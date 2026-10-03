@@ -2,13 +2,6 @@
 
 A playful, privacy-first reader that disguises your own text books and comics in familiar-looking desktop workspaces. **This is a visual simulation, not a functional office or image editor.** Not affiliated with Adobe, Microsoft, Canva, Warp, Ghostty or VS Code.
 
-## Read Suicaodex chapters
-
-- Paste a public **Suicaodex chapter link or chapter UUID** into the new home-page form. The reader opens `/read-scd/<chapter-uuid>`; direct links and reloads of that route work on Vercel.
-- The browser fetches chapter metadata directly from `https://redive.suicaodex.com/v1/chapters/:id`; there is no Vercel API rewrite or Vite development proxy. **CORS requirement:** Suicaodex must allow `https://sfw.suicaodex.com` as an origin (and `http://localhost:5173` when developing locally). If the API doesn't allow these origins, browsers will block chapter requests; this needs to be configured on the API side.
-- Pages retain the existing Photoshop, PowerPoint and Canva readers, image loading on demand, zoom, page/keyboard navigation and locally saved reader position. CDN images are fetched by your browser from the URLs supplied by the public API, with optimized/original fallback where provided.
-- Only publicly available chapters are supported; unavailable or unpublished chapters show an error with Retry/Back to home. Suicaodex-hosted chapter content **is fetched online**; only files you choose from your device remain local.
-
 ## What works
 
 - **Text:** TXT, EPUB (chapters parsed from the EPUB spine), and text-based PDF (page-by-page extraction). Choose Excel, VS Code, or Terminal; switch between sentences and paragraphs.
@@ -19,25 +12,7 @@ A playful, privacy-first reader that disguises your own text books and comics in
 - **Lazy loading:** PDF pages and comic archive images are decoded as requested, with limited prefetching and memory-aware image cache eviction. Long text views virtualize visible rows.
 - **Demo:** Built-in original sample text and simple original vector comic to try without choosing a file.
 
-## Reading workspace fidelity
-
-This revision targets **desktop visual resemblance**, without loading proprietary software or granting editor/shell access. The optional top-level SFW toolbar can still be hidden with **H**.
-
-- Photoshop: denser menu/tool chrome based on the supplied Photoshop desktop reference, nearby document tabs, actual image dimensions in the status bar, and a flattened-page layer thumbnail (rather than invented speech-bubble layers).
-- PowerPoint: contextual Office-style ribbon, File backstage, and nearby page thumbnails decoded lazily. Distant slides remain lightweight placeholders until opened.
-- Canva: document header, contextual Design / Elements / Text / Uploads / Draw / Apps panels, and document page controls.
-- Excel: contextual ribbons, a selectable row reflected in the formula bar, worksheet tab and status bar.
-- VS Code: consistent Markdown text instead of random code tokens, an activity bar, explorer and a lightweight search of the current chapter.
-- Warp / Ghostty / Windows Terminal: distinct title-bar and prompt treatments; switch profiles using the terminal status bar's **Profile** selector or the Warp View menu.
-
-The appearance is inspired by the corresponding desktop products and may differ from particular versions or operating systems. No trademarks or bundled proprietary artwork are required to render the layouts. Reader commands remain allowlisted and no shell executes.
-
-## Excel and VS Code workspaces
-
-- **Excel:** The imported story is in column A; a sparse, clearly separate decorative project tracker fills a few cells to give the sheet a believable office-document appearance. Columns A–W, extra blank rows, cell selection, formula bar, workbook ribbon, tab strip and horizontal scrolling are rendered locally. The extra data is not added to or exported with the book.
-- **VS Code:** Explorer uses the tracked files of the **sfw-reader repository**. `bun run dev` and `bun run build` regenerate the tree from `git ls-files`; a checked-in snapshot is used if Git is unavailable. Expand/collapse folders, switch tabs and use quick-open. Selected small, public source files can be previewed from this checkout. The book stays available as the pinned `reading-notes.md` tab. Previews never fetch the user's uploaded book or GitHub content over the network.
-
-## Workspace fidelity v2
+## Workspace
 
 Desktop-focused chrome refinements are split into `src/workspace-fidelity-v2.css`, loaded after the earlier styles to keep the existing reading engine untouched.
 
@@ -61,13 +36,6 @@ bun install
 bun run dev
 bun run build
 ```
-
-## Help and browser tab appearance
-
-- Open the **Guide** on the home page, use the question-mark button in the reader header, or press **F1** / **?** when you are not typing. Press **Esc** or click outside the dialog to close it. Help remains available when the reader header is hidden.
-- The guide explains supported file types, workspaces, scanning limitations, navigation shortcuts, terminal profiles and local browser storage.
-- The document title, theme color and favicon change to match the active interface: Excel, VS Code, Photoshop, PowerPoint, Canva and Warp/Ghostty/Windows Terminal. Terminal profile changes inside the terminal also update the tab immediately.
-- Custom original SVG tab marks are generated locally; the SFW Reader home favicon has a static `public/favicon.svg` fallback before React mounts.
 
 ## Keyboard shortcuts
 
