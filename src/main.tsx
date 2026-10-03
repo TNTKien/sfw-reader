@@ -7,6 +7,7 @@ import './reader-enhancements.css';
 import './office-fidelity.css';
 import './workspace-fidelity-v2.css';
 import './ribbon-photoshop-reference.css';
+import './excel-ribbon-reference.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode><App /></React.StrictMode>,
