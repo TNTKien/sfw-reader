@@ -13,4 +13,5 @@ jobs:
         with:
           bun-version: '1.4.2'
       - run: bun ci
+      - run: bun test
       - run: bun run build
