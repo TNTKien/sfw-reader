@@ -1,0 +1,165 @@
+/* Modern Excel ribbon reconstructed from the supplied desktop reference.
+ * This layer is intentionally loaded last and scoped to the dedicated component. */
+.excel-native .excel-ribbon.excel-reference-ribbon {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  height: 110px;
+  min-height: 110px;
+  max-height: 110px;
+  padding: 2px 5px 1px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #dfdfe3;
+  border-radius: 5px;
+  background: linear-gradient(#fff,#fbfbfc);
+  box-shadow: 0 1px 2px #00000016;
+  scrollbar-width: thin;
+  scrollbar-color: #c2c4c6 transparent;
+  color: #373a3d;
+  font: 11px "Segoe UI",Arial,sans-serif;
+}
+.excel-native .excel-reference-ribbon .excel-home-group {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  min-height: 100%;
+  padding: 2px 8px 1px;
+  gap: 1px;
+  border-right: 1px solid #dddfe2;
+  white-space: nowrap;
+}
+.excel-native .excel-reference-ribbon .excel-home-group:last-child { border-right: none; }
+.excel-home-group-body {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.excel-home-group-label {
+  flex: 0 0 15px;
+  height: 15px;
+  display: grid;
+  place-items: center;
+  margin-top: auto;
+  color: #74767b;
+  font-size: 10px;
+  font-weight: 400;
+}
+.excel-home-tool {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  color: #414448;
+  gap: 2px;
+  line-height: 1.15;
+  font: 11px "Segoe UI",Arial,sans-serif;
+}
+.excel-home-tool svg { flex-shrink: 0; stroke-width: 1.65; }
+.excel-home-large {
+  min-width: 43px;
+  min-height: 66px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  align-items: center;
+}
+.excel-home-large > span { line-height: 1.15; display: inline-flex; gap: 2px; align-items: center; justify-content: center; }
+.excel-home-small-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+}
+.excel-home-small-stack .excel-home-tool { min-height: 17px; }
+.excel-home-clipboard { width: 117px; }
+.excel-home-font { width: 257px; }
+.excel-home-two-rows {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 8px;
+  min-height: 0;
+}
+.excel-home-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 25px;
+  gap: 6px;
+  white-space: nowrap;
+}
+.excel-home-field {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #babdc2;
+  border-radius: 2px;
+  color: #32353a;
+  min-height: 25px;
+  padding: 3px 5px;
+  font: 12px "Segoe UI",Arial,sans-serif;
+}
+.excel-home-family { width: 121px; }
+.excel-home-point { width: 45px; }
+.excel-home-letter { color: #3d5164; font-size: 15px; line-height: 1; }
+.excel-home-letter sup { color: #2a77c3; font-size: 10px; vertical-align: 5px; }
+.excel-home-font-icons { gap: 7px; }
+.excel-home-font-icons .excel-home-tool { min-width: 18px; }
+.excel-home-red-underline { color: #31363a; font-size: 17px; line-height: 1; text-decoration: underline; text-decoration-color: #d84040; text-decoration-thickness: 3px; }
+.excel-home-alignment { width: 283px; }
+.excel-home-alignment-row { gap: 8px; }
+.excel-home-alignment-row .excel-home-tool { min-width: 18px; }
+.excel-home-labeled {
+  font-size: 11px;
+  gap: 5px;
+  margin-left: auto;
+}
+.excel-home-align-glyph { font: 19px/1 "Segoe UI Symbol",Arial,sans-serif; color: #526476; }
+.excel-home-rotation { font-size: 13px; color: #3971a7; }
+.excel-home-indent { font: 13px/1 Consolas,monospace; color: #3274a5; }
+.excel-home-number { width: 167px; }
+.excel-home-general { width: 100%; max-width: 158px; min-height: 28px; }
+.excel-home-number-row { gap: 12px; justify-content: space-between; }
+.excel-home-number-row .excel-home-tool { font-size: 14px; min-width: 15px; }
+.excel-home-decimals { font: 11px Consolas,monospace; color: #2e639b; letter-spacing: -.5px; }
+.excel-home-styles { width: 220px; }
+.excel-home-styles .excel-home-group-body { justify-content: space-around; gap: 5px; }
+.excel-home-styles .excel-home-large { min-width: 60px; }
+.excel-home-styles .excel-home-large > span { display: block; }
+.excel-home-styles .excel-home-large svg { color: #4c8d9e; }
+.excel-home-cells { width: 151px; }
+.excel-home-cells .excel-home-group-body { gap: 3px; justify-content: space-around; }
+.excel-home-cells .excel-home-large { min-width: 40px; }
+.excel-home-editing { width: 221px; }
+.excel-home-editing .excel-home-group-body { justify-content: space-between; gap: 8px; }
+.excel-home-editing-stack { gap: 5px; }
+.excel-home-editing-stack .excel-home-tool { min-width: 64px; justify-content: flex-start; }
+.excel-home-editing .excel-home-large { min-width: 53px; }
+.excel-home-additional { width: 86px; }
+.excel-home-additional .excel-home-large { min-width: 0; width: 100%; }
+.excel-home-additional .excel-home-large > span { font-size: 10px; }
+.excel-native .excel-reference-alternative { gap: 0; }
+.excel-native .excel-reference-alternative .excel-home-secondary { min-width: 155px; max-width: 360px; }
+.excel-reference-alternative .excel-home-secondary .excel-home-group-body { gap: 13px; justify-content: space-around; }
+.excel-reference-alternative .excel-home-secondary .excel-home-large { min-width: 58px; max-width: 116px; }
+.excel-reference-alternative .excel-home-secondary .excel-home-large > svg { width: 27px; height: 27px; color: #468e70; }
+.excel-reference-alternative .excel-home-secondary .excel-home-large > span {
+  max-width: 116px; white-space: normal; overflow-wrap: anywhere; font-size: 10px;
+}
+@media (max-width: 1150px) {
+  .excel-native .excel-ribbon.excel-reference-ribbon { scrollbar-width: none; }
+}
