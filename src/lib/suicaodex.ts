@@ -130,10 +130,16 @@ function createChapterDocument(payload: ChapterPayload): ComicDocument {
 
 export async function loadSuicaodexChapter(id: string, signal?: AbortSignal): Promise<ComicDocument> {
   if (!CHAPTER_ID.test(id)) throw new Error('Invalid Suicaodex chapter ID. Enter a chapter link or UUID.');
-  // Vercel rewrites this same-origin URL to the public Suicaodex API to avoid CORS.
-  const response = await fetch('/api/scd-chapters/' + encodeURIComponent(id), {
-    method: 'GET', headers: { Accept: 'application/json' }, signal,
-  });
+  // Fetch directly from the browser. Suicaodex must allow this site's Origin via CORS.
+  let response: Response;
+  try {
+    response = await fetch('https://redive.suicaodex.com/v1/chapters/' + encodeURIComponent(id), {
+      method: 'GET', headers: { Accept: 'application/json' }, signal,
+    });
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    throw new Error('Could not contact Suicaodex. Check your connection and ensure the API allows this site through CORS.');
+  }
   if (response.status === 404) throw new Error('Chapter not found, unpublished, or unavailable.');
   if (!response.ok) throw new Error(response.status === 429 ? 'Suicaodex is rate limiting requests. Try again later.' :
     'Unable to retrieve this chapter (HTTP ' + response.status + ').');
