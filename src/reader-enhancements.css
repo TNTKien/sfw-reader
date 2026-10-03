@@ -1,0 +1,211 @@
+/* Excel and VS Code fidelity pass. Loaded after realism.css. */
+
+/* Excel — dense modern Office window and a convincing, horizontally scrollable workbook. */
+.excel-native {background:#fff;font:12px "Segoe UI",Arial,sans-serif;color:#202127}
+.excel-native .excel-titlebar {background:#eceaf0;color:#292931;height:49px;min-height:49px;gap:11px;border:0;padding:0 14px}
+.excel-native .excel-logo {background:none;box-shadow:none;display:grid;place-items:center;color:#168451;padding:2px}
+.excel-autosave {display:flex;align-items:center;gap:7px;white-space:nowrap;font:12px "Segoe UI",Arial}
+.excel-autosave-off {display:flex;align-items:center;gap:7px;padding:2px 8px 2px 2px;border-radius:14px;background:#fff;border:1px solid #a0a0a7;font-size:11px}
+.excel-autosave-off i {width:15px;height:15px;border-radius:50%;background:#767982;box-shadow:inset 0 0 0 2px #aeb0b6}
+.excel-native .excel-title-quick-access {display:flex;align-items:center;gap:11px;color:#95959d;font-size:12px}
+.excel-native .excel-doc {flex:0 1 auto;min-width:60px;text-align:left;margin:0 4px 0 13px;font:12px "Segoe UI",Arial;color:#35363f}
+.excel-title-search {display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #d5d5da;border-radius:5px;box-shadow:0 1px 2px #0002;padding:8px 15px;height:35px;color:#747681;width:min(32vw,405px);margin:auto;white-space:nowrap}
+.excel-user-avatar {display:grid;place-items:center;flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#49346b;color:#fff;font-size:11px;border:2px solid #bc80dc}
+.excel-native .window-controls {margin-left:8px;color:#4b4c51;opacity:1}
+.excel-native .excel-tabs {height:38px;min-height:38px;display:flex;justify-content:space-between;background:#fafafa;border:0;padding:0 13px 0 17px;gap:9px;overflow:hidden}
+.excel-tab-labels {display:flex;align-items:stretch;gap:7px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.excel-native .excel-tab-labels button {padding:0 9px;border:0;background:transparent;color:#34343c;white-space:nowrap;font:12px "Segoe UI",Arial;flex-shrink:0}
+.excel-native .excel-tab-labels button.active {font-weight:700;box-shadow:inset 0 -3px #167a4d}
+.excel-collaboration {display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:11px}
+.excel-collaboration span {display:flex;align-items:center;gap:6px;border:1px solid #c9cad0;background:#fff;border-radius:5px;padding:5px 10px}
+.excel-collaboration .excel-share {color:#fff;background:#078247;border-color:#078247;font-weight:600}
+.excel-native .excel-ribbon {background:#fbfbfd;height:112px;min-height:112px;align-items:stretch;gap:0;padding:4px 6px;border:1px solid #e1e1e6;border-radius:7px;box-shadow:0 2px 3px #0002;overflow:hidden}
+.excel-tool-group {display:flex;flex-direction:column;flex-shrink:0;justify-content:space-between;align-items:center;min-width:90px;border-right:1px solid #d8d8dd;padding:3px 10px;gap:2px;font-size:10px}
+.excel-tool-group:last-child {border-right:0}
+.excel-tool-group small {font:10px "Segoe UI",Arial;color:#76777d;text-align:center;padding-top:3px}
+.excel-group-content {display:flex;align-items:center;gap:8px;height:75px}
+.excel-large-icon {display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px}
+.excel-large-icon svg {color:#c78d3f}
+.excel-large-icon span {display:flex;align-items:center;gap:3px}
+.excel-small-icons {display:flex;flex-direction:column;gap:5px}
+.excel-small-icons svg {color:#647889}
+.excel-font-tools {min-width:228px;align-items:stretch}
+.excel-font-selects {display:flex;align-items:center;gap:6px;min-width:0;height:31px}
+.excel-font-selects span {display:flex;align-items:center;justify-content:space-between;border:1px solid #d0d0d4;background:#fff;height:25px;min-width:48px;padding:2px 5px;white-space:nowrap}
+.excel-font-selects span:first-child {flex:1;min-width:95px}
+.excel-font-selects b {font-size:14px;white-space:nowrap;font-weight:400}
+.excel-ribbon-icons {display:flex;align-items:center;gap:10px;white-space:nowrap;height:25px}
+.excel-ribbon-icons svg {flex-shrink:0}
+.excel-highlight-marker {color:#c9ad19;text-decoration:underline}
+.excel-red-marker {color:#c7353a;text-decoration:underline}
+.excel-alignment-tools {min-width:233px;align-items:stretch}
+.excel-alignment-tools .excel-ribbon-icons {gap:13px;font-size:11px}
+.excel-number-tools {min-width:138px;align-items:stretch}
+.excel-number-select {display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #c9cad0;border-radius:2px;height:26px;padding:3px 6px}
+.excel-number-tools .excel-ribbon-icons {font-size:13px}
+.excel-styles-tools {min-width:168px}.excel-cells-tools {min-width:140px}.excel-editing-tools {min-width:145px}
+.excel-tall-tools {display:flex;justify-content:space-around;align-items:center;gap:9px;flex:1;width:100%}
+.excel-tall-tools>span {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;line-height:1.2}
+.excel-tall-tools>span>span {font-size:22px;line-height:1.1;color:#348a66}
+.excel-tall-tools svg {color:#647d88}
+.excel-ribbon-alternative {gap:0}
+.excel-simple-tools {display:flex;gap:16px;align-items:center;flex:1}
+.excel-simple-tools>span {display:flex;flex-direction:column;align-items:center;gap:7px;white-space:nowrap}
+.excel-placeholder-symbol {font-size:24px;color:#438467}
+.excel-native .excel-formula {height:34px;min-height:34px;display:flex;align-items:center;gap:0;background:#f8f8fa;border-bottom:1px solid #d9d9dc;padding:3px 9px}
+.excel-native .excel-formula>span {border:0;color:#75777d;padding:0 8px}
+.excel-native .excel-formula .excel-name-box {display:flex;align-items:center;justify-content:space-between;min-width:110px;height:25px;margin-right:12px;padding:0 8px;border:1px solid #dadbe0;border-radius:3px;background:#fff;color:#303137;text-align:left}
+.excel-native .excel-formula>div {flex:1;min-width:0;background:#fff;border:1px solid #d9dbe0;height:25px;padding:3px 8px;line-height:18px;font-size:12px;color:#454545}
+.excel-native .excel-formula .excel-formula-actions {font-size:15px;white-space:nowrap;color:#8f9098;padding:0 12px 0 1px}
+.excel-native .excel-book {flex:1;min-height:0;display:flex;background:#fff;overflow:hidden}
+.excel-sheet-scroll {width:100%;height:100%;min-width:0;min-height:0;overflow:auto;scrollbar-color:#8e8e92 #f5f5f6;scrollbar-width:auto;position:relative}
+.excel-grid-head,.excel-grid-row {display:grid;grid-template-columns:42px 420px repeat(22,86px);width:2354px;min-width:2354px}
+.excel-grid-head {position:sticky;top:0;height:23px;z-index:5;background:#f4f4f5;border-bottom:1px solid #ceced1}
+.excel-grid-head>span {display:grid;place-items:center;border-right:1px solid #dedee1;font-size:11px;color:#4d535c;user-select:none}
+.excel-grid-head .selected {color:#176b44;background:#e5ede7;border-bottom:2px solid #218052}
+.excel-grid-corner {background:linear-gradient(135deg,transparent 49%,#a2a7ab 50%,#a2a7ab 53%,transparent 54%) bottom right/10px 10px no-repeat}
+.excel-grid-virtual {position:relative;width:2354px;min-width:2354px}
+.excel-grid-row {min-height:23px;align-items:stretch}
+.excel-grid-row-num {display:grid;place-items:center;background:#f6f6f7;color:#4d555f;border-right:1px solid #d7d9dc;border-bottom:1px solid #e0e1e4;font-size:11px;user-select:none}
+.excel-grid-row-num.selected {background:#e3eee8;color:#17683b}
+.excel-grid-cell {background:#fff;color:#222;border:0;border-right:1px solid #e3e4e8;border-bottom:1px solid #e3e4e8;min-height:22px;overflow-wrap:anywhere;text-align:left;white-space:pre-wrap;padding:3px 5px;font:11px/1.5 "Segoe UI",Arial;align-self:stretch;cursor:cell;position:relative}
+.excel-grid-cell:hover {background:#f5faf7}
+.excel-grid-cell.selected {outline:2px solid #1c9254;outline-offset:-2px;background:#fff;z-index:1}
+.excel-grid-cell.selected:after {content:"";position:absolute;width:5px;height:5px;bottom:-1px;right:-1px;background:#1c9254}
+.excel-grid-cell.office-heading {font-weight:700;color:#3d594a;background:#edf4ee}
+.excel-grid-cell.excel-cell-complete {color:#268448;font-weight:600}
+.excel-sheet-tabs {display:flex;align-items:center;height:32px;min-height:32px;background:#f0eff1;gap:8px;padding:0 14px;border-top:1px solid #d5d5d9;color:#41444b}
+.excel-sheet-arrows {font-size:16px;white-space:nowrap;color:#797b83}
+.excel-sheet-active {background:#fff;padding:7px 12px 6px;border-radius:5px 5px 0 0;border-bottom:2px solid #228955;font-size:12px;font-weight:600}
+.excel-sheet-tabs button {border:0;background:none;color:#45464c;font-size:19px;padding:2px 7px}
+.excel-horizontal-track {height:11px;flex:1;background:#e0e0e3;border-radius:8px;margin-left:21px;overflow:hidden}
+.excel-horizontal-track span {display:block;height:100%;width:45%;border-radius:8px;background:#9c9da2}
+.excel-native-status {height:24px;min-height:24px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0 13px;background:#f6f6f8;color:#41434b;border-top:1px solid #dadade;font:10px "Segoe UI",Arial}
+.excel-status-left {display:flex;align-items:center;gap:22px;white-space:nowrap}
+.excel-bottom-reader {display:flex;align-items:center;gap:4px;min-width:0;margin-left:auto}
+.excel-bottom-reader button,.excel-native-zoom button {display:grid;place-items:center;padding:2px;border:0;background:transparent;color:#45474c}
+.excel-bottom-reader select {max-width:150px;min-width:60px;height:20px;padding:1px 5px;border:1px solid #dddde2;background:#fff;font-size:10px;color:#363944}
+.excel-native-zoom {display:flex;align-items:center;gap:6px;white-space:nowrap}
+.excel-native-zoom input {width:76px;height:3px;accent-color:#777980}
+
+/* VS Code — file tree from tracked repo files, tabbed read-only source views. */
+.vscode-repository {background:#282a36;color:#d7dbe5;font:12px "Segoe UI",Arial,sans-serif}
+.vscode-repository .vsc-menuline {height:39px;min-height:39px;gap:12px;background:#20212b;border-bottom:1px solid #2f3241}
+.vscode-repository .vsc-mark {color:#169fff}
+.vscode-repository .vsc-menus .menu-trigger {color:#e4e5f0;font-size:12px}
+.vsc-history-arrows {color:#9298ac;font-size:22px;white-space:nowrap}
+.vsc-quick-container {position:relative;min-width:80px;max-width:640px;flex:1;margin:0 auto}
+.vsc-quick-search {height:27px;background:#2b2d3d;border:1px solid #464a5c;border-radius:5px;display:flex;align-items:center;gap:8px;padding:0 10px;color:#adb3c3}
+.vsc-quick-search input {background:none;border:0;color:#dfe4f5;outline:0;width:100%;min-width:40px;font:12px "Segoe UI",Arial,sans-serif}
+.vsc-quick-search input::placeholder {color:#a7abba}
+.vsc-quick-search span {white-space:nowrap;font:10px Consolas,monospace;color:#81899a}
+.vsc-quick-results {position:absolute;left:0;right:0;top:31px;display:flex;flex-direction:column;padding:5px;z-index:45;border:1px solid #52566c;border-radius:5px;background:#303347;box-shadow:0 12px 35px #0009;max-height:270px;overflow:auto}
+.vsc-quick-results button {border:0;background:transparent;color:#e1e2ee;font:11px Consolas,monospace;text-align:left;padding:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vsc-quick-results button:hover {background:#454c67}
+.vsc-title-actions {display:flex;align-items:center;gap:13px;color:#c8cbd8;margin-right:12px}
+.vscode-repository .window-controls {color:#c7c9d3;opacity:1}
+.vscode-repository .vsc-body {background:#282a36}
+.vscode-repository .vsc-activity {width:49px;flex-basis:49px;background:#313449;border-right:1px solid #444759}
+.vscode-repository .vsc-activity button {height:48px;color:#7f9ccc;border-left:2px solid transparent}
+.vscode-repository .vsc-activity button.active {color:#f1f2ff;border-left-color:#a3a9ea;background:#3c3f56}
+.vscode-repository .vsc-explorer {width:336px;flex-basis:336px;background:#20212c;border:1px solid #42465b;border-top:0;border-radius:7px 7px 0 0;overflow:hidden}
+.vsc-explorer-inner {display:flex;flex-direction:column;height:100%;min-height:0}
+.vscode-repository .vsc-explorer-header {height:34px;min-height:34px;padding:10px 13px;font-size:11px;letter-spacing:0;text-transform:uppercase;background:#20212c;color:#e8e9f3}
+.vsc-repo-heading {display:flex;align-items:center;justify-content:space-between;min-height:28px;padding:0 8px 0 7px;gap:5px}
+.vsc-repo-toggle {background:none;color:#e8eaf4;border:0;display:flex;align-items:center;gap:4px;padding:4px 1px;min-width:0;font-size:12px;cursor:pointer}
+.vsc-repo-toggle b {font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.vsc-repo-actions {display:flex;align-items:center;gap:2px}
+.vsc-repo-actions button {background:transparent;color:#afb2c1;border:0;width:23px;height:23px;display:grid;place-items:center;padding:2px}
+.vsc-repo-actions button:hover:not(:disabled) {background:#4b5068}
+.vsc-repo-actions button:disabled {opacity:.65}
+.vsc-tree-scroll {flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-color:#51566e #20212c}
+.vsc-tree-row {display:flex;align-items:center;gap:5px;width:100%;max-width:100%;height:24px;border:1px solid transparent;background:transparent;color:#d8dbe8;font:12px "Segoe UI",Arial,sans-serif;text-align:left;cursor:pointer;padding-right:5px}
+.vsc-tree-row svg {flex-shrink:0;color:#9da6c5}
+.vsc-tree-row:hover {background:#33364a}
+.vsc-tree-row.selected {background:#444960;border:1px solid #626f9e;border-radius:3px}
+.vsc-tree-indent {flex:0 0 14px}
+.vsc-tree-name {white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vsc-folder-glyph {display:inline-grid;place-items:center;width:15px;flex:0 0 15px;color:#d2af77;font-size:13px;line-height:1}
+.vsc-folder-glyph.is-open {color:#e4ba74}
+.vsc-tree-glyph {display:inline-grid;place-items:center;flex-shrink:0;width:16px;height:15px;font:bold 11px Consolas,monospace;color:#8fabbf}
+.vsc-glyph-react {font-size:17px;color:#40bce8}
+.vsc-glyph-typescript {font-size:10px;color:#529fd5}
+.vsc-glyph-json {color:#dcb66b}.vsc-glyph-css {color:#a486dc}.vsc-glyph-markdown {color:#d4d8e8}.vsc-glyph-html {color:#f48e65}
+.vsc-glyph-svg {color:#d9b676}.vsc-glyph-yaml {color:#bdb4e8}.vsc-glyph-lock {color:#fb9b84}
+.vsc-explorer-lower {flex-shrink:0;background:#1e202b;border-top:1px solid #3b3e52}
+.vsc-section-toggle {width:100%;height:26px;display:flex;align-items:center;gap:4px;background:transparent;border:0;border-bottom:1px solid #34394c;color:#d9deed;font-size:11px;font-weight:700;padding:0 9px;text-align:left}
+.vsc-outline-item {display:flex;align-items:center;gap:5px;padding:8px 15px 8px 23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#b4bad1;font:11px "Segoe UI",Arial}
+.vscode-repository .vsc-filetabs {height:34px;min-height:34px;background:#20212b}
+.vsc-open-tabs {display:flex;flex:1;min-width:0;height:100%;overflow:auto hidden;scrollbar-width:none}
+.vsc-open-tab {display:flex;align-items:center;gap:0;border-right:1px solid #1a1c26;border-top:1px solid transparent;background:#232532;color:#919ab0;max-width:210px;flex-shrink:0}
+.vsc-open-tab.current {background:#282a36;border-top-color:#8899d1;color:#e3e7f3}
+.vsc-open-tab>button:first-child {display:flex;align-items:center;gap:7px;min-width:0;padding:0 12px;height:100%;background:transparent;border:0;color:inherit;font:12px "Segoe UI",Arial}
+.vsc-open-tab>button:first-child span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vsc-open-tab .vsc-close-tab {background:none;border:0;color:#aaaebc;padding:2px;margin:0 5px;display:grid;place-items:center}
+.vsc-open-tab .vsc-close-tab:hover {background:#444b60;color:#fff}
+.vscode-repository .vsc-toolbar {display:flex;align-items:center;gap:13px}
+.vscode-repository .vsc-breadcrumb {background:#282a36;color:#a8adc0;padding:6px 20px}
+.vscode-repository .vsc-editor {min-width:0}
+.vscode-repository .code-scroll {background:#282a36;min-width:0;flex:1;padding-top:6px;scrollbar-color:#4b5066 #282a36}
+.vscode-repository .code-row {min-height:25px;font:13px/1.7 Consolas,"Cascadia Code",monospace}
+.vscode-repository .code-row:hover {background:#303344}
+.vscode-repository .code-number {color:#747a91;width:67px;min-width:67px}
+.vscode-repository .code-content {color:#d2d7e6;white-space:pre-wrap;overflow-wrap:anywhere}
+.vsc-code-virtual {position:relative;min-height:100%}
+.vsc-empty-story {padding:25px;color:#9a9fb4}
+.vscode-repository .vsc-minimap {background:#282a36;opacity:.35}
+.vsc-source-view {flex:1;min-width:0;overflow:auto;padding:10px 0 30px;background:#282a36;color:#d2d8eb;font:12px/1.7 Consolas,"Cascadia Code",monospace;scrollbar-color:#474b64 transparent}
+.vsc-source-line {display:flex;gap:14px;min-height:21px;width:max-content;min-width:100%;white-space:pre}
+.vsc-source-line:hover {background:#313548}
+.vsc-source-number {width:52px;min-width:52px;text-align:right;color:#757e97;user-select:none;padding-right:4px}
+.vsc-source-unavailable {display:flex;flex:1;min-width:0;align-items:center;justify-content:center;flex-direction:column;gap:15px;color:#c0c5d6}
+.vsc-source-unavailable p {font-size:11px;color:#8289a2}
+.vsc-search-panel,.vsc-other-panel {display:flex;flex-direction:column;min-height:0;overflow-y:auto;color:#d9dded}
+.vsc-search-panel input {margin:9px 13px 8px;border:1px solid #666d88;border-radius:3px;background:#31364b;color:#f1f2ff;padding:7px;font:11px "Segoe UI",Arial}
+.vsc-search-panel small {padding:7px 13px;color:#a9aec0}
+.vsc-search-hit {display:flex;flex-direction:column;gap:5px;border:0;border-bottom:1px solid #3c4055;background:transparent;color:#ddd;text-align:left;padding:8px 15px}
+.vsc-search-hit:hover {background:#363d53}
+.vsc-search-hit b {font:11px Consolas,monospace;color:#8dbedc}
+.vsc-search-hit span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.vsc-other-panel>span {padding:13px 15px;color:#9fa8bb}
+.vscode-repository .vsc-status {height:26px;min-height:26px;background:#1d202d;color:#d5d9ea;border-top:1px solid #40445b;font-size:10px}
+.vscode-repository .vsc-status-left {display:flex;align-items:center;gap:7px;white-space:nowrap}
+.vscode-repository .vsc-status-right {gap:6px}
+.vscode-repository .vsc-status-right select {max-width:170px;min-width:60px;border:0;background:transparent;color:#d7dbeb}
+.vscode-repository .vsc-status-right option {color:#222}
+.vscode-repository .vsc-status-right button {padding:2px}
+@media(max-width:1100px) {
+  .excel-title-search {max-width:260px}
+  .excel-styles-tools,.excel-cells-tools {display:none}
+  .vscode-repository .vsc-explorer {width:270px;flex-basis:270px}
+}
+@media(max-width:790px) {
+  .excel-autosave,.excel-title-search,.excel-title-quick-access {display:none}
+  .excel-native .excel-doc {margin-left:4px}
+  .excel-collaboration span:first-child {display:none}
+  .excel-font-tools {min-width:180px}
+  .excel-alignment-tools {min-width:175px}
+  .excel-native .excel-ribbon {height:101px;min-height:101px}
+  .vsc-history-arrows,.vsc-title-actions {display:none}
+  .vscode-repository .vsc-explorer {width:220px;flex-basis:220px}
+}
+@media(max-width:570px) {
+  .excel-user-avatar {display:none}
+  .excel-native .excel-tabs {padding:0 5px}
+  .excel-native .excel-tab-labels button {padding:0 6px}
+  .excel-collaboration {display:none}
+  .excel-native .excel-ribbon {height:84px;min-height:84px}
+  .excel-native .excel-ribbon .excel-tool-group {min-width:88px;padding:3px 6px}
+  .excel-native .excel-ribbon .excel-font-tools,.excel-native .excel-ribbon .excel-alignment-tools {min-width:155px}
+  .excel-tool-group small {font-size:9px}
+  .excel-native-status {padding:0 6px;gap:6px}
+  .excel-status-left span:nth-child(2),.excel-native-zoom {display:none}
+  .excel-bottom-reader select {max-width:110px}
+  .vscode-repository .vsc-explorer {width:190px;flex-basis:190px}
+  .vscode-repository .vsc-menuline {gap:6px}
+  .vsc-quick-search {min-width:60px}
+  .vsc-quick-search span {display:none}
+  .vsc-open-tab {max-width:155px}
+  .vsc-repo-actions button:disabled {display:none}
+  .vscode-repository .vsc-status-left {display:none}
+}

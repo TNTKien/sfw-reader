@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build",
+    "dev": "bun scripts/generate-repo-tree.ts && vite --host 0.0.0.0",
+    "build": "bun scripts/generate-repo-tree.ts && tsc -b && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "bun scripts/generate-repo-tree.ts && tsc --noEmit"
   },
   "dependencies": {
     "jszip": "^3.10.1",
