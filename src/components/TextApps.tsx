@@ -55,7 +55,7 @@ function Excel({ props, rows }: { props: TextProps; rows: string[] }) {
   const [tab, setTab] = useState('Home');
   const [selectedRow, setSelectedRow] = useState(0);
   const { name, index, titles, onPage, mode, onMode, openFile, close } = props;
-  useEffect(() => setSelectedRow(0), [index, mode]);
+  useEffect(() => setSelectedRow(0), [index, mode, name]);
   const tabs = ['File', 'Home', 'Insert', 'Page Layout', 'Formulas', 'Data', 'Review', 'View', 'Help'];
   const ribbon = tab === 'Insert' ? [
     { name: 'Tables', symbols: '▦　▥　▤', caption: 'PivotTable　Table' },
@@ -104,9 +104,15 @@ function Code({ props, rows }: { props: TextProps; rows: string[] }) {
   const [activity, setActivity] = useState<'explorer' | 'search' | 'source' | 'extensions'>('explorer');
   const [searchText, setSearchText] = useState('');
   const fileName = name.replace(/\.[^.]+$/, '').replace(/\s+/g, '-').toLowerCase() + '.md';
-  const searchResults = useMemo(() => searchText.trim()
-    ? rows.map((value, i) => ({value, i})).filter(({value}) => value.toLowerCase().includes(searchText.toLowerCase())).slice(0, 12)
-    : [], [rows, searchText]);
+  const searchResults = useMemo(() => {
+    const query = searchText.trim().toLowerCase();
+    const matches: { value: string; i: number }[] = [];
+    if (!query) return matches;
+    for (let i = 0; i < rows.length && matches.length < 12; i++) {
+      if (rows[i].toLowerCase().includes(query)) matches.push({ value: rows[i], i });
+    }
+    return matches;
+  }, [rows, searchText]);
   const menus = [
     {label: 'File', items: [{label:'Open File…', action: openFile, shortcut: 'Ctrl+O'},{label:'Open Recent', disabled: true},{label:'',divider:true},{label:'Close Editor', action: close}]},
     {label:'Edit', items:[{label:'Undo',disabled:true},{label:'Cut',disabled:true},{label:'Find',action:()=>setActivity('search'),shortcut:'Ctrl+F'}]},
