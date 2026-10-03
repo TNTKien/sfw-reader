@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertCircle, ArrowDownRight, ArrowLeft, ArrowRight, BookOpen, CheckCircle2, ChevronDown, Code2, FileArchive, FileImage, FileText, FolderOpen, Github, Grid2X2, HardDrive, Image, Layers, LockKeyhole, Monitor, Plus, Presentation, ShieldCheck, Sparkles, UploadCloud, X } from 'lucide-react';
+import { AlertCircle, ArrowDownRight, ArrowLeft, ArrowRight, BookOpen, CheckCircle2, ChevronDown, ChevronUp, Code2, FileArchive, FileImage, FileText, FolderOpen, Github, Grid2X2, HardDrive, Image, Layers, LockKeyhole, Monitor, Plus, Presentation, ShieldCheck, Sparkles, UploadCloud, X } from 'lucide-react';
 import ComicApps from './components/ComicApps';
 import TextApps from './components/TextApps';
 import { demoComic, demoText } from './lib/demo';
@@ -48,6 +48,7 @@ export default function App() {
   const bookRef = useRef<ReaderDocument | null>(null);
   const [pending, setPending] = useState<PendingPdf | null>(null);
   const [view, setView] = useState<View>('photoshop');
+  const [headerVisible, setHeaderVisible] = useState(true);
   const [page, setPage] = useState(0);
   const [zoom, setZoom] = useState(80);
   const [mode, setMode] = useState<'sentence' | 'paragraph'>('sentence');
@@ -140,23 +141,51 @@ export default function App() {
     try { localStorage.setItem(`sfw-position:${book.id}`, JSON.stringify({ index: page, view })); } catch { /* optional */ }
   }, [book, page, view]);
   useEffect(() => {
-    if (!book) return;
+    if (!book || pending) return;
     const onKey = (event: KeyboardEvent) => {
       const element = event.target as HTMLElement | null;
-      if (element && (['INPUT','SELECT','TEXTAREA','BUTTON'].includes(element.tagName) || element.isContentEditable)) return;
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'o') { event.preventDefault(); fileInput.current?.click(); }
-      else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
-        event.preventDefault(); setPage(p => Math.min(p + 1, book.kind === 'comic' ? book.pageCount - 1 : book.chapters.length - 1));
-      } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); setPage(p => Math.max(0, p - 1)); }
+      // Keep native editing and mock application menu keyboard interactions intact.
+      if (element && (
+        ['INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName) ||
+        element.isContentEditable ||
+        element.closest('[contenteditable="true"], [role="textbox"], .menu-bar, [role="menu"], [role="dialog"]')
+      )) return;
+
+      if ((event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === 'o') {
+        event.preventDefault();
+        fileInput.current?.click();
+        return;
+      }
+      if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+
+      if (event.key.toLowerCase() === 'h') {
+        if (event.repeat) return; // Holding H should not flash the header.
+        event.preventDefault();
+        setHeaderVisible(visible => !visible);
+        return;
+      }
+
+      // In comic mode, arrows must still work after clicking a workspace or toolbar button.
+      // Keep the existing text-reader behavior for focused buttons.
+      if (book.kind === 'text' && element?.tagName === 'BUTTON') return;
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+        event.preventDefault();
+        setPage(p => Math.min(p + 1, book.kind === 'comic' ? book.pageCount - 1 : book.chapters.length - 1));
+      } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+        event.preventDefault();
+        setPage(p => Math.max(0, p - 1));
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [book]);
+  }, [book, pending]);
 
   const compatible = useMemo(() => book?.kind === 'comic' ? comicViews : textViews, [book]);
   return <>
     {!book ? <Landing onFiles={openFiles} onDemo={type => { lastFiles.current = null; applyBook(type === 'comic' ? demoComic() : demoText()); }} busy={busy} error={error}/> :
-      <div className="reader-page"><header className="reader-toolbar"><button className="reader-home" onClick={close} title="Close reader"><span className="reader-home-badge"><BookOpen size={17}/></span><span>SFW <b>READER</b></span></button><div className="reader-toolbar-divider"/><span className="reader-bookname" title={book.name}>{book.name}</span><div className="reader-mode-switch" role="group" aria-label="Choose simulated workspace">{compatible.map(item => <button key={item.id} className={view === item.id ? 'current' : ''} onClick={() => setView(item.id as View)} title={item.desc}>{item.title}</button>)}</div>{book.kind === 'text' && lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf') && <button className="reader-pdf-comic" onClick={()=>void reopenAsComic()}>Read as comic</button>}<span className="reader-local"><span/> LOCAL ONLY</span><input hidden type="file" ref={fileInput} multiple accept=".txt,.epub,.pdf,.cbz,.zip,.jpg,.jpeg,.png,.webp,.gif,.avif" onChange={event=>{if(event.target.files?.length)void openFiles(Array.from(event.target.files));event.target.value='';}}/><button className="reader-open" onClick={()=>fileInput.current?.click()} disabled={busy}><Plus size={16}/> Open</button><button className="reader-back" title="Back to library" onClick={close}><X size={17}/></button></header>
+      <div className="reader-page">
+      <input hidden type="file" ref={fileInput} multiple accept=".txt,.epub,.pdf,.cbz,.zip,.jpg,.jpeg,.png,.webp,.gif,.avif" onChange={event=>{if(event.target.files?.length)void openFiles(Array.from(event.target.files));event.target.value='';}}/>
+      {headerVisible ? <header className="reader-toolbar"><button className="reader-home" onClick={close} title="Close reader"><span className="reader-home-badge"><BookOpen size={17}/></span><span>SFW <b>READER</b></span></button><div className="reader-toolbar-divider"/><span className="reader-bookname" title={book.name}>{book.name}</span><div className="reader-mode-switch" role="group" aria-label="Choose simulated workspace">{compatible.map(item => <button key={item.id} className={view === item.id ? 'current' : ''} onClick={() => setView(item.id as View)} title={item.desc}>{item.title}</button>)}</div>{book.kind === 'text' && lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf') && <button className="reader-pdf-comic" onClick={()=>void reopenAsComic()}>Read as comic</button>}<span className="reader-local"><span/> LOCAL ONLY</span><button className="reader-open" onClick={()=>fileInput.current?.click()} disabled={busy}><Plus size={16}/> Open</button><button className="reader-header-hide" type="button" title="Hide reader header (H)" aria-label="Hide reader header (H)" onClick={() => setHeaderVisible(false)}><ChevronUp size={16}/><kbd>H</kbd></button><button className="reader-back" title="Back to library" onClick={close}><X size={17}/></button></header> : <button type="button" className="reader-header-show" title="Show reader header (H)" aria-label="Show reader header (H)" onClick={() => setHeaderVisible(true)}><ChevronDown size={16}/></button>}
       {book.kind === 'comic' ? <ComicApps name={book.name} index={page} count={book.pageCount} image={image} zoom={zoom} setZoom={setZoom} onPage={setPage} view={view as ComicView} setView={setView} openFile={()=>fileInput.current?.click()} close={close}/> : <TextApps name={book.name} raw={raw} loading={rendering} index={page} titles={book.chapters} onPage={setPage} mode={mode} onMode={setMode} view={view as TextView} setView={setView} openFile={()=>fileInput.current?.click()} close={close}/>}
       {error && <div className="reader-error"><AlertCircle size={17}/>{error}<button onClick={()=>setError(null)}><X size={15}/></button></div>}
       {rendering && book.kind === 'text' && <div className="reader-toast">Loading {book.chapters[page]?.title}…</div>}
