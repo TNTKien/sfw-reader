@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1280" role="img" aria-label="Original illustrative sample comic page">
+  <rect width="900" height="1280" fill="#fff"/>
+  <defs>
+    <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#b2b2b2"/></pattern>
+    <pattern id="small" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 0L6 6" stroke="#d3d3d3" stroke-width=".9"/></pattern>
+  </defs>
+  <g stroke="#111" stroke-width="6">
+    <rect x="22" y="22" width="540" height="388" fill="url(#small)"/>
+    <path d="M20 350Q120 232 190 292T385 276Q465 237 563 324V411H20Z" fill="#eee"/>
+    <path d="M23 298l48-129 32 74 59-105 45 126 56-87 32 80 74-147 52 129 57-101 85 160" fill="none" stroke="#555" stroke-width="3"/>
+    <rect x="580" y="22" width="297" height="388" fill="url(#dots)"/>
+    <path d="M584 402Q593 244 681 190T852 250L877 409" fill="#212121" stroke="#111" stroke-width="5"/>
+    <ellipse cx="736" cy="286" rx="92" ry="105" fill="#fff"/>
+    <path d="M641 244q20-98 130-64 58 16 59 110l-29-49q-28-4-39-34-38 39-107 38Z" fill="#1b1b1b"/>
+    <path d="M681 290q20-12 34 0m38 0q19-12 38 2m-69 60q20 12 39 0" stroke-width="5" fill="none"/>
+    <rect x="22" y="426" width="855" height="378" fill="#fafafa"/>
+    <path d="M23 693L152 522l73 103 118-165 112 188 142-180 109 171 169-163V803H22Z" fill="url(#dots)" stroke="#777" stroke-width="2"/>
+    <path d="M175 808Q178 651 253 604t157 17q81 47 87 186M396 804Q440 639 539 608t154 51q57 54 80 145" fill="#fff"/>
+    <path d="M259 626q-87 30-68 118l12 62h31q-13-56 21-95 54-12 86 11l28 84h34l-18-124q-52-87-126-56ZM564 614q-71-21-115 65l15 65q27-64 67-67l88 75-14 53h86l-25-122q-32-63-102-69Z" fill="#141414"/>
+    <rect x="22" y="822" width="407" height="432" fill="url(#dots)"/>
+    <path d="M22 1248q49-147 154-132 106-10 225 132" fill="#161616"/>
+    <ellipse cx="224" cy="1058" rx="111" ry="119" fill="#fff"/>
+    <path d="M115 1044q-20-154 131-125 119 2 81 147-22-37-52-57l-43 24-32-25-43 56Z" fill="#151515"/>
+    <path d="M165 1056q22-19 48-1m46 0q21-14 43 1m-98 62q19 9 37-1" fill="none" stroke-width="5"/>
+    <rect x="447" y="822" width="430" height="432" fill="#f5f5f5"/>
+    <path d="M448 1217q149-194 278-29l152 67H448Z" fill="#1c1c1c"/>
+    <ellipse cx="673" cy="1090" rx="112" ry="127" fill="#fff"/>
+    <path d="M555 1062q6-181 164-121 52 4 68 104-25-43-63-55-73 64-168 72Z" fill="#191919"/>
+    <path d="M615 1100q24-17 40 0m40 1q24-13 42 2m-83 54q27-16 49 0" fill="none" stroke-width="5"/>
+  </g>
+  <g fill="#fff" stroke="#111" stroke-width="4">
+    <path d="M71 47Q45 50 48 97v57q5 51 63 57l-9 27 37-30h148q56 0 59-53V94q-3-46-67-47Z"/>
+    <path d="M591 47q-33 0-34 41v54q0 32 45 38l15 20 6-21h160q52-3 50-52V86q-1-39-54-39Z"/>
+    <path d="M47 443q-15 2-15 38v74q3 41 48 43h87l35 36-5-38h173q45-3 47-40v-73q-3-41-45-40Z"/>
+    <path d="M521 470q-41-1-42 45v65q0 47 44 52h113l29 32 4-31h125q45-3 46-46v-72q-3-47-43-45Z"/>
+    <path d="M40 845q-11 0-12 29v34q0 36 38 39h112l16 26 6-26h104q38-2 40-38v-33q-2-30-37-31Z"/>
+    <path d="M494 844q-34 0-36 38v57q2 37 38 40l17 25 11-25h218q38-3 40-39v-58q-3-39-46-38Z"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-weight="800" fill="#111" text-anchor="middle">
+    <text x="197" y="109" font-size="26"><tspan x="197">AN ORDINARY</tspan><tspan x="197" dy="33">MONDAY...</tspan></text>
+    <text x="691" y="101" font-size="23"><tspan x="691">WAIT.</tspan><tspan x="691" dy="32">ONE MORE</tspan><tspan x="691" dy="32">CHAPTER?</tspan></text>
+    <text x="223" y="495" font-size="23"><tspan x="223">THE DEADLINE</tspan><tspan x="223" dy="31">IS IN FIVE</tspan><tspan x="223" dy="31">MINUTES!</tspan></text>
+    <text x="659" y="521" font-size="25"><tspan x="659">THIS IS</tspan><tspan x="659" dy="32">RESEARCH.</tspan></text>
+    <text x="185" y="881" font-size="23">SURE IT IS.</text>
+    <text x="620" y="894" font-size="23"><tspan x="620">WELCOME TO</tspan><tspan x="620" dy="31">SFW READER.</tspan></text>
+    <text x="450" y="1271" font-size="12" fill="#777">ORIGINAL DEMO ILLUSTRATION • SFW READER</text>
+  </g>
+</svg>
