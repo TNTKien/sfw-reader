@@ -35,7 +35,7 @@ function Sheet({ rows, selected, select, change }: {
   const virtualizer = useVirtualizer({
     count: total,
     getScrollElement: () => scroller.current,
-    estimateSize: () => 29,
+    estimateSize: () => 38,
     overscan: 8,
   });
   useEffect(() => { scroller.current?.scrollTo({top: 0}); virtualizer.scrollToIndex(0); }, [change]);
