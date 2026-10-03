@@ -13,6 +13,7 @@ const comicViews: { id: ComicView; title: string; desc: string }[] = [
 const textViews: { id: TextView; title: string; desc: string }[] = [
   { id: 'excel', title: 'Excel', desc: 'Stories in cells' },
   { id: 'code', title: 'VS Code', desc: 'Readable source' },
+  { id: 'terminal', title: 'Terminal', desc: 'Warp · Ghostty · Windows Terminal' },
 ];
 
 function getStoredPosition(doc: ReaderDocument): { index: number; view?: View } {
@@ -68,7 +69,7 @@ export default function App() {
     setPage(Math.min(saved.index, limit - 1));
     setView(next.kind === 'comic' && ['photoshop','powerpoint','canva'].includes(saved.view ?? '')
       ? saved.view as ComicView
-      : next.kind === 'text' && ['excel','code'].includes(saved.view ?? '')
+      : next.kind === 'text' && ['excel','code','terminal'].includes(saved.view ?? '')
         ? saved.view as TextView : next.kind === 'comic' ? 'photoshop' : 'excel');
     setZoom(80);
     setBook(next);
