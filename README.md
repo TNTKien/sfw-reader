@@ -5,7 +5,7 @@ A playful, privacy-first reader that disguises your own text books and comics in
 ## Read Suicaodex chapters
 
 - Paste a public **Suicaodex chapter link or chapter UUID** into the new home-page form. The reader opens `/read-scd/<chapter-uuid>`; direct links and reloads of that route work on Vercel.
-- Chapter metadata is requested through a fixed same-origin **Vercel external rewrite** from `/api/scd-chapters/:id` to `https://redive.suicaodex.com/v1/chapters/:id`. Vite uses an equivalent development proxy. This avoids the upstream API's website-origin CORS restriction without exposing credentials or accepting arbitrary proxy destinations.
+- The browser fetches chapter metadata directly from `https://redive.suicaodex.com/v1/chapters/:id`; there is no Vercel API rewrite or Vite development proxy. **CORS requirement:** Suicaodex must allow `https://sfw.suicaodex.com` as an origin (and `http://localhost:5173` when developing locally). If the API doesn't allow these origins, browsers will block chapter requests; this needs to be configured on the API side.
 - Pages retain the existing Photoshop, PowerPoint and Canva readers, image loading on demand, zoom, page/keyboard navigation and locally saved reader position. CDN images are fetched by your browser from the URLs supplied by the public API, with optimized/original fallback where provided.
 - Only publicly available chapters are supported; unavailable or unpublished chapters show an error with Retry/Back to home. Suicaodex-hosted chapter content **is fetched online**; only files you choose from your device remain local.
 
