@@ -349,3 +349,13 @@
   .term-footer-controls { width: 100%; justify-content: center; }
   .term-mock-menus .menu-trigger { padding: 6px; }
 }
+
+/* Starship- and Oh My Posh-inspired prompts: colored segments are visual only. */
+.term-starship-prompt,.term-omp-prompt { display:inline-flex;align-items:center;gap:0;flex-wrap:wrap;white-space:normal;font-weight:650;font-size:12px;vertical-align:middle; }
+.term-starship-path { color:#9ed7f9;background:#283b50;padding:1px 7px;border-radius:4px 0 0 4px; }
+.term-starship-branch { color:#b3e4bc;background:#2b423b;padding:1px 7px;border-radius:0 4px 4px 0; }
+.term-starship-arrow { color:#abe7b0;padding:0 8px;font-size:15px; }
+.term-omp-os { color:#fff;background:#236bb3;padding:2px 7px;border-radius:5px 0 0 5px; }
+.term-omp-path { color:#0e2231;background:#84c9f2;padding:2px 8px; }
+.term-omp-branch { color:#fff;background:#5b72b2;padding:2px 8px;border-radius:0 5px 5px 0; }
+.term-omp-arrow { color:#9ecafa;padding:0 8px;font-size:15px; }
