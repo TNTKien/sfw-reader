@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertCircle, ArrowDownRight, ArrowLeft, ArrowRight, BookOpen, CheckCircle2, ChevronDown, Code2, FileArchive, FileImage, FileText, FolderOpen, Github, Grid2X2, HardDrive, Image, Layers, LockKeyhole, Monitor, Plus, Presentation, ShieldCheck, Sparkles, UploadCloud, X } from 'lucide-react';
 import ComicApps from './components/ComicApps';
 import TextApps from './components/TextApps';
-import { loadDocuments } from './lib/documents';
 import { demoComic, demoText } from './lib/demo';
 import type { ComicView, PendingPdf, ReaderDocument, TextView, View } from './types';
 
@@ -84,6 +83,7 @@ export default function App() {
     try {
       if (pending) pending.dispose();
       setPending(null);
+      const { loadDocuments } = await import('./lib/documents');
       const result = await loadDocuments(files);
       lastFiles.current = files;
       if (result.kind === 'pending-pdf') setPending(result);
@@ -95,7 +95,7 @@ export default function App() {
   const reopenAsComic = async () => {
     if (!lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf')) return;
     setBusy(true);
-    try { const result = await loadDocuments(lastFiles.current, 'comic'); if (result.kind === 'comic') applyBook(result); }
+    try { const { loadDocuments } = await import('./lib/documents'); const result = await loadDocuments(lastFiles.current, 'comic'); if (result.kind === 'comic') applyBook(result); }
     catch(e) { setError(e instanceof Error ? e.message : 'Could not open PDF as comic.'); }
     finally { setBusy(false); }
   };
@@ -155,7 +155,7 @@ export default function App() {
 
   const compatible = useMemo(() => book?.kind === 'comic' ? comicViews : textViews, [book]);
   return <>
-    {!book ? <Landing onFiles={openFiles} onDemo={type => applyBook(type === 'comic' ? demoComic() : demoText())} busy={busy} error={error}/> :
+    {!book ? <Landing onFiles={openFiles} onDemo={type => { lastFiles.current = null; applyBook(type === 'comic' ? demoComic() : demoText()); }} busy={busy} error={error}/> :
       <div className="reader-page"><header className="reader-toolbar"><button className="reader-home" onClick={close} title="Close reader"><span className="reader-home-badge"><BookOpen size={17}/></span><span>SFW <b>READER</b></span></button><div className="reader-toolbar-divider"/><span className="reader-bookname" title={book.name}>{book.name}</span><div className="reader-mode-switch" role="group" aria-label="Choose simulated workspace">{compatible.map(item => <button key={item.id} className={view === item.id ? 'current' : ''} onClick={() => setView(item.id as View)} title={item.desc}>{item.title}</button>)}</div>{book.kind === 'text' && lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf') && <button className="reader-pdf-comic" onClick={()=>void reopenAsComic()}>Read as comic</button>}<span className="reader-local"><span/> LOCAL ONLY</span><input hidden type="file" ref={fileInput} multiple accept=".txt,.epub,.pdf,.cbz,.zip,.jpg,.jpeg,.png,.webp,.gif,.avif" onChange={event=>{if(event.target.files?.length)void openFiles(Array.from(event.target.files));event.target.value='';}}/><button className="reader-open" onClick={()=>fileInput.current?.click()} disabled={busy}><Plus size={16}/> Open</button><button className="reader-back" title="Back to library" onClick={close}><X size={17}/></button></header>
       {book.kind === 'comic' ? <ComicApps name={book.name} index={page} count={book.pageCount} image={image} zoom={zoom} setZoom={setZoom} onPage={setPage} view={view as ComicView} setView={setView} openFile={()=>fileInput.current?.click()} close={close}/> : <TextApps name={book.name} raw={raw} loading={rendering} index={page} titles={book.chapters} onPage={setPage} mode={mode} onMode={setMode} view={view as TextView} setView={setView} openFile={()=>fileInput.current?.click()} close={close}/>}
       {error && <div className="reader-error"><AlertCircle size={17}/>{error}<button onClick={()=>setError(null)}><X size={15}/></button></div>}
