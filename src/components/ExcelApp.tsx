@@ -24,22 +24,24 @@ type Cell = { row: number; col: string };
 const valueAt = (row: number, col: string, rows: string[]) =>
   col === 'A' ? (rows[row] ?? '') : (officeCells[row]?.[col] ?? '');
 
-function Sheet({ rows, selected, select, change }: {
+function Sheet({ rows, selected, select, change, zoom }: {
   rows: string[];
   selected: Cell;
   select: (cell: Cell) => void;
   change: string;
+  zoom: number;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const total = Math.max(150, rows.length);
   const virtualizer = useVirtualizer({
     count: total,
     getScrollElement: () => scroller.current,
-    estimateSize: () => 38,
+    estimateSize: () => Math.round(38 * zoom / 100),
     overscan: 8,
   });
   useEffect(() => { scroller.current?.scrollTo({top: 0}); virtualizer.scrollToIndex(0); }, [change]);
-  return <div className="excel-sheet-scroll" ref={scroller}>
+  useEffect(() => { virtualizer.measure(); }, [zoom, virtualizer]);
+  return <div className="excel-sheet-scroll" ref={scroller} style={{ "--sheet-zoom": zoom / 100 } as React.CSSProperties}>
     <div className="excel-grid-head" role="row">
       <span className="excel-grid-corner"/>
       {columns.map(col => <span key={col} className={selected.col === col ? 'selected' : ''}>{col}</span>)}
@@ -147,7 +149,7 @@ export default function ExcelApp({props, rows}: {props: TextProps; rows: string[
     {tab === 'File' ? <div className="excel-backstage"><aside><strong>File</strong><button onClick={() => setTab('Home')}>← Back</button><button onClick={openFile}>Open</button><button onClick={() => setTab('Home')}>Info</button></aside><main><h2>Open</h2><p>Recent</p><button onClick={openFile}><FolderOpen size={18}/> Browse this device</button></main></div> : <>
       <Ribbon tab={tab}/>
       <div className="excel-formula"><span className="excel-name-box">{selected.col}{selected.row + 1} <ChevronDown size={13}/></span><span className="excel-formula-actions">×　✓　ƒx</span><div title={expression}>{expression}</div><ChevronDown size={14}/></div>
-      <div className="excel-book"><Sheet rows={rows} selected={selected} select={select} change={name + ':' + index + ':' + mode}/></div>
+      <div className="excel-book"><Sheet rows={rows} selected={selected} select={select} change={name + ':' + index + ':' + mode} zoom={excelZoom}/></div>
       <div className="excel-sheet-tabs"><span className="excel-sheet-arrows">‹　›</span><span className="excel-sheet-active">Sheet1</span><button title="Add sheet" disabled>＋</button><span className="excel-horizontal-track"><span/></span></div>
       <footer className="excel-native-status"><div className="excel-status-left"><span>Ready</span><span>♧ Accessibility: Good to go</span></div>
         <div className="excel-bottom-reader"><button disabled={index === 0} title="Previous chapter" onClick={() => onPage(index - 1)}><ChevronLeft size={15}/></button>
