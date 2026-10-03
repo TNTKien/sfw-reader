@@ -111,7 +111,7 @@ export default function CodeApp({ props, rows }: { props: TextProps; rows: strin
         <div className="vsc-activity-spacer"/><button title="Manage" aria-label="Manage"><Settings size={21}/></button>
       </div>
       <aside className="vsc-explorer">
-        {activity === 'explorer' ? <RepoExplorer selectedPath={active===STORY?null:active} onFile={openPath} chapterTitle={titles[index]?.title||'Current chapter'}/> :
+        {activity === 'explorer' ? <RepoExplorer selectedPath={active===STORY?null:active} onFile={openPath} onStory={()=>setActive(STORY)} chapterTitle={titles[index]?.title||'Current chapter'}/> :
         activity==='search' ? <div className="vsc-search-panel"><div className="vsc-explorer-header">SEARCH <Ellipsis size={16}/></div>
           <input type="search" aria-label="Search current chapter" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search in current chapter"/>
           <small>{search ? searchResults.length+' results' : 'Search in the open book'}</small>
@@ -138,7 +138,7 @@ export default function CodeApp({ props, rows }: { props: TextProps; rows: strin
       </div>
     </div>
     <div className="vsc-status">
-      <div className="vsc-status-left"><GitBranch size={14}/> main　 ⊗ 0　⚠ 0　↻</div>
+      <div className="vsc-status-left"><GitBranch size={14}/> main　 ⊗ 0　⚠ 0　↻ <span className="vsc-status-branch">sfw-reader</span></div>
       <div className="vsc-status-right">
         <button disabled={index===0} aria-label="Previous chapter" onClick={()=>onPage(index-1)}><ChevronLeft size={14}/></button>
         <select aria-label="Chapter or page" value={index} onChange={e=>onPage(Number(e.target.value))}>{titles.map((chapter,i)=><option key={i} value={i}>{chapter.title}</option>)}</select>
