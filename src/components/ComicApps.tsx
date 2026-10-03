@@ -6,6 +6,7 @@ import type { ComicView } from '../types';
 export interface ComicProps {
   name: string;
   image: string | null;
+  getImage?: (index: number) => Promise<string>;
   index: number;
   count: number;
   zoom: number;
@@ -110,12 +111,88 @@ function Photoshop({ props }: { props: ComicProps }) {
   </div>;
 }
 
+function SlideThumbnail({ page, active, activeImage, current, getImage }: {
+  page: number;
+  active: boolean;
+  activeImage: string | null;
+  current: number;
+  getImage?: (index: number) => Promise<string>;
+}) {
+  const [preview, setPreview] = useState<string | null>(null);
+  useEffect(() => {
+    if (page === current || Math.abs(page - current) > 1 || !getImage) return;
+    let mounted = true;
+    getImage(page).then(src => { if (mounted) setPreview(src); }).catch(() => {});
+    return () => { mounted = false; };
+  }, [page, current, getImage]);
+  const display = active ? activeImage : Math.abs(page - current) <= 1 ? preview : null;
+  return <div className={active ? 'ppt-thumb ppt-thumb-active' : 'ppt-thumb'}>
+    {display ? <img src={display} alt={`Slide ${page + 1} thumbnail`}/> :
+      <div className="ppt-thumbnail-placeholder"><FileImage size={19}/><small>{page + 1}</small></div>}
+  </div>;
+}
+
 function PowerPoint({ props }: { props: ComicProps }) {
-  const { index, count, image, name, zoom, setZoom, onPage, openFile, close, setView } = props;
+  const { index, count, image, getImage, name, zoom, setZoom, onPage, openFile, close } = props;
   const [tab, setTab] = useState('Home');
   const tabs = ['File', 'Home', 'Insert', 'Draw', 'Design', 'Transitions', 'Animations', 'Slide Show', 'Review', 'View', 'Help'];
-  return <div className="powerpoint app-fill"><div className="ppt-titlebar"><span className="ppt-icon">P</span><span>AutoSave <span className="switch-mock">◯</span></span><span className="ppt-title">{name} — PowerPoint</span><WindowControls onClose={close}/></div><div className="ppt-tabs">{tabs.map(t => <button onClick={() => { setTab(t); if (t === 'File') openFile(); }} key={t} className={t === tab ? 'selected' : ''}>{t}</button>)}</div><div className="ppt-ribbon"><div className="ppt-ribbon-tool"><ImageIcon size={23}/><span>Pictures</span></div><div className="ppt-ribbon-tool"><LayoutTemplate size={23}/><span>Layout</span></div><div className="ppt-ribbon-tool"><Plus size={23}/><span>New slide</span></div><div className="ppt-ribbon-sep"/><div className="ppt-ribbon-tool"><Type size={22}/><span>Text box</span></div><div className="ppt-ribbon-tool"><Shapes size={23}/><span>Shapes</span></div><div className="ppt-ribbon-sep"/><div className="ppt-placeholder">Calibri (Body)　⌄<br/>24　 B　 I　 U　 A</div><div className="ppt-ribbon-spacer"/></div>
-    <div className="ppt-body"><aside className="ppt-slides"><div className="ppt-side-heading">Slides　⌄</div>{Array.from({ length: Math.min(count, 150) }, (_, i) => <button key={i} onClick={() => onPage(i)} className={`ppt-thumb-row ${index === i ? 'selected' : ''}`}><span>{i + 1}</span><div className="ppt-thumb">{index === i && image ? <img src={image} alt="Selected slide"/> : <FileImage size={24}/>}</div></button>)}</aside><div className="ppt-center"><div className="ppt-slide-wrap"><div className="ppt-slide"><ImageCanvas src={image} zoom={zoom} name={name}/></div></div><div className="ppt-notes">Click to add notes</div></div></div><div className="ppt-bottom"><span>Slide {index + 1} of {count}</span><span className="ppt-bottom-center">English (United States)　Accessibility: Good</span><Navigation page={index} count={count} onPage={onPage}/><button title="Switch to Canva" onClick={() => setView('canva')}>Canva</button><button onClick={() => setZoom(Math.max(40, zoom - 10))}><ZoomOut size={15}/></button><input aria-label="Zoom" type="range" min="40" max="175" value={zoom} onChange={e => setZoom(Number(e.target.value))}/><button onClick={() => setZoom(Math.min(175, zoom + 10))}><ZoomIn size={15}/></button><span>{zoom}%</span></div>
+  const ribbon = tab === 'Insert' ? [
+    { Icon: LayoutTemplate, title: 'New Slide', group: 'Slides' },
+    { Icon: ImageIcon, title: 'Pictures', group: 'Images' },
+    { Icon: Shapes, title: 'Shapes', group: 'Illustrations' },
+    { Icon: Type, title: 'Text Box', group: 'Text' },
+  ] : tab === 'Design' ? [
+    { Icon: LayoutTemplate, title: 'Themes', group: 'Themes' },
+    { Icon: ImageIcon, title: 'Variants', group: 'Variants' },
+    { Icon: Maximize, title: 'Slide Size', group: 'Customize' },
+  ] : tab === 'View' ? [
+    { Icon: LayoutTemplate, title: 'Normal', group: 'Presentation Views' },
+    { Icon: ImageIcon, title: 'Slide Sorter', group: 'Presentation Views' },
+    { Icon: Maximize, title: 'Fit to Window', group: 'Zoom' },
+  ] : [
+    { Icon: LayoutTemplate, title: 'New Slide', group: 'Slides' },
+    { Icon: Type, title: 'Font', group: 'Font' },
+    { Icon: AlignLeft, title: 'Paragraph', group: 'Paragraph' },
+    { Icon: Shapes, title: 'Drawing', group: 'Drawing' },
+  ];
+  return <div className="powerpoint app-fill">
+    <div className="ppt-titlebar">
+      <span className="ppt-icon">P</span>
+      <span className="ppt-autosave">AutoSave <span>Off</span></span>
+      <span className="ppt-quick-access">↶　↷</span>
+      <span className="ppt-title">{name.replace(/\.[^.]+$/, '')} — PowerPoint</span>
+      <span className="ppt-title-search"><Search size={13}/> Search (Alt + Q)</span>
+      <WindowControls onClose={close}/>
+    </div>
+    <div className="ppt-tabs">{tabs.map(t => <button onClick={() => setTab(t)} key={t} className={t === tab ? 'selected' : ''}>{t}</button>)}</div>
+    {tab === 'File' ? <main className="ppt-backstage"><aside><b>File</b><button onClick={() => setTab('Home')}>← Back</button><button onClick={openFile}>Open</button><button onClick={() => setTab('Home')}>Info</button></aside><section><h2>Open</h2><p>Recent</p><button onClick={openFile}><FolderOpen size={18}/> Browse files on this device</button></section></main> : <>
+      <div className="ppt-ribbon">
+        {ribbon.map((item, i) => <div className="ppt-ribbon-group" key={item.title}>
+          {i > 0 && <div className="ppt-ribbon-sep"/>}
+          <div className="ppt-ribbon-tool"><item.Icon size={23}/><span>{item.title}</span></div>
+          {item.title === 'Font' && <div className="ppt-ribbon-font"><span>Aptos　⌄</span><span>18　⌄</span><span><b>B</b>　<i>I</i>　<u>U</u>　A</span></div>}
+          <small>{item.group}</small>
+        </div>)}
+        <div className="ppt-ribbon-spacer"/>
+        <button className="ppt-ribbon-collapse" title="Collapse ribbon" onClick={() => setTab('View')}>⌃</button>
+      </div>
+      <div className="ppt-body">
+        <aside className="ppt-slides"><div className="ppt-side-heading"><span>Slides</span> <span>Outline</span></div>
+          {Array.from({ length: Math.min(count, 150) }, (_, i) =>
+            <button key={i} onClick={() => onPage(i)} className={`ppt-thumb-row ${index === i ? 'selected' : ''}`} aria-label={`Go to slide ${i + 1}`}>
+              <span>{i + 1}</span><SlideThumbnail page={i} current={index} active={index === i} activeImage={image} getImage={getImage}/>
+            </button>)}
+        </aside>
+        <div className="ppt-center"><div className="ppt-slide-wrap"><div className="ppt-slide"><ImageCanvas src={image} zoom={zoom} name={name}/></div></div><div className="ppt-notes">Notes</div></div>
+      </div>
+      <div className="ppt-bottom"><span>Slide {index + 1} of {count}</span><span className="ppt-bottom-center">English (United States)　 <span className="ppt-status-accessibility">✓ Accessibility: Good</span></span>
+        <Navigation page={index} count={count} onPage={onPage}/>
+        <button aria-label="Fit slide" title="Fit slide" onClick={() => setZoom(80)}><Maximize size={14}/></button>
+        <button aria-label="Zoom out" onClick={() => setZoom(Math.max(40, zoom - 10))}><ZoomOut size={15}/></button>
+        <input aria-label="Zoom" type="range" min="40" max="175" value={zoom} onChange={e => setZoom(Number(e.target.value))}/>
+        <button aria-label="Zoom in" onClick={() => setZoom(Math.min(175, zoom + 10))}><ZoomIn size={15}/></button><span>{zoom}%</span>
+      </div>
+    </>}
   </div>;
 }
 
