@@ -1,0 +1,136 @@
+/* Reference-driven styling: dense Office ribbons and Photoshop desktop panels. */
+/* Keep familiar application colors on their title bars rather than desaturating them. */
+.excel-native .excel-titlebar {
+  background: #196b42; color: #f8fff9; border-bottom: 1px solid #125331;
+}
+.excel-native .excel-logo { color: white; background: #0d5934; border-radius: 3px; padding: 5px; }
+.excel-native .excel-doc { color: #f1fff7; }
+.excel-native .excel-title-quick-access { color: #f1fff7; }
+.excel-native .excel-title-search { background: #fff; color: #60676a; }
+.excel-native .excel-autosave-off { color: #333; }
+.excel-native .window-controls { color: #f2fff5; }
+.excel-native .excel-grid-cell { font-size: 13.5px; line-height: 1.45; padding: 7px 7px; min-height: 34px; }
+.excel-native .excel-grid-head>span,
+.excel-native .excel-grid-row-num { font-size: 12px; }
+.excel-native .excel-grid-row { min-height: 37px; }
+.excel-native .excel-formula>div { font-size: 13.5px; line-height: 20px; }
+.excel-native .excel-ribbon { height: 121px; min-height: 121px; }
+.excel-native .excel-ribbon-icons { font-size: 12px; }
+.excel-native .excel-font-selects { font-size: 12px; }
+.excel-native .excel-tool-group small { font-size: 11px; }
+.excel-native .excel-tab-labels button { font-size: 13px; }
+
+/* Orange remains the focal point of the PowerPoint window. */
+.powerpoint .ppt-titlebar {
+  height: 43px; min-height: 43px; gap: 12px;
+  background: #b8492c; color: #fff; padding: 0 14px;
+}
+.powerpoint .ppt-icon { background: linear-gradient(145deg,#e97a4b,#cf4b27 65%); color: #fff; box-shadow: -3px 2px 0 #933519; font-size: 13px; }
+.powerpoint .ppt-autosave { gap: 7px; display: inline-flex; align-items: center; white-space: nowrap; font-size: 12px; }
+.powerpoint .ppt-autosave>span { background: #ee6735; color: #fff; border-radius: 20px; font-weight: 700; padding: 3px 11px; }
+.powerpoint .ppt-quick-access { display: flex; align-items: center; gap: 11px; color: #f2dbd1; font-size: 14px; }
+.powerpoint .ppt-title { margin: 0; flex: 1; min-width: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: center; font-size: 12px; }
+.ppt-fidelity-general { color: #f5dbd0; margin-left: 10px; font-weight: 400; }
+.powerpoint .ppt-title-search { background: #fcf9f8; border: 1px solid #e6d4cd; box-shadow: 0 1px 2px #0002; border-radius: 4px; color: #7c7776; height: 31px; width: min(27vw,405px); min-width: 125px; display: flex; gap: 12px; justify-content: flex-start; flex: 0 1 405px; }
+.ppt-fidelity-avatar { display: grid; place-items: center; border-radius: 50%; background: #5a3777; border: 2px solid #aa78b7; color: white; width: 27px; height: 27px; flex-shrink: 0; font-size: 12px; }
+.powerpoint .ppt-tabs { background: #fff; height: 39px; min-height: 39px; gap: 0; overflow-x: auto; overflow-y: visible; padding: 0 11px; border-bottom: 1px solid #e2e2e2; }
+.powerpoint .ppt-tabs button { font: 12px "Segoe UI",Arial,sans-serif; color: #303239; padding: 0 10px; }
+.powerpoint .ppt-tabs button.selected { color: #242424; font-weight: 700; box-shadow: inset 0 -3px #c24c2c; }
+.powerpoint .ppt-tabs button:last-of-type { color: #c34d2d; }
+.ppt-fidelity-tab-actions { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; padding: 0 0 0 14px; white-space: nowrap; }
+.ppt-fidelity-comment,.ppt-fidelity-share { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border: 1px solid #b8b8b8; border-radius: 5px; color: #454545; font-size: 11px; line-height: 1; }
+.ppt-fidelity-share { background: #c34b24; border-color: #c34b24; color: #fff; }
+.powerpoint .ppt-fidelity-ribbon { min-height: 115px; height: 115px; padding: 3px 8px; border-radius: 0; display: flex; overflow-x: auto; overflow-y: hidden; gap: 0; background: #fff; }
+.ppt-fidelity-group { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 4px; flex-shrink: 0; min-width: 106px; padding: 8px 10px 3px; border-right: 1px solid #ddd; font: 11px "Segoe UI",Arial,sans-serif; color: #333; }
+.ppt-fidelity-group small { margin-top: auto; font: 10px "Segoe UI",Arial,sans-serif; color: #707075; }
+.ppt-fidelity-group .ppt-fidelity-main-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #b45432; white-space: nowrap; }
+.ppt-fidelity-group .ppt-fidelity-main-icon span { color: #3e3e3e; font-size: 11px; }
+.ppt-fidelity-clipboard,.ppt-fidelity-slides { flex-direction: row; position: relative; justify-content: flex-start; padding-bottom: 18px; gap: 10px; }
+.ppt-fidelity-clipboard small,.ppt-fidelity-slides small { position: absolute; bottom: 4px; left: 0; width: 100%; text-align: center; }
+.ppt-fidelity-mini { display: flex; flex-direction: column; gap: 8px; color: #777; }
+.ppt-fidelity-mini-text { display: flex; flex-direction: column; justify-content: center; gap: 7px; white-space: nowrap; font-size: 10px; }
+.ppt-fidelity-mini-text span { display: inline-flex; align-items: center; gap: 5px; }
+.ppt-fidelity-font { min-width: 265px; align-items: stretch; }
+.ppt-fidelity-font-controls { display: flex; align-items: center; gap: 5px; }
+.ppt-fidelity-font-controls span { border: 1px solid #cacbcc; background: white; min-height: 27px; display: inline-flex; align-items: center; justify-content: space-between; padding: 4px 7px; gap: 16px; white-space: nowrap; }
+.ppt-fidelity-font-controls span:first-child { flex: 1; }
+.ppt-fidelity-font-controls b { font-size: 13px; font-weight: 400; white-space: nowrap; }
+.ppt-fidelity-format { font: 14px "Segoe UI",Arial,sans-serif; color: #444; white-space: nowrap; letter-spacing: 2px; }
+.ppt-fidelity-paragraph { min-width: 158px; }
+.ppt-fidelity-drawing { min-width: 150px; flex-direction: row; justify-content: flex-start; position: relative; padding-bottom: 19px; gap: 8px; }
+.ppt-fidelity-drawing small { position: absolute; bottom: 4px; left: 0; width: 100%; text-align: center; }
+.ppt-fidelity-editing { min-width: 132px; }
+.ppt-fidelity-extras { display: flex; flex-direction: row; align-items: flex-start; min-width: 260px; padding-bottom: 20px; position: relative; gap: 15px; }
+.ppt-fidelity-extras>div { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 10px; color: #4d5053; }
+.ppt-fidelity-extras small { position: absolute; bottom: 4px; left: 0; width: 100%; text-align: center; }
+.powerpoint .ppt-slides { width: 217px; flex-basis: 217px; background: #f6f5f8; padding: 9px 11px; }
+.powerpoint .ppt-thumb-row { padding: 7px 2px; gap: 10px; }
+.powerpoint .ppt-thumb { width: 157px; height: 94px; border: 1px solid #c6c6c8; border-radius: 2px; box-shadow: 0 1px 3px #0001; }
+.powerpoint .ppt-thumb.ppt-thumb-active { border: 2px solid #c24b25; }
+.powerpoint .ppt-slide-wrap { background: #e9e9ed; padding: 15px 18px; align-items: flex-start; }
+.powerpoint .ppt-slide { width: min(100%,1152px); max-width: 1152px; max-height: none; min-height: 0; height: auto; aspect-ratio: 16 / 9; background: #fff; overflow: hidden; }
+.powerpoint .ppt-slide .image-stage { min-height: 0; height: 100%; width: 100%; padding: 12px; align-items: center; }
+.powerpoint .ppt-slide .comic-image { max-height: 100%; max-width: 95%; height: auto; object-fit: contain; min-width: 0; }
+.powerpoint .ppt-notes { min-height: 38px; height: 38px; padding: 10px 15px; }
+.powerpoint .ppt-bottom { min-height: 25px; height: 25px; }
+
+/* Keep Photoshop monochrome and tool-specific, as in the supplied screenshot. */
+.photoshop .ps-menu-top { height: 30px; min-height: 30px; background: #2b2b2b; border-bottom: 1px solid #161616; padding: 0 8px; gap: 11px; }
+.photoshop .ps-badge { background: #061c37; color: #4fb9ff; border-radius: 3px; border: none; font-size: 12px; padding: 3px 5px; }
+.photoshop .ps-menubar .menu-trigger { padding: 6px 4px; font: 12px "Segoe UI",Arial; color: #ddd; }
+.ps-fidelity-top-icons { display: flex; align-items: center; gap: 19px; color: #bec1c4; padding-right: 14px; }
+.photoshop .ps-fidelity-options { min-height: 40px; height: 40px; background: #252525; padding: 0 12px; gap: 10px; overflow-x: auto; }
+.photoshop .ps-fidelity-options .ps-option-select { padding: 4px 6px; min-width: 0; }
+.photoshop .ps-fidelity-options .ps-option-wide { min-width: 118px; }
+.ps-fidelity-toolgroup { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 11px; }
+.ps-fidelity-value { display: inline-flex; min-width: 34px; padding: 3px 8px; background: #2b2b2b; border: 1px solid #484848; }
+.ps-fidelity-check { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; white-space: nowrap; color: #d0d0d0; }
+.ps-fidelity-check input { width: 13px; height: 13px; accent-color: #8eacbd; }
+.ps-fidelity-command { white-space: nowrap; background: #353535; border: 1px solid #474747; padding: 5px 10px; color: #c8c8c8; font-size: 11px; }
+.photoshop .ps-tools { width: 40px; flex-basis: 40px; background: #242424; }
+.photoshop .ps-tool { width: 31px; height: 27px; color: #ccc; }
+.photoshop .ps-tool.active { background: #424242; box-shadow: inset 0 0 0 1px #666; }
+.photoshop .ps-left { width: 231px; flex-basis: 231px; }
+.photoshop .ps-right { width: 304px; flex-basis: 304px; }
+.photoshop .ps-right-icons { display: flex; flex-direction: column; width: 39px; flex-basis: 39px; gap: 19px; padding-top: 11px; }
+.photoshop .ps-nav-preview { background: #2c2c2c; height: 260px; }
+.photoshop .ps-nav-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.photoshop .ps-nav-viewport { border-color: #c64c4f; opacity: .8; }
+.photoshop .ps-mini-zoom { min-height: 31px; height: 31px; }
+.photoshop .ps-prop-title { gap: 9px; }
+.photoshop .ps-property-grid { padding: 8px 11px; gap: 7px; }
+.ps-fidelity-align { padding: 10px 14px; font-size: 17px; letter-spacing: 4px; color: #b5b7b7; }
+.ps-fidelity-action { display: block; margin: 10px 13px; background: #303030; border: 1px solid #494949; color: #d0d0d0; padding: 6px; text-align: center; font-size: 10px; }
+.photoshop .ps-tabs { min-height: 32px; height: 32px; }
+.photoshop .ps-canvas-area { background: #151515; }
+.photoshop .ps-canvas-area .comic-image { box-shadow: 0 0 0 1px #0009; }
+.photoshop .ps-panel-heading { min-height: 29px; height: 29px; background: #353535; }
+.photoshop .ps-layer { min-height: 34px; height: 34px; gap: 6px; }
+.photoshop .ps-layer.selected { background: #414141; }
+.ps-fidelity-type-layer { font-size: 11px; }
+.ps-fidelity-fx { color: #bbb; margin-left: auto; }
+@media (max-width: 1110px) {
+  .ppt-fidelity-editing,.ppt-fidelity-extras { display: none; }
+  .powerpoint .ppt-title-search { max-width: 200px; }
+  .photoshop .ps-left { width: 180px; flex-basis: 180px; }
+  .photoshop .ps-right { width: 230px; flex-basis: 230px; }
+  .ps-fidelity-command { display: none; }
+}
+@media (max-width: 810px) {
+  .powerpoint .ppt-title-search,.ppt-fidelity-general,.ppt-fidelity-tab-actions { display: none; }
+  .powerpoint .ppt-slides { width: 95px; flex-basis: 95px; }
+  .powerpoint .ppt-thumb { width: 67px; height: 56px; }
+  .photoshop .ps-left,.photoshop .ps-right { display: none; }
+  .ps-fidelity-check:nth-of-type(n+2) { display:none; }
+}
+@media (max-width: 550px) {
+  .ppt-fidelity-paragraph,.ppt-fidelity-drawing { display: none; }
+  .powerpoint .ppt-fidelity-ribbon { min-height: 88px; height: 88px; }
+  .powerpoint .ppt-titlebar { gap: 8px; }
+  .powerpoint .ppt-quick-access { display: none; }
+  .powerpoint .ppt-title-search { display:none; }
+  .powerpoint .ppt-slides { display: none; }
+  .photoshop .ps-fidelity-top-icons { gap: 8px; padding-right: 0; }
+  .photoshop .ps-fidelity-top-icons svg:nth-child(n+3) { display: none; }
+  .ps-fidelity-check,.ps-fidelity-toolgroup:not(:first-child) { display:none; }
+}
