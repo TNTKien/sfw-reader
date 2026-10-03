@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { AlignCenter, AlignLeft, AlignRight, ArrowLeft, BookOpen, Brush, ChevronDown, ChevronLeft, ChevronRight, Crop, Download, Eraser, Eye, FileImage, FolderOpen, Hand, Image as ImageIcon, Layers, LayoutTemplate, Maximize, MousePointer2, Move, PaintBucket, PanelLeft, PanelRight, PenTool, Pipette, Plus, Search, Settings2, Shapes, SlidersHorizontal, Sparkles, Square, Type, WandSparkles, ZoomIn, ZoomOut, Save, Undo2, Redo2, Bell, Mic, Clipboard, Scissors, Copy, Paintbrush, LayoutGrid } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { AlignCenter, AlignLeft, AlignRight, ArrowLeft, BookOpen, Brush, ChevronDown, ChevronLeft, ChevronRight, Crop, Download, Eraser, Eye, FileImage, FolderOpen, Hand, Image as ImageIcon, Layers, LayoutTemplate, Maximize, MousePointer2, Move, PaintBucket, PanelLeft, PanelRight, PenTool, Pipette, Plus, Search, Settings2, Shapes, SlidersHorizontal, Sparkles, Square, Type, WandSparkles, ZoomIn, ZoomOut, Save, Undo2, Redo2, Bell, Mic, Clipboard, Scissors, Copy, Paintbrush, LayoutGrid, Upload, Lightbulb, Palette, Grid3X3, History, Stamp } from 'lucide-react';
 import { MenuBar, PageSelect, WindowControls } from './Chrome';
+import PowerPointHomeRibbon from './PowerPointHomeRibbon';
 import type { ComicView } from '../types';
 
 export interface ComicProps {
@@ -42,6 +43,7 @@ function Photoshop({ props }: { props: ComicProps }) {
   const [left, setLeft] = useState(true);
   const [right, setRight] = useState(true);
   const [layers, setLayers] = useState(true);
+  const [psPanel, setPsPanel] = useState<'Character' | 'Paragraph' | 'Glyphs'>('Character');
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
   useEffect(() => {
     if (!image) { setDimensions(null); return; }
@@ -90,7 +92,7 @@ function Photoshop({ props }: { props: ComicProps }) {
     { label: 'Help', items: [ { label: 'About SFW Reader', action: () => alert('SFW Reader opens local books in familiar-looking workspaces. It is not affiliated with Adobe.') } ] },
   ];
   return <div className="photoshop app-fill">
-    <div className="ps-menu-top"><div className="ps-badge">Ps</div><MenuBar entries={menu} className="ps-menubar" /><div className="ps-top-spacer" /><div className="ps-fidelity-top-icons"><Clipboard size={16}/><Bell size={15}/><Search size={16}/><Sparkles size={16}/><LayoutGrid size={15}/></div><WindowControls onClose={close} /></div>
+    <div className="ps-menu-top"><div className="ps-badge">Ps</div><MenuBar entries={menu} className="ps-menubar" /><div className="ps-top-spacer" /><WindowControls onClose={close} /></div>
     <div className="ps-options ps-fidelity-options">
       <span className="ps-tool-name">{tool === 'Magic Wand' ? <WandSparkles size={19}/> : tool === 'Text' ? <Type size={19}/> : <MousePointer2 size={19}/>}<ChevronDown size={12}/></span>
       <span className="ps-divider"/>
@@ -109,6 +111,14 @@ function Photoshop({ props }: { props: ComicProps }) {
         <span className="ps-color-swatch" aria-label="Foreground color"/>
       </> : <><span className="ps-option-select">{tool}</span><span className="ps-option-select ps-option-wide">Normal <ChevronDown size={11}/></span><span>Opacity: 100%</span></>}
       <div className="ps-spacer"/>
+      <div className="ps-fidelity-utilities" aria-label="Photoshop window utilities">
+        <span title="Share"><Upload size={17}/></span>
+        <span title="Notifications"><Bell size={17}/></span>
+        <span title="Search"><Search size={17}/></span>
+        <span title="Discover"><Lightbulb size={18}/></span>
+        <span title="Workspace"><LayoutGrid size={17}/><ChevronDown size={10}/></span>
+        <span className="ps-account-orb" title="Profile"/>
+      </div>
     </div>
     <div className="ps-workspace">
       <aside className="ps-tools" aria-label="Tools">
@@ -133,33 +143,84 @@ function Photoshop({ props }: { props: ComicProps }) {
         <div className="ps-canvas-area"><ImageCanvas src={image} zoom={zoom} name={name}/></div>
         <div className="ps-status"><span>{zoom}%</span><span>{dimensions ? `${dimensions.width.toLocaleString()} px × ${dimensions.height.toLocaleString()} px (72 ppi)` : 'Document preview (RGB/8)'}</span><span className="ps-status-page"><Navigation page={index} count={count} onPage={onPage} /></span></div>
       </main>
-      {right && <aside className="ps-right ps-panel-stack"><div className="ps-right-icons"><Brush size={18}/><Layers size={18}/><Shapes size={18}/><Sparkles size={18}/></div><div className="ps-right-content"><div className="ps-panel-heading">Character <span>Paragraph　 Glyphs</span></div><div className="ps-right-fields"><span className="ps-fake-input">000 WildWords2 TB</span><span className="ps-fake-input">Roman</span><span className="ps-fake-input">25 pt</span><span className="ps-fake-input">22 pt</span><span className="ps-fake-input">Metrics</span><span className="ps-fake-input">90%</span></div><div className="ps-typography">T　𝑻　T　T̲　T²　T⁄₂<br/> fi　of　∫　Aa　T　1st　½</div><div className="ps-lang">English: UK　　Smooth</div>{layers && <><div className="ps-panel-heading ps-layers-title">Layers <span>Channels</span></div><div className="ps-layer-filters">⌕ Kind　 ▧　 ◧　T</div><div className="ps-layer-filters">Normal　　　　 Opacity: 100%</div><div className="ps-layer-list">
-   {['Type Layer 3', 'Type Layer 2', 'Type Layer 1'].map((layer, i)=><div className="ps-layer ps-fidelity-type-layer" key={layer}><Eye size={13}/><Type size={15}/><span>{layer}</span>{i===0 && <span className="ps-fidelity-fx">ƒx</span>}</div>)}
-   <div className="ps-layer"><Eye size={13}/><span className="ps-layer-thumb ps-background-thumb"/><span>Image layer</span></div>
-   <div className="ps-layer selected"><Eye size={13}/><span className="ps-layer-thumb">{image && <img src={image} alt="Current layer thumbnail"/>}</span><span>Background</span><span className="ps-layer-lock">⌑</span></div>
-  </div><div className="ps-layer-footer">🔗　ƒx　 ▣　 ◉　 ▤　⊕</div></>}</div></aside>}
+      {right && <aside className="ps-right ps-panel-stack">
+        <nav className="ps-right-icons" aria-label="Photoshop panels">
+          <span title="Color"><Palette size={18}/></span>
+          <span title="Swatches"><Grid3X3 size={18}/></span>
+          <span className="ps-rail-break"/>
+          <span title="Brushes"><Brush size={19}/></span>
+          <span title="Brush Settings"><SlidersHorizontal size={18}/></span>
+          <span className="ps-rail-break"/>
+          <span title="Clone Source"><Stamp size={18}/></span>
+          <span title="History"><History size={18}/></span>
+          <span className="ps-rail-break"/>
+          <span title="Adjustments"><Settings2 size={18}/></span>
+          <span title="Properties"><Sparkles size={18}/></span>
+        </nav>
+        <div className="ps-right-content">
+          <div className="ps-sidebar-tabs" role="tablist" aria-label="Typography panels">
+            {(['Character','Paragraph','Glyphs'] as const).map(label=>
+              <button type="button" key={label} role="tab" aria-selected={psPanel === label}
+                className={psPanel === label ? 'ps-sidebar-tab active' : 'ps-sidebar-tab'}
+                onClick={()=>setPsPanel(label)}>{label}</button>)}
+            <span className="ps-panel-menu" aria-hidden="true">☰</span>
+          </div>
+          {psPanel === 'Character' ? <>
+            <div className="ps-right-fields"><span className="ps-fake-input">000 WildWords2 TB</span><span className="ps-fake-input">Roman</span><span className="ps-fake-input">25 pt</span><span className="ps-fake-input">22 pt</span><span className="ps-fake-input">Metrics</span><span className="ps-fake-input">90%</span></div>
+            <div className="ps-typography">T　𝑻　T　T̲　T²　T⁄₂<br/> fi　of　∫　Aa　T　1st　½</div>
+            <div className="ps-lang">English: UK　　Smooth</div>
+          </> : psPanel === 'Paragraph' ?
+            <div className="ps-paragraph-panel">
+              <div className="ps-paragraph-alignment"><AlignLeft size={19}/><AlignCenter size={19}/><AlignRight size={19}/></div>
+              <div className="ps-paragraph-justified">☰　☷　☵　≡</div>
+              <div className="ps-paragraph-settings">Indent:　0 pt　　Spacing:　0 pt</div>
+            </div> :
+            <div className="ps-glyph-panel"><div className="ps-fake-input">000 WildWords2 TB　⌄</div><div className="ps-glyph-grid">{'A B C D E F G H I J K L M N O P'.split(' ').map(l=><span key={l}>{l}</span>)}</div></div>}
+          {layers && <>
+            <div className="ps-sidebar-tabs ps-layer-tabs"><strong>Layers</strong><span>Channels</span><span>Paths</span><span className="ps-panel-menu">☰</span></div>
+            <div className="ps-layer-filters">⌕ Kind　 ▧　 ◧　T</div>
+            <div className="ps-layer-filters">Normal　　　　 Opacity: 100%</div>
+            <div className="ps-layer-list">
+              {['Type Layer 3', 'Type Layer 2', 'Type Layer 1'].map((layer, i)=><div className="ps-layer ps-fidelity-type-layer" key={layer}><Eye size={13}/><Type size={15}/><span>{layer}</span>{i===0 && <span className="ps-fidelity-fx">ƒx</span>}</div>)}
+              <div className="ps-layer"><Eye size={13}/><span className="ps-layer-thumb ps-background-thumb"/><span>Image layer</span></div>
+              <div className="ps-layer selected"><Eye size={13}/><span className="ps-layer-thumb">{image && <img src={image} alt="Current layer thumbnail"/>}</span><span>Background</span><span className="ps-layer-lock">⌑</span></div>
+            </div>
+            <div className="ps-layer-footer">🔗　ƒx　 ▣　 ◉　 ▤　⊕</div>
+          </>}
+        </div>
+      </aside>}
     </div>
   </div>;
 }
 
-function SlideThumbnail({ page, active, activeImage, current, getImage }: {
+function SlideThumbnail({ page, active, activeImage, getImage }: {
   page: number;
   active: boolean;
   activeImage: string | null;
-  current: number;
   getImage?: (index: number) => Promise<string>;
 }) {
   const [preview, setPreview] = useState<string | null>(null);
+  const container = useRef<HTMLDivElement>(null);
+  // Decode only thumbnails that approach the visible slides pane, not every page.
   useEffect(() => {
-    if (page === current || Math.abs(page - current) > 1 || !getImage) return;
-    let mounted = true;
-    getImage(page).then(src => { if (mounted) setPreview(src); }).catch(() => {});
-    return () => { mounted = false; };
-  }, [page, current, getImage]);
-  const display = active ? activeImage : Math.abs(page - current) <= 1 ? preview : null;
-  return <div className={active ? 'ppt-thumb ppt-thumb-active' : 'ppt-thumb'}>
-    {display ? <img src={display} alt={`Slide ${page + 1} thumbnail`}/> :
-      <div className="ppt-thumbnail-placeholder"><FileImage size={19}/><small>{page + 1}</small></div>}
+    if (active || !getImage || preview || !container.current) return;
+    let live = true;
+    let requested = false;
+    const node = container.current;
+    const observer = new IntersectionObserver(entries => {
+      if (!requested && entries.some(entry => entry.isIntersecting)) {
+        requested = true;
+        observer.disconnect();
+        getImage(page).then(src => { if (live) setPreview(src); }).catch(() => {});
+      }
+    }, { root: node.closest('.ppt-slides'), rootMargin: '120px 0px' });
+    observer.observe(node);
+    return () => { live = false; observer.disconnect(); };
+  }, [active, getImage, page, preview]);
+  const display = active ? activeImage : preview;
+  return <div ref={container} className={active ? 'ppt-thumb ppt-thumb-active' : 'ppt-thumb'}>
+    {display ? <img loading="lazy" src={display} alt={`Slide ${page + 1} thumbnail`}/> :
+      <div className="ppt-thumbnail-placeholder"><FileImage size={18}/><small>{page + 1}</small></div>}
   </div>;
 }
 
@@ -195,44 +256,25 @@ function PowerPoint({ props }: { props: ComicProps }) {
       <span className="ppt-title-search"><Search size={15}/> Search</span><span className="ppt-fidelity-avatar">R</span>
       <WindowControls onClose={close}/>
     </div>
-    <div className="ppt-tabs">{tabs.map(t => <button onClick={() => setTab(t)} key={t} className={t === tab ? 'selected' : ''}>{t}</button>)}<div className="ppt-fidelity-tab-actions"><span className="ppt-fidelity-comment"><Clipboard size={14}/> Comments</span><span className="ppt-fidelity-share">⇧ Share ⌄</span></div></div>
+    <div className="ppt-tabs">{tabs.map(t => <button onClick={() => setTab(t)} key={t} className={t === tab ? 'selected' : ''}>{t}</button>)}<div className="ppt-fidelity-tab-actions"><span className="ppt-fidelity-comment"><BookOpen size={14}/> Comments</span><span className="ppt-fidelity-share">⇧ Share ⌄</span></div></div>
     {tab === 'File' ? <main className="ppt-backstage"><aside><b>File</b><button onClick={() => setTab('Home')}>← Back</button><button onClick={openFile}>Open</button><button onClick={() => setTab('Home')}>Info</button></aside><section><h2>Open</h2><p>Recent</p><button onClick={openFile}><FolderOpen size={18}/> Browse files on this device</button></section></main> : <>
       <div className="ppt-ribbon ppt-fidelity-ribbon">
-        {tab === 'Home' || tab === 'Shape Format' ? <>
-          <div className="ppt-fidelity-group ppt-fidelity-clipboard">
-            <div className="ppt-fidelity-main-icon"><Clipboard size={29}/><span>Paste ⌄</span></div>
-            <div className="ppt-fidelity-mini"><Scissors size={14}/><Copy size={14}/><Paintbrush size={14}/></div>
-            <small>Clipboard</small>
-          </div>
-          <div className="ppt-fidelity-group ppt-fidelity-slides">
-            <div className="ppt-fidelity-main-icon"><LayoutTemplate size={26}/><span>New Slide ⌄</span></div>
-            <div className="ppt-fidelity-mini-text"><span>▤ Layout ⌄</span><span>◫ Reset</span><span>▧ Section ⌄</span></div>
-            <small>Slides</small>
-          </div>
-          <div className="ppt-fidelity-group ppt-fidelity-font">
-            <div className="ppt-fidelity-font-controls"><span>Calibri <ChevronDown size={12}/></span><span>24 <ChevronDown size={12}/></span><b>A˄</b><b>A˅</b></div>
-            <div className="ppt-fidelity-format">B　<i>I</i>　<u>U</u>　S　Ａ　A▼　✎　A̲</div><small>Font</small>
-          </div>
-          <div className="ppt-fidelity-group ppt-fidelity-paragraph"><div className="ppt-fidelity-format">•≡　1≡　↤　↦　↕　⌄</div><div className="ppt-fidelity-format">☰　≡　☷　☵　▤　↵</div><small>Paragraph</small></div>
-          <div className="ppt-fidelity-group ppt-fidelity-drawing">
-            <div className="ppt-fidelity-main-icon"><Shapes size={26}/><span>Shapes</span></div><div className="ppt-fidelity-mini-text"><span>Arrange</span><span>Quick Styles</span></div><small>Drawing</small>
-          </div>
-          <div className="ppt-fidelity-group ppt-fidelity-editing"><div className="ppt-fidelity-mini-text"><span><Search size={14}/> Find and Replace</span><span>Replace Fonts</span><span>◁ Select</span></div><small>Editing</small></div>
-          <div className="ppt-fidelity-group ppt-fidelity-extras"><div><Mic size={21}/>Dictate</div><div>▧<br/>Sensitivity</div><div>▦<br/>Add-ins</div><div>✧<br/>Designer</div><small>Tools</small></div>
-        </> : ribbon.map((item, i) => <div className="ppt-ribbon-group" key={item.title}>
-          {i > 0 && <div className="ppt-ribbon-sep"/>}
-          <div className="ppt-ribbon-tool"><item.Icon size={23}/><span>{item.title}</span></div>
-          <small>{item.group}</small>
-        </div>)}
+        {tab === 'Home' || tab === 'Shape Format' ?
+          <PowerPointHomeRibbon/> :
+          ribbon.map((item, i) => <div className="ppt-ribbon-group" key={item.title}>
+            {i > 0 && <div className="ppt-ribbon-sep"/>}
+            <div className="ppt-ribbon-tool"><item.Icon size={23}/><span>{item.title}</span></div>
+            <small>{item.group}</small>
+          </div>)}
       </div>
       <div className="ppt-body">
         <aside className="ppt-slides"><div className="ppt-side-heading"><span>Slides</span> <span>Outline</span></div>
           {Array.from({ length: Math.min(count, 150) }, (_, i) =>
             <button key={i} onClick={() => onPage(i)} className={`ppt-thumb-row ${index === i ? 'selected' : ''}`} aria-label={`Go to slide ${i + 1}`}>
-              <span>{i + 1}</span><SlideThumbnail page={i} current={index} active={index === i} activeImage={image} getImage={getImage}/>
+              <span>{i + 1}</span><SlideThumbnail page={i} active={index === i} activeImage={image} getImage={getImage}/>
             </button>)}
         </aside>
-        <div className="ppt-center"><div className="ppt-slide-wrap"><div className="ppt-slide"><ImageCanvas src={image} zoom={zoom} name={name}/></div></div><div className="ppt-notes">Notes</div></div>
+        <div className="ppt-center"><div className="ppt-slide-wrap"><div className="ppt-slide"><ImageCanvas src={image} zoom={zoom} name={name}/></div></div><div className="ppt-notes"><span>Notes</span><span className="ppt-notes-hint">Click to add notes</span></div></div>
       </div>
       <div className="ppt-bottom"><span>Slide {index + 1} of {count}</span><span className="ppt-bottom-center">English (United States)　 <span className="ppt-status-accessibility">✓ Accessibility: Good</span></span>
         <Navigation page={index} count={count} onPage={onPage}/>
@@ -279,10 +321,10 @@ function Canva({ props }: { props: ComicProps }) {
   return <div className="canva app-fill">
     <div className="canva-bar">
       <button onClick={close} title="Back to library"><ArrowLeft size={18}/></button>
-      <div className="canva-logo">Canva</div>
+      <div className="canva-logo">Canva</div><span className="canva-top-divider"/>
       <button onClick={openFile}>File <ChevronDown size={12}/></button>
       <button disabled>Resize <ChevronDown size={12}/></button>
-      <span className="canva-doc-title">{name.replace(/\.[^.]+$/, '')}</span>
+      <span className="canva-doc-title" title={name}>{name.replace(/\.[^.]+$/, '')}</span><span className="canva-history"><Undo2 size={15}/><Redo2 size={15}/></span>
       <span className="canva-saved">☁ <span>All changes saved</span></span>
       <span className="canva-avatar">R</span>
       <span className="canva-share">Share</span>
@@ -294,7 +336,7 @@ function Canva({ props }: { props: ComicProps }) {
         <div className="canva-options">
           <span><Sparkles size={16}/> Edit image</span><span><SlidersHorizontal size={16}/> Adjust</span>
           <span><Crop size={16}/> Crop</span><span><Maximize size={16}/> Flip</span>
-          <span className="canva-options-right">Position <ChevronDown size={12}/></span>
+          <span className="canva-options-right">Position <ChevronDown size={12}/></span><span className="canva-top-more">⋯</span>
         </div>
         <div className="canva-stage">
           <div className="canva-work-area"><div className="canva-page-heading"><span>Page {index + 1} — {name.slice(0, 30)}</span><span>•••</span></div>

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { AlignCenter, AlignLeft, AlignRight, ArrowDownAZ, Bold, ChevronDown, ChevronLeft, ChevronRight, Clipboard, Copy, FileSpreadsheet, FolderOpen, Italic, MessageSquare, Paintbrush, Redo2, Save, Scissors, Search, Share2, Sigma, Underline, Undo2 } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, FileSpreadsheet, FolderOpen, MessageSquare, Redo2, Save, Search, Share2, Undo2 } from 'lucide-react';
 import { WindowControls } from './Chrome';
+import ExcelRibbon from './ExcelRibbon';
 import type { TextProps } from './TextApps';
 
 const columns = Array.from({length: 23}, (_, n) => String.fromCharCode(65 + n));
@@ -24,22 +25,24 @@ type Cell = { row: number; col: string };
 const valueAt = (row: number, col: string, rows: string[]) =>
   col === 'A' ? (rows[row] ?? '') : (officeCells[row]?.[col] ?? '');
 
-function Sheet({ rows, selected, select, change }: {
+function Sheet({ rows, selected, select, change, zoom }: {
   rows: string[];
   selected: Cell;
   select: (cell: Cell) => void;
   change: string;
+  zoom: number;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const total = Math.max(150, rows.length);
   const virtualizer = useVirtualizer({
     count: total,
     getScrollElement: () => scroller.current,
-    estimateSize: () => 38,
+    estimateSize: () => Math.round(38 * zoom / 100),
     overscan: 8,
   });
   useEffect(() => { scroller.current?.scrollTo({top: 0}); virtualizer.scrollToIndex(0); }, [change]);
-  return <div className="excel-sheet-scroll" ref={scroller}>
+  useEffect(() => { virtualizer.measure(); }, [zoom, virtualizer]);
+  return <div className="excel-sheet-scroll" ref={scroller} style={{ "--sheet-zoom": zoom / 100 } as React.CSSProperties}>
     <div className="excel-grid-head" role="row">
       <span className="excel-grid-corner"/>
       {columns.map(col => <span key={col} className={selected.col === col ? 'selected' : ''}>{col}</span>)}
@@ -71,57 +74,6 @@ function Sheet({ rows, selected, select, change }: {
 
 const tabs = ['File', 'Home', 'Insert', 'Draw', 'Page Layout', 'Formulas', 'Data', 'Review', 'View', 'Automate', 'Help'];
 
-function Ribbon({ tab }: {tab: string}) {
-  if (tab !== 'Home') {
-    const others: Record<string, {title: string; items: string[]}[]> = {
-      Insert: [{title:'Tables',items:['PivotTable', 'Recommended PivotTables', 'Table']},{title:'Illustrations',items:['Pictures','Shapes','Icons']},{title:'Charts',items:['Recommended Charts','Column','Line']}],
-      Data: [{title:'Get & Transform Data',items:['Get Data','Refresh All']},{title:'Sort & Filter',items:['Sort','Filter','Clear']},{title:'Data Tools',items:['Text to Columns','Remove Duplicates']}],
-      Formulas: [{title:'Function Library',items:['Insert Function','AutoSum','Recently Used']},{title:'Defined Names',items:['Name Manager','Define Name']}],
-      View: [{title:'Workbook Views',items:['Normal','Page Layout','Page Break Preview']},{title:'Show',items:['Formula Bar','Gridlines','Headings']},{title:'Zoom',items:['100%','Zoom to Selection']}],
-    };
-    const groups = others[tab] || [{title:tab,items:[tab + ' options','Preferences','Settings']}];
-    return <div className="excel-ribbon excel-ribbon-alternative">{groups.map(group =>
-      <div className="excel-tool-group" key={group.title}><div className="excel-simple-tools">{group.items.map((item, i) =>
-        <span key={item}><span className="excel-placeholder-symbol">{['▤','▦','◈'][i % 3]}</span>{item}</span>)}</div>
-        <small>{group.title}</small></div>)}
-    </div>;
-  }
-  return <div className="excel-ribbon excel-ribbon-detailed">
-    <div className="excel-tool-group excel-clipboard-tools">
-      <div className="excel-group-content"><div className="excel-large-icon"><Clipboard size={26}/><span>Paste <ChevronDown size={11}/></span></div>
-        <div className="excel-small-icons"><span><Scissors size={17}/></span><span><Copy size={17}/></span><span><Paintbrush size={17}/></span></div></div>
-      <small>Clipboard</small>
-    </div>
-    <div className="excel-tool-group excel-font-tools">
-      <div className="excel-font-selects"><span>Aptos Narrow <ChevronDown size={12}/></span><span>11 <ChevronDown size={12}/></span><b>A˄</b><b>A˅</b></div>
-      <div className="excel-ribbon-icons"><Bold size={16}/><Italic size={16}/><Underline size={16}/><span>▦</span><span className="excel-highlight-marker">▰</span><span className="excel-red-marker">A</span></div>
-      <small>Font</small>
-    </div>
-    <div className="excel-tool-group excel-alignment-tools">
-      <div className="excel-ribbon-icons"><AlignLeft size={17}/><AlignCenter size={17}/><AlignRight size={17}/><span>↗</span><span>↵ Wrap Text</span></div>
-      <div className="excel-ribbon-icons"><span>≡</span><span>☷</span><span>⇥</span><span>⇤</span><span>▦ Merge &amp; Center</span></div>
-      <small>Alignment</small>
-    </div>
-    <div className="excel-tool-group excel-number-tools">
-      <div className="excel-number-select">General <ChevronDown size={12}/></div>
-      <div className="excel-ribbon-icons"><span>$</span><span>%</span><span>,</span><span>.0←</span><span>→.00</span></div>
-      <small>Number</small>
-    </div>
-    <div className="excel-tool-group excel-styles-tools">
-      <div className="excel-tall-tools"><span><span>▦</span>Conditional<br/>Formatting</span><span><span>▨</span>Format as<br/>Table</span><span><span>▤</span>Cell<br/>Styles</span></div>
-      <small>Styles</small>
-    </div>
-    <div className="excel-tool-group excel-cells-tools">
-      <div className="excel-tall-tools"><span><span>▥</span>Insert</span><span><span>▧</span>Delete</span><span><span>▦</span>Format</span></div>
-      <small>Cells</small>
-    </div>
-    <div className="excel-tool-group excel-editing-tools">
-      <div className="excel-tall-tools"><span><Sigma size={23}/>AutoSum</span><span><ArrowDownAZ size={23}/>Sort &amp;<br/>Filter</span><span><Search size={23}/>Find &amp;<br/>Select</span></div>
-      <small>Editing</small>
-    </div>
-  </div>;
-}
-
 export default function ExcelApp({props, rows}: {props: TextProps; rows: string[]}) {
   const { name, index, titles, onPage, mode, onMode, openFile, close } = props;
   const [tab, setTab] = useState('Home');
@@ -145,9 +97,9 @@ export default function ExcelApp({props, rows}: {props: TextProps; rows: string[
       <div className="excel-collaboration"><span><MessageSquare size={15}/> Comments</span><span className="excel-share"><Share2 size={15}/> Share⌄</span></div>
     </div>
     {tab === 'File' ? <div className="excel-backstage"><aside><strong>File</strong><button onClick={() => setTab('Home')}>← Back</button><button onClick={openFile}>Open</button><button onClick={() => setTab('Home')}>Info</button></aside><main><h2>Open</h2><p>Recent</p><button onClick={openFile}><FolderOpen size={18}/> Browse this device</button></main></div> : <>
-      <Ribbon tab={tab}/>
+      <ExcelRibbon tab={tab}/>
       <div className="excel-formula"><span className="excel-name-box">{selected.col}{selected.row + 1} <ChevronDown size={13}/></span><span className="excel-formula-actions">×　✓　ƒx</span><div title={expression}>{expression}</div><ChevronDown size={14}/></div>
-      <div className="excel-book"><Sheet rows={rows} selected={selected} select={select} change={name + ':' + index + ':' + mode}/></div>
+      <div className="excel-book"><Sheet rows={rows} selected={selected} select={select} change={name + ':' + index + ':' + mode} zoom={excelZoom}/></div>
       <div className="excel-sheet-tabs"><span className="excel-sheet-arrows">‹　›</span><span className="excel-sheet-active">Sheet1</span><button title="Add sheet" disabled>＋</button><span className="excel-horizontal-track"><span/></span></div>
       <footer className="excel-native-status"><div className="excel-status-left"><span>Ready</span><span>♧ Accessibility: Good to go</span></div>
         <div className="excel-bottom-reader"><button disabled={index === 0} title="Previous chapter" onClick={() => onPage(index - 1)}><ChevronLeft size={15}/></button>

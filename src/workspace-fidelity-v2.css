@@ -1,0 +1,282 @@
+/*
+  Workspace fidelity v2
+  Final, deliberately scoped override layer for the seven? eight reading looks:
+  Excel, VS Code, Photoshop, PowerPoint, Canva, Warp, Ghostty and Windows Terminal.
+  No external assets: locally rendered controls retain the lightweight reader.
+*/
+
+/* Shared application typography, unobtrusive window controls */
+.excel-native, .powerpoint, .photoshop, .canva { font-kerning: normal; }
+.excel-native .window-controls, .powerpoint .window-controls, .photoshop .window-controls,
+.vscode-repository .window-controls { display: inline-flex; align-items: stretch; flex: 0 0 auto; height: 100%; }
+.excel-native .window-controls > *, .powerpoint .window-controls > *, .photoshop .window-controls > * ,
+.vscode-repository .window-controls > * { min-width: 28px; display: grid; place-items: center; }
+.excel-native .window-controls button:hover, .powerpoint .window-controls button:hover,
+.photoshop .window-controls button:hover, .vscode-repository .window-controls button:hover { background: #d74436; color: white; }
+.excel-native button:focus-visible, .powerpoint button:focus-visible,
+.photoshop button:focus-visible, .canva button:focus-visible,
+.vscode-repository button:focus-visible, .term button:focus-visible {
+  outline: 1px solid currentColor; outline-offset: -2px;
+}
+
+/* Excel: desktop-green identity + worksheet proportions from the reference. */
+.excel-native .excel-titlebar {
+  height: 45px; min-height: 45px;
+  background: #196b43; color: #fff;
+  gap: 12px; font: 12px "Segoe UI", Arial, sans-serif;
+}
+.excel-native .excel-logo { box-shadow: -2px 1px 0 #083e24; }
+.excel-native .excel-title-quick-access { gap: 13px; color: #e2f2e6; }
+.excel-native .excel-title-quick-access svg:first-child { stroke: #e8c3f2; }
+.excel-native .excel-doc { font-size: 12px; margin: 0 12px; color: #f2fff6; }
+.excel-native .excel-title-search { min-width: 180px; flex-basis: 310px; flex-shrink: 1; max-width: 390px; border-radius: 4px; }
+.excel-native .excel-user-avatar { width: 27px; height: 27px; box-shadow: 0 1px 3px #071f143d; }
+.excel-native .excel-tabs { height: 39px; min-height: 39px; align-items: stretch; border-bottom: 1px solid #dadbdc; background: #fff; }
+.excel-native .excel-tab-labels { gap: 4px; }
+.excel-native .excel-tab-labels button.active { color: #16663a; }
+.excel-native .excel-collaboration .excel-share { background: #107c41; }
+.excel-native .excel-ribbon { background: linear-gradient(#fff,#fcfcfd); border-radius: 5px; box-shadow: 0 1px 3px #00000017; }
+.excel-native .excel-tool-group { border-right-color: #dddddf; }
+.excel-native .excel-tool-group small { font-size: 10px; }
+.excel-native .excel-tool-group .excel-font-selects span,
+.excel-native .excel-tool-group .excel-number-select { border-radius: 2px; }
+.excel-native .excel-formula { background: #f8f8f9; border-bottom: 1px solid #e5e5e8; }
+.excel-native .excel-formula>div { color: #262b2a; }
+.excel-native .excel-grid-head { height: 25px; background: #f5f6f6; }
+.excel-native .excel-grid-head span.selected { background: #e2efe7; }
+.excel-native .excel-grid-row {
+  min-height: calc(38px * var(--sheet-zoom,1));
+  align-items: stretch;
+}
+.excel-native .excel-grid-cell {
+  min-height: calc(37px * var(--sheet-zoom,1));
+  font: 400 calc(13.5px * var(--sheet-zoom,1)) / 1.42 "Segoe UI",Arial,sans-serif;
+  padding: calc(7px * var(--sheet-zoom,1)) 7px;
+  color: #24282a;
+}
+.excel-native .excel-grid-cell.office-heading { font-weight: 700; }
+.excel-native .excel-grid-row-num { font-size: calc(12px * var(--sheet-zoom,1)); }
+.excel-native .excel-grid-cell:focus-visible { outline: 2px solid #197b45; outline-offset: -2px; }
+.excel-native .excel-grid-cell.selected { box-shadow: inset 0 0 0 1px #177c3e; }
+.excel-native .excel-sheet-tabs { border-top: 1px solid #d8d9dc; }
+.excel-native .excel-sheet-active { border-bottom-color: #15834d; }
+.excel-native .excel-native-status { height: 26px; min-height: 26px; }
+
+/* PowerPoint: rich contextual ribbon, a real slide editor silhouette, and orange controls. */
+.powerpoint .ppt-titlebar { background: #b8492b; color: #fff; height: 43px; min-height: 43px; }
+.powerpoint .ppt-title { flex: 1; text-align: left; margin: 0 0 0 12px; line-height: 1.4; }
+.powerpoint .ppt-title-search { margin: 0 auto; flex: 0 1 390px; }
+.powerpoint .ppt-tabs { box-shadow: none; background: #fff; gap: 0; }
+.powerpoint .ppt-tabs button { font-size: 12px; padding: 0 11px; color: #292929; }
+.powerpoint .ppt-tabs button.selected { box-shadow: inset 0 -3px #c54b28; }
+.powerpoint .ppt-fidelity-tab-actions { position: sticky; right: 0; background: #fff; z-index: 2; }
+.powerpoint .ppt-fidelity-ribbon {
+  background: #fdfdfd; height: 116px; min-height: 116px;
+  padding: 4px 8px 3px; box-shadow: 0 2px 3px #1111;
+}
+.powerpoint .ppt-fidelity-font-controls span { box-shadow: inset 0 1px #fff; }
+.powerpoint .ppt-fidelity-main-icon svg { color: #c45a32; stroke-width: 1.7; }
+.powerpoint .ppt-fidelity-extras { gap: 12px; }
+.powerpoint .ppt-body { background: #e7e7ea; }
+.powerpoint .ppt-slides {
+  width: clamp(186px,15.4vw,248px); flex-basis: clamp(186px,15.4vw,248px);
+  padding: 10px 10px 14px; background: #f4f3f5;
+  scrollbar-color: #a5a5a9 #efeff2;
+}
+.powerpoint .ppt-side-heading { position: sticky; top: -10px; z-index: 2; background: #f4f3f5; margin-bottom: 5px; padding: 4px 0 8px; }
+.powerpoint .ppt-thumb-row { display: flex; align-items: flex-start; gap: 8px; padding: 7px 1px; }
+.powerpoint .ppt-thumb-row > span { width: 17px; flex: 0 0 17px; padding-top: 6px; color: #555; }
+.powerpoint .ppt-thumb { flex: 1; height: auto; aspect-ratio: 16 / 9; max-height: none; border-radius: 2px; }
+.powerpoint .ppt-thumb img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; }
+.powerpoint .ppt-slide-wrap {
+  background: #e6e6ea; padding: clamp(15px,2vw,28px);
+  justify-content: center; align-items: flex-start;
+}
+.powerpoint .ppt-slide {
+  aspect-ratio: 16 / 9; min-width: 0; min-height: 0;
+  height: auto; width: min(100%,1050px); max-height: none;
+  background: white; border: 1px solid #c9c9cd;
+  box-shadow: 0 2px 8px #00000022;
+}
+.powerpoint .ppt-slide .image-stage {
+  height: 100%; min-height: 0; padding: 12px 25px;
+  display: flex; align-items: center;
+}
+.powerpoint .ppt-slide .comic-image { max-height: 100%; max-width: 100%; width: 72%; height: auto; object-fit: contain; }
+.powerpoint .ppt-notes {
+  display: flex; align-items: center; gap: 8px;
+  background: #fff; height: 38px; min-height: 38px;
+  color: #5f6168; font-size: 11px;
+}
+.powerpoint .ppt-notes span:first-child { font-weight: 600; }
+.ppt-notes-hint { color: #9699a0; font-size: 10px; }
+.powerpoint .ppt-bottom { border-top-color: #c9cace; color: #4d4e56; }
+.powerpoint .ppt-bottom-center { color: #666; }
+
+/* Photoshop: dense gray bars and a believable layered-panel workspace. */
+.photoshop { background: #202020; }
+.photoshop .ps-menu-top { background: #303030; border-bottom: 1px solid #191919; }
+.photoshop .ps-badge { font-weight: 700; box-shadow: none; }
+.photoshop .ps-options.ps-fidelity-options {
+  min-height: 39px; height: 39px; background: #252525; gap: 9px;
+  scrollbar-width: none;
+}
+.photoshop .ps-fidelity-command { border-radius: 3px; background: #313131; color: #d5d5d5; border-color: #484848; }
+.photoshop .ps-fidelity-check { color: #d0d0d0; }
+.photoshop .ps-workspace { background: #1c1c1c; }
+.photoshop .ps-tools { background: #292929; border-right-color: #121212; gap: 1px; }
+.photoshop .ps-tool { border-radius: 2px; }
+.photoshop .ps-left { background: #2c2c2c; border-right-color: #111; }
+.photoshop .ps-right { background: #2a2a2a; border-left-color: #101010; }
+.photoshop .ps-panel-heading { font-size: 11px; padding: 0 9px; background: #363636; }
+.photoshop .ps-nav-preview { background: #2f2f2f; }
+.photoshop .ps-nav-preview img { border: 1px solid #747474; }
+.photoshop .ps-property-grid { align-items: center; }
+.photoshop .ps-property-grid b { padding: 5px 6px; color: #d5d5d5; font-weight: 400; background: #262626; }
+.photoshop .ps-document { background: #171717; }
+.photoshop .ps-tabs button { border-right: 1px solid #232323; }
+.photoshop .ps-tabs button.ps-active-tab { background: #3e3e3e; color: #eee; box-shadow: inset 0 1px #585858; }
+.photoshop .ps-canvas-area { background: #111; scrollbar-color: #555 #222; }
+.photoshop .ps-canvas-area .image-stage { min-height: 100%; padding: 20px 24px; }
+.photoshop .ps-canvas-area .comic-image { background: white; box-shadow: 0 0 0 1px #151515, 0 4px 15px #0008; }
+.photoshop .ps-status { background: #222; border-top-color: #121212; }
+.photoshop .ps-typography { font-size: 15px; }
+.photoshop .ps-right-fields { gap: 4px; }
+.photoshop .ps-fake-input { padding: 5px 6px; font-size: 11px; }
+.photoshop .ps-layer { border-bottom: 1px solid #3b3b3b; }
+.photoshop .ps-layer-thumb { border-color: #5d5d5d; }
+
+/* Canva: teal-blue-violet top, compact rail, design-sidebar catalog and clean page. */
+.canva { background: #ececf2; color: #24242f; }
+.canva .canva-bar {
+  height: 54px; min-height: 54px;
+  background: linear-gradient(108deg,#235fcf,#5756cc 55%,#8542b4);
+  padding: 0 15px; gap: 13px;
+  box-shadow: 0 1px 3px #0002;
+}
+.canva .canva-logo { font: italic 800 27px Georgia,serif; letter-spacing: -1.4px; }
+.canva-top-divider { width: 1px; height: 24px; background: #ffffff40; }
+.canva-history { display: flex; gap: 11px; margin-left: 3px; align-items: center; color: #ffffffc7; }
+.canva .canva-doc-title { text-align: center; font-size: 12px; color: #f9f7ff; margin: 0 auto; }
+.canva .canva-share { padding: 9px 18px; font-weight: 700; box-shadow: 0 1px 2px #0002; }
+.canva .canva-rail { background: #1b1e29; padding-top: 10px; width: 68px; flex-basis: 68px; }
+.canva .canva-rail button { color: #bcc0d0; border-radius: 6px; }
+.canva .canva-rail button.active { background: #34394b; color: #fff; }
+.canva .canva-side { background: #fff; border-color: #dfe0e9; box-shadow: 1px 0 3px #0000000b; width: 268px; flex-basis: 268px; }
+.canva .canva-side-head { font-size: 16px; }
+.canva .canva-search { border-radius: 6px; background: #f4f4f7; }
+.canva .canva-template { box-shadow: 0 1px 4px #00000011; }
+.canva .canva-options { border-bottom-color: #e2e2e7; background: #fff; height: 49px; min-height: 49px; }
+.canva-top-more { font-size: 22px; color: #888; padding-left: 8px; }
+.canva .canva-stage { background: #e9e9f0; }
+.canva .canva-work-area { padding-top: 4px; }
+.canva .canva-artboard { border: 1px solid #c6c8d2; border-radius: 1px; box-shadow: 0 4px 20px #3536442e; background: white; }
+.canva .canva-artboard .image-stage { align-items: flex-start; }
+.canva .canva-artboard .comic-image { background: white; max-width: 100%; }
+.canva .canva-page-actions { color: #777987; font-size: 11px; }
+.canva .canva-footer { height: 43px; min-height: 43px; border-top-color: #dfe0e5; }
+.canva .canva-footer input { accent-color: #7849c6; }
+
+/* VS Code: dark workbench, Explorer's Open Editors strip, precise hierarchy. */
+.vscode-repository { background: #242634; font-family: "Segoe UI",Arial,sans-serif; }
+.vscode-repository .vsc-menuline { background: #20212b; border-bottom-color: #3c4050; height: 40px; min-height: 40px; }
+.vscode-repository .vsc-menus .menu-trigger { letter-spacing: 0; padding: 5px 7px; }
+.vscode-repository .vsc-quick-search { background: #2e303d; border-color: #55596a; }
+.vscode-repository .vsc-quick-search input { color: #ededf7; }
+.vscode-repository .vsc-title-actions { color: #d5d7e7; }
+.vscode-repository .vsc-activity { border-right: 1px solid #484b61; background: #2d3144; }
+.vscode-repository .vsc-activity button { color: #7e9ac9; }
+.vscode-repository .vsc-activity button.active { color: #f6f6ff; background: #363a52; box-shadow: inset 2px 0 #b5b9ef; }
+.vscode-repository .vsc-explorer { background: #20222d; border-color: #4b5069; }
+.vsc-open-editors { border-bottom: 1px solid #34394d; }
+.vsc-open-editors-title {
+  height: 25px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 11px; font-size: 10px; font-weight: 700; color: #c5cada; letter-spacing: .15px;
+}
+.vsc-open-editors-title span { background: #40465b; border-radius: 4px; padding: 1px 6px; font-size: 10px; }
+.vsc-open-editor-story {
+  width: 100%; display: flex; align-items: center; gap: 8px; height: 25px;
+  border: 0; background: #282c3a; color: #d0d6e8; padding: 0 16px 0 23px; font: 11px "Segoe UI",Arial;
+  cursor: pointer;
+}
+.vsc-open-editor-story:hover { background: #3a4053; }
+.vsc-open-editor-story span { margin-left: auto; color: #aab2bf; }
+.vscode-repository .vsc-repo-heading { border-top: 1px solid #2e3344; }
+.vscode-repository .vsc-tree-row { height: 24px; }
+.vscode-repository .vsc-tree-row.selected { background: #393f58; border-color: #6b719c; }
+.vscode-repository .vsc-explorer-lower { border-top-color: #44465b; }
+.vscode-repository .vsc-breadcrumb { font-size: 11px; }
+.vscode-repository .vsc-filetabs { background: #21232e; }
+.vscode-repository .vsc-open-tab.current { border-top-color: #9eaae2; }
+.vscode-repository .vsc-editor { background: #282b38; }
+.vscode-repository .code-scroll { background: #282b38; }
+.vscode-repository .code-row:hover { background: #32364a; }
+.vscode-repository .code-content { color: #d2d7e6; }
+.vscode-repository .vsc-status { height: 25px; min-height: 25px; border-top-color: #414558; }
+.vsc-status-branch { color: #8fa3e2; }
+
+/* Distinct terminals, not a single generic shell painted three ways. */
+.term { font-family: "Cascadia Code","JetBrains Mono",Consolas,monospace; }
+.term .term-story-line { letter-spacing: 0; }
+.term--warp { --term-bg: #17141d; --term-panel: #201c2b; --term-chrome: #25202c; --term-border: #403749; }
+.term--warp .term-titlebar { height: 42px; min-height: 42px; }
+.term--warp .term-warp-sidebar { width: 195px; flex-basis: 195px; background: #1d1926; border-right-color: #393145; }
+.term--warp .term-side-selected { border: 1px solid #5d4c72; background: #372d42; }
+.term--warp .term-session-heading { height: 38px; min-height: 38px; background: #24202d; }
+.term--warp .term-scroll { padding-top: 27px; }
+.term--warp .term-warp-command-caption { display: flex; align-items: center; gap: 9px; font-size: 10px; color: #d0b8ff; }
+.term--warp .term-warp-command-caption>span:first-child {
+  display: grid; place-items: center; width: 16px; height: 16px;
+  border-radius: 50%; background: #376c58; color: #c9f8da; font-size: 10px;
+}
+.term-command-duration { color: #91879d; max-width: 45vw; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.term--warp .term-story-line { background: #292334b5; border-left-color: #866fb2; border-bottom: 1px solid #342b43; }
+.term--warp .term-inputbar { box-shadow: 0 3px 15px #0003; }
+.term--warp .term-footer { background: #26212f; }
+.term--ghostty { --term-bg: #181925; --term-chrome: #232434; --term-border: #33384d; }
+.term--ghostty .term-titlebar { background: #232435; box-shadow: inset 0 -1px #3c3c51; }
+.term--ghostty .term-ghostty-heading { min-height: 30px; height: 30px; font-size: 10px; border-bottom-color: #292b3c; }
+.term--ghostty .term-scroll { padding-top: 20px; }
+.term--ghostty .term-story-line { color: #d4d8eb; line-height: 1.75; }
+.term--ghostty .term-inputbar { border-top-color: #2c3141; }
+.term--ghostty .term-footer { border-top-color: #363b4d; }
+.term--windows { --term-bg: #0c1624; --term-chrome: #222b39; --term-border: #3c4c5e; }
+.term--windows .term-titlebar { color: #dfe9f8; background: #232e3e; }
+.term--windows .term-win-tab { align-self: flex-end; height: 34px; background: #0c1725; border: 1px solid #3d4a5b; border-bottom: none; gap: 9px; }
+.term--windows .term-win-add { display: flex; align-items: center; gap: 6px; }
+.term-win-chevron { color: #aebbd0; font-size: 12px; }
+.term--windows .term-win-menu { min-width: 0; }
+.term--windows .term-scroll { background: #0c1624; color: #e6f0fa; padding-top: 27px; }
+.term--windows .term-story-line { color: #e3edf8; }
+.term--windows .term-inputbar { background: #0c1624; border-color: #30435a; }
+.term--windows .term-footer { background: #185184; border-top-color: #4172a4; }
+.term--windows .term-footer select { background: #164673; color: #f8fbff; border-color: #5683ad; }
+
+/* Compact/small viewport: maintain reachable reader controls and scroll chrome when necessary. */
+@media (max-width: 1130px) {
+  .powerpoint .ppt-fidelity-extras { display: none; }
+  .powerpoint .ppt-title-search { flex-basis: 210px; }
+  .canva .canva-side { width: 230px; flex-basis: 230px; }
+  .term--warp .term-warp-sidebar { width: 150px; flex-basis: 150px; }
+}
+@media (max-width: 810px) {
+  .excel-native .excel-title-search { min-width: 0; }
+  .powerpoint .ppt-title-search,.powerpoint .ppt-fidelity-tab-actions { display: none; }
+  .powerpoint .ppt-slides { width: 100px; flex-basis: 100px; padding: 6px; }
+  .powerpoint .ppt-thumb-row > span { display: none; }
+  .canva .canva-side { display: none; }
+  .term--warp .term-warp-sidebar { display: none; }
+}
+@media (max-width: 580px) {
+  .excel-native .excel-titlebar { gap: 6px; }
+  .excel-native .excel-doc { margin: 0 4px; }
+  .powerpoint .ppt-title { font-size: 10px; margin-left: 4px; }
+  .powerpoint .ppt-slide-wrap { padding: 10px; }
+  .powerpoint .ppt-slides { display: none; }
+  .canva .canva-bar { padding: 0 8px; gap: 7px; }
+  .canva .canva-top-divider,.canva .canva-history { display: none; }
+  .vscode-repository .vsc-explorer { width: 185px; flex-basis: 185px; }
+  .vsc-open-editors-title { font-size: 9px; }
+  .term--windows .term-win-menu { display: none; }
+  .term-appearance select { max-width: 82px; }
+}

@@ -30,6 +30,19 @@ The appearance is inspired by the corresponding desktop products and may differ 
 - **Excel:** The imported story is in column A; a sparse, clearly separate decorative project tracker fills a few cells to give the sheet a believable office-document appearance. Columns A–W, extra blank rows, cell selection, formula bar, workbook ribbon, tab strip and horizontal scrolling are rendered locally. The extra data is not added to or exported with the book.
 - **VS Code:** Explorer uses the tracked files of the **sfw-reader repository**. `bun run dev` and `bun run build` regenerate the tree from `git ls-files`; a checked-in snapshot is used if Git is unavailable. Expand/collapse folders, switch tabs and use quick-open. Selected small, public source files can be previewed from this checkout. The book stays available as the pinned `reading-notes.md` tab. Previews never fetch the user's uploaded book or GitHub content over the network.
 
+## Workspace fidelity v2
+
+Desktop-focused chrome refinements are split into `src/workspace-fidelity-v2.css`, loaded after the earlier styles to keep the existing reading engine untouched.
+
+- **Excel:** the green workbook header is retained; the Zoom slider now updates the actual sheet's text sizing and virtualization estimates.
+- **VS Code:** Open Editors includes a direct link to the pinned story tab; Explorer is still generated from Git-tracked project files.
+- **Photoshop:** contextual toolbars, gray workspace and dense side-panel proportions.
+- **PowerPoint:** fuller ribbon, orange header, 16:9 canvas and lazily decoded thumbnails **only when their slide entries approach view**.
+- **Canva:** tighter purple/blue title bar, more realistic panel, page and toolbar treatments.
+- **Terminals:** separate styling for Warp blocks, minimal Ghostty and Windows Terminal tabs/prompt, preserving all three profile choices.
+
+These layouts remain lightweight lookalike readers rather than full-fledged editors or real shells.
+
 ## Stack
 
 Vite, React 19, TypeScript, PDF.js, JSZip, TanStack Virtual, lucide-react. No server-side runtime required.

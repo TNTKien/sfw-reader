@@ -1,0 +1,263 @@
+/* Desktop-reference corrections: PowerPoint Home ribbon and Photoshop top/right chrome.
+ * Kept separate from earlier polish layers to avoid affecting other workspaces. */
+
+/* PowerPoint: each Office group is a tight, vertically aligned unit, not widely spaced text. */
+.powerpoint .ppt-ribbon.ppt-fidelity-ribbon {
+  height: 112px;
+  min-height: 112px;
+  padding: 3px 4px 0;
+  gap: 0;
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: #fff;
+  border-bottom: 1px solid #ced0d4;
+  scrollbar-width: thin;
+}
+.ppt-home-ribbon {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  flex: 0 0 auto;
+  min-width: min-content;
+  height: 100%;
+  color: #36383d;
+  font: 11px/1.25 "Segoe UI", Arial, sans-serif;
+}
+.ppt-home-group {
+  position: relative;
+  flex: 0 0 auto;
+  border-right: 1px solid #d9d9dd;
+  min-height: 100%;
+  padding: 4px 8px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.ppt-home-group-inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  justify-content: center;
+}
+.ppt-home-group-label {
+  flex: 0 0 15px;
+  color: #73767d;
+  font-size: 10px;
+  font-weight: 400;
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  white-space: nowrap;
+}
+.ppt-home-tool {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #41454a;
+  font-size: 11px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.ppt-home-tool svg { flex-shrink: 0; stroke-width: 1.7; }
+.ppt-home-tall {
+  height: 75px;
+  min-width: 46px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+.ppt-home-tall > span { display: inline-flex; align-items: center; justify-content: center; gap: 2px; font-size: 10px; }
+.ppt-home-mini-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  justify-content: center;
+  min-width: 17px;
+}
+.ppt-home-mini-column .ppt-home-tool { justify-content: flex-start; }
+.ppt-home-named-tools .ppt-home-tool { gap: 5px; font-size: 10px; }
+.ppt-home-clipboard { width: 100px; }
+.ppt-home-slides { width: 161px; }
+.ppt-home-slides .ppt-home-tall { min-width: 62px; }
+.ppt-home-font { width: 309px; }
+.ppt-home-font .ppt-home-group-inner { display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 7px; }
+.ppt-home-font-top,.ppt-home-font-bottom { display: flex; align-items: center; gap: 6px; min-height: 27px; justify-content: flex-start; }
+.ppt-home-font-bottom { gap: 8px; }
+.ppt-home-input {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border: 1px solid #c9cacf;
+  background: #fff;
+  color: #30343a;
+  padding: 4px 6px;
+  height: 27px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.ppt-home-font-family { width: 142px; }
+.ppt-home-font-size { width: 48px; }
+.ppt-home-aa { font-size: 17px; line-height: 1; white-space: nowrap; }
+.ppt-home-aa sup { color: #5384ba; font-size: 10px; vertical-align: 6px; }
+.ppt-home-aa-small { font: 13px "Segoe UI",Arial,sans-serif; }
+.ppt-home-font-color { font-size: 16px; text-decoration: underline; text-decoration-color: #d54b4c; text-decoration-thickness: 3px; }
+.ppt-home-paragraph { width: 254px; }
+.ppt-home-paragraph .ppt-home-group-inner {
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  justify-content: center;
+}
+.ppt-home-para-row { display: flex; align-items: center; gap: 10px; min-height: 26px; justify-content: flex-start; }
+.ppt-home-indent { color: #4c7296; font: 14px Consolas,monospace; }
+.ppt-home-drawing { width: 229px; }
+.ppt-home-drawing .ppt-home-group-inner { gap: 7px; }
+.ppt-home-drawing .ppt-home-tall { min-width: 51px; }
+.ppt-home-editing { width: 156px; }
+.ppt-home-editing .ppt-home-group-inner { justify-content: center; align-items: flex-start; }
+.ppt-home-editing .ppt-home-named-tools { gap: 10px; }
+.ppt-home-letter { min-width: 16px; font-size: 15px; color: #4c6684; text-align: center; }
+.ppt-home-single { width: 79px; padding-left: 4px; padding-right: 4px; }
+.ppt-home-single .ppt-home-group-inner { justify-content: center; }
+.ppt-home-single .ppt-home-tall { min-width: 0; max-width: 100%; gap: 6px; }
+.ppt-home-single .ppt-home-tall > span { font-size: 10px; white-space: normal; text-align: center; }
+@media (max-width: 900px) {
+  .powerpoint .ppt-ribbon.ppt-fidelity-ribbon { scrollbar-width: none; }
+}
+
+/* Photoshop: native window buttons occupy the menu row, utilities the OPTIONS row. */
+.photoshop .ps-menu-top { justify-content: flex-start; height: 30px; min-height: 30px; }
+.photoshop .ps-menu-top .ps-top-spacer { flex: 1; }
+.photoshop .ps-menu-top .window-controls { align-self: stretch; gap: 1px; margin-right: -5px; }
+.photoshop .ps-menu-top .window-controls > * {
+  min-width: 32px;
+  height: 29px;
+  color: #c2c3c5;
+}
+.photoshop .ps-menu-top .window-controls > button { border-radius: 0; }
+.photoshop .ps-options.ps-fidelity-options { gap: 9px; padding-left: 12px; padding-right: 12px; }
+.photoshop .ps-fidelity-utilities {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  height: 100%;
+  color: #c6c8cb;
+  padding: 0 2px 0 12px;
+}
+.ps-fidelity-utilities > span:not(.ps-account-orb) {
+  min-width: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.ps-fidelity-utilities > span svg { stroke-width: 1.7; }
+.photoshop .ps-account-orb {
+  width: 23px;
+  height: 23px;
+  display: inline-block;
+  flex: 0 0 23px;
+  border-radius: 50%;
+  border: 2px solid #6cc5fa;
+  background: radial-gradient(circle at 34% 30%,#76e9f6 0%,#549ad5 26%,#8a40b9 57%,#3b55cc 80%);
+  box-shadow: 0 0 0 1px #122b48, inset 0 0 0 2px #ffffff20;
+}
+.photoshop .ps-right { background: #282828; }
+.photoshop .ps-right-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 38px;
+  flex-basis: 38px;
+  gap: 0;
+  padding: 5px 0;
+  border-right: 1px solid #171717;
+  background: #303030;
+}
+.photoshop .ps-right-icons > span:not(.ps-rail-break) {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  height: 34px;
+  width: 100%;
+  color: #cacbcd;
+}
+.photoshop .ps-right-icons svg { stroke-width: 1.75; }
+.photoshop .ps-right-icons .ps-rail-break {
+  width: 100%;
+  flex: 0 0 8px;
+  height: 8px;
+  border-top: 1px solid #212121;
+  border-bottom: 1px solid #484848;
+  margin: 3px 0;
+}
+.photoshop .ps-right-content { background: #292929; }
+.photoshop .ps-sidebar-tabs {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 33px;
+  height: 33px;
+  min-height: 33px;
+  background: #313131;
+  border-bottom: 1px solid #191919;
+  gap: 0;
+  padding-left: 3px;
+  color: #b2b4b8;
+}
+.photoshop .ps-sidebar-tab {
+  border: 0;
+  background: transparent;
+  padding: 0 9px;
+  color: #bfc0c2;
+  font: 10.5px "Segoe UI",Arial,sans-serif;
+  flex: 0 0 auto;
+}
+.photoshop .ps-sidebar-tab.active {
+  color: white;
+  background: #383838;
+  box-shadow: inset 0 2px #737373;
+  font-weight: 700;
+}
+.photoshop .ps-panel-menu {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  flex: 0 0 18px;
+  font-size: 9px;
+  margin-left: auto;
+  color: #a6a6a9;
+}
+.photoshop .ps-right-fields { padding: 9px 6px; grid-template-columns: 1.3fr 1fr; gap: 6px; }
+.photoshop .ps-right-fields .ps-fake-input { font-size: 11px; padding: 5px; }
+.photoshop .ps-lang { padding: 7px 9px; }
+.photoshop .ps-layer-tabs { margin-top: 9px; align-items: center; padding-left: 10px; gap: 13px; font-size: 11px; }
+.photoshop .ps-layer-tabs strong { display: grid; align-items: center; align-self: stretch; box-shadow: inset 0 2px #707070; color: white; }
+.photoshop .ps-layer-tabs>span:not(.ps-panel-menu) { white-space: nowrap; }
+.ps-paragraph-panel { padding: 14px 10px 17px; min-height: 167px; color: #bec1c5; }
+.ps-paragraph-alignment { display: flex; gap: 17px; padding: 8px 2px; }
+.ps-paragraph-justified { letter-spacing: 8px; font-size: 17px; padding: 13px 2px; }
+.ps-paragraph-settings { font-size: 11px; padding: 7px 0; color: #9fa3a6; }
+.ps-glyph-panel { padding: 12px 8px 16px; min-height: 167px; }
+.ps-glyph-grid { display: grid; grid-template-columns: repeat(8,1fr); gap: 4px; padding: 12px 0; }
+.ps-glyph-grid span { display: grid; place-items: center; background: #343434; border: 1px solid #4b4b4b; font: 12px Georgia,serif; height: 23px; }
+@media (max-width: 1320px) {
+  .photoshop .ps-fidelity-utilities { gap: 9px; }
+  .photoshop .ps-fidelity-command { display: none; }
+}
+@media (max-width: 830px) {
+  .photoshop .ps-fidelity-utilities { gap: 6px; }
+  .photoshop .ps-fidelity-utilities>span:nth-child(2),.photoshop .ps-fidelity-utilities>span:nth-child(4) { display: none; }
+}

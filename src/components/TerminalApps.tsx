@@ -128,11 +128,11 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
   return <div className={'term app-fill term--' + skin}>
     <div className="term-titlebar">
       {skin === 'windows' ?
-        <div className="term-win-tab"><TerminalIcon size={15}/><span>PowerShell</span><span aria-hidden="true">×</span><span className="term-win-add"><Plus size={14}/></span></div> :
+        <div className="term-win-tab"><TerminalIcon size={15}/><span>PowerShell</span><span aria-hidden="true">×</span><span className="term-win-add"><Plus size={14}/><span className="term-win-chevron">⌄</span></span></div> :
         <div className="term-mac-title"><div className="term-traffic" aria-hidden="true"><i/><i/><i/></div>{skin === 'warp' ? <strong>warp <span>›</span> reader</strong> : <strong>ghostty</strong>}</div>}
       {skin === 'windows' && <div className="term-win-menu"><MenuBar entries={menus}/></div>}
       <div className="term-title-spacer"/>
-      {skin === 'warp' && <span className="term-native-badge">zsh　▾</span>}
+      {skin === 'warp' && <span className="term-native-badge">zsh　⌄</span>}
       {skin === 'windows' && <WindowControls onClose={close}/>}
     </div>
     <div className="term-menubar">
@@ -161,7 +161,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
             <Prompt skin={skin}/>
             <span className="term-command"> {skin === 'windows' ? 'Get-Content ' : 'cat '}{fileName}</span>
           </div>
-          {skin === 'warp' && <div className="term-warp-command-caption">OUTPUT · {chapterTitle}</div>}
+          {skin === 'warp' && <div className="term-warp-command-caption"><span>✓</span> OUTPUT <span className="term-command-duration">· {chapterTitle}</span></div>}
           {skin === 'ghostty' && <div className="term-ghostty-banner"># {chapterTitle}</div>}
           {showOutput && (loading ? <div className="term-feedback">Reading local document…</div> :
             rows.length ? <div className="term-virtual" style={{height: virtualizer.getTotalSize(), position: 'relative'}}>
