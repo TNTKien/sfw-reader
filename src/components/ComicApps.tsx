@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AlignCenter, AlignLeft, AlignRight, ArrowLeft, BookOpen, Brush, ChevronDown, ChevronLeft, ChevronRight, Crop, Download, Eraser, Eye, FileImage, FolderOpen, Hand, Image as ImageIcon, Layers, LayoutTemplate, Maximize, MousePointer2, Move, PaintBucket, PanelLeft, PanelRight, PenTool, Pipette, Plus, Search, Settings2, Shapes, SlidersHorizontal, Sparkles, Square, Type, WandSparkles, ZoomIn, ZoomOut, Save, Undo2, Redo2, Bell, Mic, Clipboard, Scissors, Copy, Paintbrush, LayoutGrid, Upload, Lightbulb, Palette, Grid3X3, History, CircleHalf, Stamp } from 'lucide-react';
+import { AlignCenter, AlignLeft, AlignRight, ArrowLeft, BookOpen, Brush, ChevronDown, ChevronLeft, ChevronRight, Crop, Download, Eraser, Eye, FileImage, FolderOpen, Hand, Image as ImageIcon, Layers, LayoutTemplate, Maximize, MousePointer2, Move, PaintBucket, PanelLeft, PanelRight, PenTool, Pipette, Plus, Search, Settings2, Shapes, SlidersHorizontal, Sparkles, Square, Type, WandSparkles, ZoomIn, ZoomOut, Save, Undo2, Redo2, Bell, Mic, Clipboard, Scissors, Copy, Paintbrush, LayoutGrid, Upload, Lightbulb, Palette, Grid3X3, History, Stamp } from 'lucide-react';
 import { MenuBar, PageSelect, WindowControls } from './Chrome';
 import PowerPointHomeRibbon from './PowerPointHomeRibbon';
 import type { ComicView } from '../types';
@@ -154,7 +154,7 @@ function Photoshop({ props }: { props: ComicProps }) {
           <span title="Clone Source"><Stamp size={18}/></span>
           <span title="History"><History size={18}/></span>
           <span className="ps-rail-break"/>
-          <span title="Adjustments"><CircleHalf size={18}/></span>
+          <span title="Adjustments"><Settings2 size={18}/></span>
           <span title="Properties"><Sparkles size={18}/></span>
         </nav>
         <div className="ps-right-content">
