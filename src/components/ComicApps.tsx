@@ -197,10 +197,73 @@ function PowerPoint({ props }: { props: ComicProps }) {
 }
 
 function Canva({ props }: { props: ComicProps }) {
-  const { index, count, image, name, zoom, setZoom, onPage, openFile, close, setView } = props;
+  const { index, count, image, name, zoom, setZoom, onPage, openFile, close } = props;
   const [panel, setPanel] = useState('Design');
-  const panels = [{ label: 'Design', Icon: LayoutTemplate }, { label: 'Elements', Icon: Shapes }, { label: 'Text', Icon: Type }, { label: 'Uploads', Icon: FolderOpen }, { label: 'Draw', Icon: PenTool }, { label: 'Apps', Icon: Sparkles }];
-  return <div className="canva app-fill"><div className="canva-bar"><button onClick={close} title="Back to library"><ArrowLeft size={18}/></button><div className="canva-logo">SFW <b>Design</b></div><button onClick={openFile}>File <ChevronDown size={12}/></button><button disabled>Resize <ChevronDown size={12}/></button><span className="canva-doc-title">{name}</span><span className="canva-saved">✓ All changes saved</span><span className="canva-share">Share</span></div><div className="canva-editor"><aside className="canva-rail">{panels.map(({label,Icon}) => <button className={panel === label ? 'active' : ''} key={label} onClick={() => setPanel(label)}><Icon size={21}/><span>{label}</span></button>)}</aside><aside className="canva-side"><div className="canva-side-head">{panel}<button onClick={() => setPanel('')}><ChevronLeft size={16}/></button></div>{panel === 'Design' ? <><div className="canva-search"><Search size={15}/> Search templates</div><h4>Recently used</h4><div className="canva-template">{image && <img src={image} alt="Current design"/>}</div><h4>Styles</h4><div className="canva-styles"><span/><span/><span/><span/></div></> : <div className="canva-panel-note">Select an element to view its settings.</div>}</aside><div className="canva-main"><div className="canva-options"><span><Sparkles size={16}/> Edit image</span><span><SlidersHorizontal size={16}/> Adjust</span><span><Crop size={16}/> Crop</span><span><Maximize size={16}/> Flip</span></div><div className="canva-stage"><div className="canva-artboard"><ImageCanvas src={image} zoom={zoom} name={name}/></div></div><div className="canva-footer"><button onClick={() => onPage(Math.max(0, index - 1))} disabled={index === 0}><ChevronLeft size={16}/></button><PageSelect count={count} page={index} onPage={onPage} /><button onClick={() => onPage(Math.min(count - 1, index + 1))} disabled={index === count - 1}><ChevronRight size={16}/></button><div className="canva-footer-spacer"/><button onClick={() => setZoom(Math.max(40, zoom - 10))}><ZoomOut size={16}/></button><input aria-label="Zoom" type="range" min="40" max="175" value={zoom} onChange={e => setZoom(Number(e.target.value))}/><span>{zoom}%</span><button onClick={() => setView('photoshop')} title="Switch to Photoshop"><ImageIcon size={16}/></button></div></div></div></div>;
+  const panels = [
+    { label: 'Design', Icon: LayoutTemplate }, { label: 'Elements', Icon: Shapes },
+    { label: 'Text', Icon: Type }, { label: 'Uploads', Icon: FolderOpen },
+    { label: 'Draw', Icon: PenTool }, { label: 'Apps', Icon: Sparkles },
+  ];
+  const panelContent = panel === 'Design' ? <>
+    <div className="canva-search"><Search size={15}/> Search templates</div>
+    <div className="canva-side-subtitle">Recently used <span>See all</span></div>
+    <div className="canva-recent-grid"><div className="canva-template">{image && <img src={image} alt="Current design"/>}</div><div className="canva-template canva-blank-template"><LayoutTemplate size={28}/></div></div>
+    <div className="canva-side-subtitle">Styles</div><div className="canva-styles"><span/><span/><span/><span/></div>
+    <div className="canva-side-subtitle">Layouts</div><div className="canva-layout-grid"><span/><span/><span/><span/></div>
+  </> : panel === 'Elements' ? <>
+    <div className="canva-search"><Search size={15}/> Search elements</div>
+    <div className="canva-side-subtitle">Recently used</div><div className="canva-elements-grid"><span>●</span><span>▢</span><span>△</span><span>★</span><span>➜</span><span>◆</span></div>
+    <div className="canva-side-subtitle">Lines & shapes</div><div className="canva-elements-grid"><span>◯</span><span>▭</span><span>⬡</span><span>⬟</span></div>
+  </> : panel === 'Text' ? <>
+    <div className="canva-search"><Search size={15}/> Search text</div>
+    <div className="canva-text-panel"><div>Add a text box</div><strong>Add a heading</strong><b>Add a subheading</b><span>Add a little bit of body text</span></div>
+  </> : panel === 'Uploads' ? <>
+    <button className="canva-upload-button" onClick={openFile}><FolderOpen size={16}/> Upload files</button>
+    <div className="canva-side-subtitle">Images</div><div className="canva-uploaded">{image && <img src={image} alt="Current page"/>}</div>
+  </> : panel === 'Draw' ? <>
+    <div className="canva-side-subtitle">Drawing tools</div><div className="canva-draw-tools"><PenTool/><Brush/><SlidersHorizontal/></div>
+    <div className="canva-side-subtitle">Colors</div><div className="canva-styles"><span/><span/><span/><span/></div>
+  </> : panel === 'Apps' ? <>
+    <div className="canva-search"><Search size={15}/> Search apps</div>
+    <div className="canva-elements-grid canva-app-tiles"><span>▥</span><span>▦</span><span>✦</span><span>◉</span></div>
+  </> : null;
+  return <div className="canva app-fill">
+    <div className="canva-bar">
+      <button onClick={close} title="Back to library"><ArrowLeft size={18}/></button>
+      <div className="canva-logo">Canva</div>
+      <button onClick={openFile}>File <ChevronDown size={12}/></button>
+      <button disabled>Resize <ChevronDown size={12}/></button>
+      <span className="canva-doc-title">{name.replace(/\.[^.]+$/, '')}</span>
+      <span className="canva-saved">☁ <span>All changes saved</span></span>
+      <span className="canva-avatar">R</span>
+      <span className="canva-share">Share</span>
+    </div>
+    <div className="canva-editor">
+      <aside className="canva-rail">{panels.map(({label, Icon}) => <button className={panel === label ? 'active' : ''} key={label} onClick={() => setPanel(panel === label ? '' : label)} aria-label={label}><Icon size={21}/><span>{label}</span></button>)}</aside>
+      {panel && <aside className="canva-side"><div className="canva-side-head">{panel}<button onClick={() => setPanel('')} aria-label="Collapse sidebar"><ChevronLeft size={16}/></button></div>{panelContent}</aside>}
+      <div className="canva-main">
+        <div className="canva-options">
+          <span><Sparkles size={16}/> Edit image</span><span><SlidersHorizontal size={16}/> Adjust</span>
+          <span><Crop size={16}/> Crop</span><span><Maximize size={16}/> Flip</span>
+          <span className="canva-options-right">Position <ChevronDown size={12}/></span>
+        </div>
+        <div className="canva-stage">
+          <div className="canva-work-area"><div className="canva-page-heading"><span>Page {index + 1} — {name.slice(0, 30)}</span><span>•••</span></div>
+            <div className="canva-artboard"><ImageCanvas src={image} zoom={zoom} name={name}/></div>
+            <div className="canva-page-actions"><button onClick={() => onPage(Math.max(0,index - 1))} disabled={index === 0}>‹ Previous page</button><span>Page {index + 1} of {count}</span><button onClick={() => onPage(Math.min(count - 1,index + 1))} disabled={index === count - 1}>Next page ›</button></div>
+          </div>
+        </div>
+        <div className="canva-footer">
+          <button aria-label="Previous page" onClick={() => onPage(Math.max(0,index - 1))} disabled={index === 0}><ChevronLeft size={16}/></button>
+          <PageSelect count={count} page={index} onPage={onPage}/>
+          <button aria-label="Next page" onClick={() => onPage(Math.min(count - 1,index + 1))} disabled={index === count - 1}><ChevronRight size={16}/></button>
+          <div className="canva-footer-spacer"/><button title="Zoom out" onClick={() => setZoom(Math.max(40,zoom - 10))}><ZoomOut size={16}/></button>
+          <input aria-label="Zoom" type="range" min="40" max="175" value={zoom} onChange={e => setZoom(Number(e.target.value))}/>
+          <span>{zoom}%</span><button title="Fit" onClick={() => setZoom(80)}><Maximize size={15}/></button>
+        </div>
+      </div>
+    </div>
+  </div>;
 }
 
 export default function ComicApps(props: ComicProps) {
