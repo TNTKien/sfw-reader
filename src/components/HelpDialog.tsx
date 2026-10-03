@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { BookOpen, ChevronLeft, ChevronRight, FileImage, FileText, HelpCircle, Keyboard, LockKeyhole, Monitor, ScanText, X } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, FileImage, FileText, Keyboard, LockKeyhole, Monitor, ScanText, X } from 'lucide-react';
 
 const shortcuts: {keys: string[]; action: string; context?: string}[] = [
   {keys: ['F1'], action: 'Open this guide', context: 'Anywhere in SFW Reader'},
@@ -45,19 +45,15 @@ export default function HelpDialog({ onClose }: {onClose: () => void}) {
   }, [onClose]);
 
   return <div className="dialog-backdrop help-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}>
-    <section ref={panel} className="help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-heading" aria-describedby="help-description">
+    <section ref={panel} className="help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-heading">
       <div className="help-dialog-heading">
         <div className="help-dialog-brand"><span><BookOpen size={18}/></span><small>YOUR READING DESK</small></div>
         <button ref={closeButton} type="button" className="help-close" onClick={onClose} aria-label="Close guide" title="Close guide (Esc)"><X size={18}/></button>
       </div>
       <div className="help-dialog-scroll">
-        <div className="help-intro"><span className="help-kicker"><HelpCircle size={14}/> QUICK START GUIDE</span>
-          <h2 id="help-heading">Make yourself<br/><em>at home.</em></h2>
-          <p id="help-description">Open a book, pick a familiar workspace, and read. Everything happens in your browser.</p>
-        </div>
         <div className="help-columns">
           <section className="help-section">
-            <h3><BookOpen size={17}/> Getting started</h3>
+            <h3 id="help-heading"><BookOpen size={17}/> Getting started</h3>
             <div className="help-step"><b>01</b><div><strong>Open a book</strong><p>Drop a file onto the home page or use <em>Choose a file</em>. You can also try either built-in demo.</p></div></div>
             <div className="help-step"><b>02</b><div><strong>Choose your workspace</strong><p>Text books open in Excel, VS Code, or Terminal. Comics open in Photoshop, PowerPoint, or Canva. Change the workspace from the reader header.</p></div></div>
             <div className="help-step"><b>03</b><div><strong>Read your way</strong><p>Use chapter/page controls or keyboard navigation. Text readers support sentences or paragraphs; comics support zoom.</p></div></div>
