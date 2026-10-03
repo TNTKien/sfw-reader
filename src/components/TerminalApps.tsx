@@ -20,6 +20,12 @@ function storedSkin(): TerminalSkin {
   return 'ghostty';
 }
 
+function Prompt({ skin }: { skin: TerminalSkin }) {
+  if (skin === 'ghostty') return <span className="term-starship-prompt"><span className="term-starship-path">~/books</span><span className="term-starship-branch">git:main</span><span className="term-starship-arrow">❯</span></span>;
+  if (skin === 'windows') return <span className="term-omp-prompt"><span className="term-omp-os">PS</span><span className="term-omp-path">~/books</span><span className="term-omp-branch">git:main</span><span className="term-omp-arrow">❯</span></span>;
+  return <span className="term-prompt">➜  ~/books</span>;
+}
+
 export default function TerminalApps({ props, rows }: { props: TextProps; rows: string[] }) {
   const { name, index, titles, onPage, mode, onMode, openFile, close, setView, loading } = props;
   const [skin, setSkin] = useState<TerminalSkin>(storedSkin);
@@ -153,7 +159,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
             <div className="term-win-heading">Windows PowerShell <span> — {chapterTitle}</span></div>}
         <div className="term-scroll" ref={scrollElement} tabIndex={0} role="region" aria-label="Story content">
           <div className="term-command-echo">
-            <span className="term-prompt">{skin === 'windows' ? 'PS C:\\Users\\reader\\books>' : '➜  ~/books'}</span>
+            <Prompt skin={skin}/>
             <span className="term-command"> {skin === 'windows' ? 'Get-Content ' : 'cat '}{fileName}</span>
           </div>
           {skin === 'warp' && <div className="term-warp-command-caption">OUTPUT · {chapterTitle}</div>}
@@ -174,7 +180,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
           {message && <div className="term-feedback term-result" role="status">{message}</div>}
         </div>
         <form className="term-inputbar" onSubmit={runCommand}>
-          <label htmlFor="sfw-terminal-command" className="term-prompt">{skin === 'windows' ? 'PS >' : '➜  ~/books'}</label>
+          <label htmlFor="sfw-terminal-command"><Prompt skin={skin}/></label>
           <input ref={commandField} id="sfw-terminal-command" value={command} onChange={event => setCommand(event.target.value)} autoComplete="off" spellCheck={false} placeholder="help · cat · next · theme…" aria-label="Simulated reader command"/>
           <span className="term-command-hint">simulated</span>
         </form>
