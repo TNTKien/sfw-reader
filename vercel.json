@@ -4,10 +4,6 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/api/scd-chapters/:id",
-      "destination": "https://redive.suicaodex.com/v1/chapters/:id"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
