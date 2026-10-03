@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { AlignLeft, Book, BookOpen, Braces, ChevronDown, ChevronLeft, ChevronRight, Code2, Columns, Copy, FileCode2, Files, FolderOpen, Github, Grid2X2, Menu, MoreHorizontal, Play, Search, Settings, Split, Table, Type, X } from 'lucide-react';
 import { MenuBar, WindowControls } from './Chrome';
+import TerminalApps from './TerminalApps';
 import { splitText } from '../lib/text';
 import type { TextView } from '../types';
 
@@ -73,5 +74,6 @@ function Code({ props, rows }: { props: TextProps; rows: string[] }) {
 
 export default function TextApps(props: TextProps) {
   const rows = useMemo(() => splitText(props.raw, props.mode), [props.raw, props.mode]);
+  if (props.view === 'terminal') return <TerminalApps props={props} rows={rows}/>;
   return props.view === 'excel' ? <Excel props={props} rows={rows}/> : <Code props={props} rows={rows}/>;
 }
