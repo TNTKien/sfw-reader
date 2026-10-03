@@ -2,6 +2,13 @@
 
 A playful, privacy-first reader that disguises your own text books and comics in familiar-looking desktop workspaces. **This is a visual simulation, not a functional office or image editor.** Not affiliated with Adobe, Microsoft, Canva, Warp, Ghostty or VS Code.
 
+## Read Suicaodex chapters
+
+- Paste a public **Suicaodex chapter link or chapter UUID** into the new home-page form. The reader opens `/read-scd/<chapter-uuid>`; direct links and reloads of that route work on Vercel.
+- The browser fetches chapter metadata directly from `https://redive.suicaodex.com/v1/chapters/:id`; there is no Vercel API rewrite or Vite development proxy. **CORS requirement:** Suicaodex must allow `https://sfw.suicaodex.com` as an origin (and `http://localhost:5173` when developing locally). If the API doesn't allow these origins, browsers will block chapter requests; this needs to be configured on the API side.
+- Pages retain the existing Photoshop, PowerPoint and Canva readers, image loading on demand, zoom, page/keyboard navigation and locally saved reader position. CDN images are fetched by your browser from the URLs supplied by the public API, with optimized/original fallback where provided.
+- Only publicly available chapters are supported; unavailable or unpublished chapters show an error with Retry/Back to home. Suicaodex-hosted chapter content **is fetched online**; only files you choose from your device remain local.
+
 ## What works
 
 - **Text:** TXT, EPUB (chapters parsed from the EPUB spine), and text-based PDF (page-by-page extraction). Choose Excel, VS Code, or Terminal; switch between sentences and paragraphs.
