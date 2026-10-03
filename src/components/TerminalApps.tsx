@@ -130,10 +130,9 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
       {skin === 'windows' ?
         <div className="term-win-tab"><TerminalIcon size={15}/><span>PowerShell</span><span aria-hidden="true">×</span><span className="term-win-add"><Plus size={14}/></span></div> :
         <div className="term-mac-title"><div className="term-traffic" aria-hidden="true"><i/><i/><i/></div>{skin === 'warp' ? <strong>warp <span>›</span> reader</strong> : <strong>ghostty</strong>}</div>}
+      {skin === 'windows' && <div className="term-win-menu"><MenuBar entries={menus}/></div>}
       <div className="term-title-spacer"/>
-      <div className="term-theme-switch" role="group" aria-label="Terminal appearance">
-        {skins.map(item => <button type="button" key={item.id} className={skin === item.id ? 'is-active' : ''} aria-pressed={skin === item.id} onClick={() => setSkin(item.id)} title={item.caption}>{item.label}</button>)}
-      </div>
+      {skin === 'warp' && <span className="term-native-badge">zsh　▾</span>}
       {skin === 'windows' && <WindowControls onClose={close}/>}
     </div>
     <div className="term-menubar">
@@ -155,7 +154,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
         {skin === 'warp' ?
           <div className="term-session-heading"><span><TerminalIcon size={15}/> reader@localhost</span><span>{chapterTitle}</span></div> :
           skin === 'ghostty' ?
-            <div className="term-ghostty-heading"><span className="term-ghostty-user">reader@localhost</span><span> ~/books / {chapterTitle}</span></div> :
+            <div className="term-ghostty-heading"><span className="term-ghostty-user">reader@localhost</span><span> ~/books / {chapterTitle}</span><span className="term-ghostty-shell">⌘⌥</span></div> :
             <div className="term-win-heading">Windows PowerShell <span> — {chapterTitle}</span></div>}
         <div className="term-scroll" ref={scrollElement} tabIndex={0} role="region" aria-label="Story content">
           <div className="term-command-echo">
@@ -187,7 +186,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
       </div>
     </div>
     <footer className="term-footer">
-      <div className="term-footer-left"><span className="term-footer-indicator"/><span>{skin === 'windows' ? 'PowerShell' : skin === 'warp' ? 'zsh' : 'fish'}</span><span className="term-footer-muted">UTF-8 · Local</span></div>
+      <div className="term-footer-left"><span className="term-footer-indicator"/><span>{skin === 'windows' ? 'PowerShell' : skin === 'warp' ? 'zsh' : 'fish'}</span><span className="term-footer-muted">UTF-8</span></div>
       <div className="term-footer-controls">
         <button type="button" onClick={previous} disabled={index === 0} aria-label="Previous chapter" title="Previous chapter"><ChevronLeft size={15}/></button>
         <select aria-label="Chapter or page" value={index} onChange={event => onPage(Number(event.target.value))}>
@@ -197,6 +196,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
         <select aria-label="Line grouping" value={mode} onChange={event => onMode(event.target.value as TextProps['mode'])}>
           <option value="sentence">Sentences</option><option value="paragraph">Paragraphs</option>
         </select>
+        <label className="term-appearance"><span>Profile</span><select aria-label="Terminal profile" value={skin} onChange={e => setSkin(e.target.value as TerminalSkin)}>{skins.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
         <button type="button" className="term-open-file" title="Open another book" onClick={openFile}><FolderOpen size={14}/><span>Open</span></button>
       </div>
     </footer>
