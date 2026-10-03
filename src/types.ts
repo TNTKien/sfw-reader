@@ -1,4 +1,4 @@
-export type TextView = 'excel' | 'code';
+export type TextView = 'excel' | 'code' | 'terminal';
 export type ComicView = 'photoshop' | 'powerpoint' | 'canva';
 export type View = TextView | ComicView;
 
