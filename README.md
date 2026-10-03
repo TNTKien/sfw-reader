@@ -25,6 +25,11 @@ This revision targets **desktop visual resemblance**, without loading proprietar
 
 The appearance is inspired by the corresponding desktop products and may differ from particular versions or operating systems. No trademarks or bundled proprietary artwork are required to render the layouts. Reader commands remain allowlisted and no shell executes.
 
+## Excel and VS Code workspaces
+
+- **Excel:** The imported story is in column A; a sparse, clearly separate decorative project tracker fills a few cells to give the sheet a believable office-document appearance. Columns A–W, extra blank rows, cell selection, formula bar, workbook ribbon, tab strip and horizontal scrolling are rendered locally. The extra data is not added to or exported with the book.
+- **VS Code:** Explorer uses the tracked files of the **sfw-reader repository**. `bun run dev` and `bun run build` regenerate the tree from `git ls-files`; a checked-in snapshot is used if Git is unavailable. Expand/collapse folders, switch tabs and use quick-open. Selected small, public source files can be previewed from this checkout. The book stays available as the pinned `reading-notes.md` tab. Previews never fetch the user's uploaded book or GitHub content over the network.
+
 ## Stack
 
 Vite, React 19, TypeScript, PDF.js, JSZip, TanStack Virtual, lucide-react. No server-side runtime required.
