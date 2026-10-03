@@ -55,9 +55,18 @@ bun run dev
 bun run build
 ```
 
+## Help and browser tab appearance
+
+- Open the **Guide** on the home page, use the question-mark button in the reader header, or press **F1** / **?** when you are not typing. Press **Esc** or click outside the dialog to close it. Help remains available when the reader header is hidden.
+- The guide explains supported file types, workspaces, scanning limitations, navigation shortcuts, terminal profiles and local browser storage.
+- The document title, theme color and favicon change to match the active interface: Excel, VS Code, Photoshop, PowerPoint, Canva and Warp/Ghostty/Windows Terminal. Terminal profile changes inside the terminal also update the tab immediately.
+- Custom original SVG tab marks are generated locally; the SFW Reader home favicon has a static `public/favicon.svg` fallback before React mounts.
+
 ## Keyboard shortcuts
 
-When a book is open:
+The guide is also accessible from the home page using **F1** or **?**. While a book is open:
+
+- **F1 / ?** — Open the guide. Use Esc to close it.
 
 - **H** — Hide or show the SFW Reader header. The hide button also shows this shortcut; a subtle tab at the top restores the header with a click.
 - **Left / Right arrows** — Previous / next comic page in Photoshop, PowerPoint and Canva workspaces (also available after clicking toolbar or workspace buttons).
@@ -65,7 +74,7 @@ When a book is open:
 - **Terminal:** Use on-screen Previous/Next chapter or enter `next`/`prev` in the simulated prompt (arrows within the prompt move the text cursor normally).
 - **Ctrl/Cmd + O** — Open another local file, even while the reader header is hidden.
 
-Shortcuts leave text fields, dropdowns, editable content and mock application menus alone. Use unmodified keys for navigation.
+Navigation and ? shortcuts leave text fields, dropdowns, editable content and mock application menus alone. F1 opens the guide even from a focused input (subject to browser shortcut overrides). Use unmodified keys for navigation.
 
 ## Notes and limits
 
