@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AlignLeft, ArrowLeft, BookOpen, Brush, ChevronDown, ChevronLeft, ChevronRight, Crop, Download, Eraser, Eye, FileImage, FolderOpen, Hand, Image as ImageIcon, Layers, LayoutTemplate, Maximize, MousePointer2, Move, PaintBucket, PanelLeft, PanelRight, PenTool, Pipette, Plus, Search, Settings2, Shapes, SlidersHorizontal, Sparkles, Square, Type, WandSparkles, ZoomIn, ZoomOut } from 'lucide-react';
 import { MenuBar, PageSelect, WindowControls } from './Chrome';
 import type { ComicView } from '../types';
@@ -41,6 +41,18 @@ function Photoshop({ props }: { props: ComicProps }) {
   const [left, setLeft] = useState(true);
   const [right, setRight] = useState(true);
   const [layers, setLayers] = useState(true);
+  const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
+  useEffect(() => {
+    if (!image) { setDimensions(null); return; }
+    let current = true;
+    const img = new window.Image();
+    img.onload = () => { if (current) setDimensions({ width: img.naturalWidth, height: img.naturalHeight }); };
+    img.src = image;
+    return () => { current = false; };
+  }, [image]);
+  const documentName = name.replace(/\.[^.]+$/, '');
+  const tabStart = Math.min(Math.max(0, index - 2), Math.max(0, count - 5));
+  const neighboringPages = Array.from({ length: Math.min(count, 5) }, (_, i) => tabStart + i);
   const menu = [
     { label: 'File', items: [
       { label: 'New…', disabled: true, shortcut: 'Ctrl+N' },
@@ -78,7 +90,7 @@ function Photoshop({ props }: { props: ComicProps }) {
   ];
   return <div className="photoshop app-fill">
     <div className="ps-menu-top"><div className="ps-badge">Ps</div><MenuBar entries={menu} className="ps-menubar" /><div className="ps-top-spacer" /><button className="ps-share" disabled>Share</button><Search size={16} /><WindowControls onClose={close} /></div>
-    <div className="ps-options"><span className="ps-tool-name"><Type size={19}/><ChevronDown size={12}/></span><span className="ps-divider"/><span className="ps-option-select">{tool} Tool</span><span className="ps-option-select ps-option-wide">Roman <ChevronDown size={12} /></span><span className="ps-option-select">25 pt <ChevronDown size={12} /></span><span className="ps-divider"/><SlidersHorizontal size={17}/><span className="ps-option-select">Smooth</span><div className="ps-spacer" /></div>
+    <div className="ps-options"><span className="ps-tool-name"><Type size={19}/><ChevronDown size={12}/></span><span className="ps-divider"/><span className="ps-option-select">{tool === 'Text' ? 'T' : tool}</span>{tool === 'Text' ? <><span className="ps-option-select ps-option-wide">Arial <ChevronDown size={12}/></span><span className="ps-option-select">Regular <ChevronDown size={12}/></span><span className="ps-option-select">25 pt <ChevronDown size={12}/></span><span className="ps-text-align"><AlignLeft size={15}/><AlignLeft size={15}/><AlignLeft size={15}/></span><span className="ps-color-swatch" aria-label="Foreground color"/></> : <><span className="ps-option-select ps-option-wide">Normal <ChevronDown size={12}/></span><span>Opacity: 100%</span></><span className="ps-divider"/><SlidersHorizontal size={17}/><span className="ps-option-select">Smooth</span><div className="ps-spacer" /></div>
     <div className="ps-workspace">
       <aside className="ps-tools" aria-label="Tools">
         {toolIcons.map((Icon, i) => <button title={`${toolNames[i]} tool`} className={`ps-tool ${tool === toolNames[i] ? 'active' : ''}`} key={toolNames[i]} onClick={() => setTool(toolNames[i])}><Icon size={17} strokeWidth={1.8} /></button>)}
@@ -89,11 +101,11 @@ function Photoshop({ props }: { props: ComicProps }) {
         <div className="ps-panel ps-properties"><div className="ps-panel-heading">Properties <span>History　Tool Presets</span></div><div className="ps-prop-title"><Type size={16} /> Type Layer</div><div className="ps-prop-head">⌄　Transform <span>↶</span></div><div className="ps-property-grid"><span>W</span><b>85.15 px</b><span>X</span><b>94.12 px</b><span>H</span><b>64.78 px</b><span>Y</span><b>1394.91 px</b></div><div className="ps-prop-head">⌄　Character</div><div className="ps-fake-input">Roman</div><div className="ps-fake-input">25 pt <span>90%</span></div><div className="ps-fake-input">Aa　　 Metrics</div></div>
       </aside>}
       <main className="ps-document">
-        <div className="ps-tabs"><button className="ps-active-tab"><FileImage size={13}/> {name.slice(0, 26)}{name.length > 26 ? '…' : ''}_{String(index + 1).padStart(3, '0')}.psd @ {zoom}% (RGB/8)　×</button>{index > 0 && <button onClick={() => onPage(index - 1)} className="ps-other-tab">{name.slice(0, 11)}_{String(index).padStart(3, '0')}.psd　×</button>}{index < count - 1 && <button onClick={() => onPage(index + 1)} className="ps-other-tab">{name.slice(0, 11)}_{String(index + 2).padStart(3, '0')}.psd　×</button>}</div>
+        <div className="ps-tabs" role="tablist" aria-label="Open documents">{neighboringPages.map(n => <button key={n} role="tab" aria-selected={index === n} className={index === n ? 'ps-active-tab' : 'ps-other-tab'} onClick={() => onPage(n)}><FileImage size={12}/><span className="ps-tab-label">{documentName.slice(0, 14)}_{String(n + 1).padStart(4, '0')}.psd {index === n ? '@ ' + zoom + '% (RGB/8)' : ''}</span><span className="ps-tab-close" aria-hidden="true">×</span></button>)}</div>
         <div className="ps-canvas-area"><ImageCanvas src={image} zoom={zoom} name={name}/></div>
-        <div className="ps-status"><span>{zoom}%</span><span>1022 px × 1500 px (72 ppi)</span><span className="ps-status-page"><Navigation page={index} count={count} onPage={onPage} /></span></div>
+        <div className="ps-status"><span>{zoom}%</span><span>{dimensions ? `${dimensions.width.toLocaleString()} px × ${dimensions.height.toLocaleString()} px (72 ppi)` : 'Document preview (RGB/8)'}</span><span className="ps-status-page"><Navigation page={index} count={count} onPage={onPage} /></span></div>
       </main>
-      {right && <aside className="ps-right ps-panel-stack"><div className="ps-right-icons"><Brush size={18}/><Layers size={18}/><Shapes size={18}/><Sparkles size={18}/></div><div className="ps-right-content"><div className="ps-panel-heading">Character <span>Paragraph　 Glyphs</span></div><div className="ps-right-fields"><span className="ps-fake-input">000 WildWords2 TB</span><span className="ps-fake-input">Roman</span><span className="ps-fake-input">25 pt</span><span className="ps-fake-input">22 pt</span><span className="ps-fake-input">Metrics</span><span className="ps-fake-input">90%</span></div><div className="ps-typography">T　𝑻　T　T̲　T²　T⁄₂<br/> fi　of　∫　Aa　T　1st　½</div><div className="ps-lang">English: UK　　Smooth</div>{layers && <><div className="ps-panel-heading ps-layers-title">Layers <span>Channels</span></div><div className="ps-layer-filters">⌕ Kind　 ▧　 ◧　T</div><div className="ps-layer-filters">Normal　　　　 Opacity: 100%</div><div className="ps-layer-list">{Array.from({ length: 7 }, (_, i) => <div className={`ps-layer ${i === 0 ? 'selected' : ''}`} key={i}><Eye size={13}/><Type size={16}/><span>{['page_' + String(index + 1).padStart(3, '0'), 'speech_bubble_06', 'speech_bubble_05', 'speech_bubble_04', 'speech_bubble_03', 'speech_bubble_02', 'Background'][i]}</span></div>)}</div><div className="ps-layer-footer">🔗　ƒx　 ▣　 ◉　 ▤　⊕</div></>}</div></aside>}
+      {right && <aside className="ps-right ps-panel-stack"><div className="ps-right-icons"><Brush size={18}/><Layers size={18}/><Shapes size={18}/><Sparkles size={18}/></div><div className="ps-right-content"><div className="ps-panel-heading">Character <span>Paragraph　 Glyphs</span></div><div className="ps-right-fields"><span className="ps-fake-input">000 WildWords2 TB</span><span className="ps-fake-input">Roman</span><span className="ps-fake-input">25 pt</span><span className="ps-fake-input">22 pt</span><span className="ps-fake-input">Metrics</span><span className="ps-fake-input">90%</span></div><div className="ps-typography">T　𝑻　T　T̲　T²　T⁄₂<br/> fi　of　∫　Aa　T　1st　½</div><div className="ps-lang">English: UK　　Smooth</div>{layers && <><div className="ps-panel-heading ps-layers-title">Layers <span>Channels</span></div><div className="ps-layer-filters">⌕ Kind　 ▧　 ◧　T</div><div className="ps-layer-filters">Normal　　　　 Opacity: 100%</div><div className="ps-layer-list"><div className="ps-layer selected"><Eye size={13}/><span className="ps-layer-thumb">{image && <img src={image} alt="Current layer thumbnail"/>}</span><span>{documentName.slice(0, 24)}_{String(index + 1).padStart(4, '0')}</span></div><div className="ps-layer"><Eye size={13}/><span className="ps-layer-thumb ps-background-thumb"/><span>Background</span><span className="ps-layer-lock">🔒</span></div></div><div className="ps-layer-footer">🔗　ƒx　 ▣　 ◉　 ▤　⊕</div></>}</div></aside>}
     </div>
   </div>;
 }
