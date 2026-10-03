@@ -18,14 +18,14 @@ Vite, React 19, TypeScript, PDF.js, JSZip, TanStack Virtual, lucide-react. No se
 ## Run locally
 
 ```bash
-npm install
-npm run dev
-npm run build
+bun install
+bun run dev
+bun run build
 ```
 
 ## Deploy to Vercel
 
-Import `TNTKien/sfw-reader` into Vercel, choose **Vite** (or use the included `vercel.json`), and deploy. `npm run build` creates `dist/`; no environment variables are needed. All user book processing runs in the browser.
+Import `TNTKien/sfw-reader` into Vercel, choose **Vite** (or use the included `vercel.json`), and deploy. `bun run build` creates `dist/`; no environment variables are needed. All user book processing runs in the browser.
 
 ## Notes and limits
 
