@@ -78,15 +78,6 @@
 }
 .help-close:hover { color: #1f3026; border-color: #8bac80; background: #e5eedf; }
 .help-dialog-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #c4d1c0 transparent; }
-  display: inline-flex; align-items: center; gap: 6px;
-  color: #53834f;
-  font: 800 10px 'Space Grotesk',sans-serif;
-  letter-spacing: 1.35px;
-}
-  margin: 9px 0 10px;
-  font: 700 clamp(33px,5vw,51px)/1.06 'Space Grotesk',Arial,sans-serif;
-  letter-spacing: -2px;
-}
 .help-columns { display: grid; grid-template-columns: 1fr 1.1fr; }
 .help-section { padding: 24px 32px 20px; min-width: 0; }
 .help-section + .help-section { border-left: 1px solid #dfe8da; }
