@@ -88,6 +88,7 @@ export default function App() {
     if (window.location.pathname !== '/') window.history.pushState({}, '', '/');
     setRemoteChapterId(null);
     setRemoteLoading(false);
+    setError(null);
   }, []);
 
   const openSuicaodexLink = useCallback((input: string): string | null => {
