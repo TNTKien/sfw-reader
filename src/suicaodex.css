@@ -1,0 +1,46 @@
+/* Open public Suicaodex chapters with the existing comic workspaces. */
+.scd-link-card {
+  margin: 34px 0 0;
+  border: 1px solid #b7d1b4;
+  background: #eaf2e5;
+  border-radius: 13px;
+  padding: 20px 24px;
+  box-shadow: 4px 5px 0 #d4e3cd;
+  color: #2b4333;
+  display: grid;
+  grid-template-columns: minmax(215px,1fr) minmax(270px,1.25fr);
+  gap: 22px;
+  align-items: center;
+}
+.scd-link-intro { display: flex; align-items: flex-start; gap: 13px; min-width: 0; }
+.scd-link-mark { display: grid; place-items: center; width: 41px; height: 41px; background: #d5e9c8; color: #375d37; border: 1px solid #b3cdae; border-radius: 8px; flex: 0 0 41px; }
+.scd-link-eyebrow { font: 800 10px 'Space Grotesk',sans-serif; color: #6b9461; letter-spacing: 1.2px; }
+.scd-link-intro h3 { margin: 5px 0; font: 700 19px 'Space Grotesk',sans-serif; letter-spacing: -.45px; line-height: 1.25; }
+.scd-link-intro p { margin: 0; color: #6c7d6c; font-size: 11px; line-height: 1.7; }
+.scd-link-form { display: flex; align-items: flex-end; gap: 9px; min-width: 0; }
+.scd-link-input { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 6px; font: 800 9px 'Space Grotesk',sans-serif; letter-spacing: 1px; color: #607b63; }
+.scd-link-input input { min-width: 0; width: 100%; height: 42px; background: #fff; border: 1px solid #b8cdb6; border-radius: 6px; color: #283e2e; padding: 0 12px; font: 12px 'DM Sans',Arial,sans-serif; letter-spacing: 0; outline: none; }
+.scd-link-input input:focus { border-color: #6b9e69; box-shadow: 0 0 0 2px #6b9e6928; }
+.scd-link-input input::placeholder { color: #9aaa9f; }
+.scd-link-form button {
+  flex: 0 0 auto; height: 42px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: #2c5137; border: 0; border-radius: 6px; color: #e3ffd2; padding: 0 13px;
+  font: 800 11px 'Space Grotesk',sans-serif; white-space: nowrap;
+}
+.scd-link-form button:not(:disabled):hover { background: #477a46; }
+.scd-link-form button:disabled { opacity: .55; cursor: not-allowed; }
+.scd-link-error { grid-column: 2; font-size: 11px; font-weight: 700; color: #b24537; padding: 0 2px; }
+.scd-route-page { display: grid; min-height: 100vh; padding: 22px; place-items: center; background: #f2f5ef; color: #314936; }
+.scd-route-panel { width: min(100%, 425px); padding: 33px 30px; border: 1px solid #c5d8be; border-radius: 16px; text-align: center; background: #fff; box-shadow: 7px 9px 0 #dfebd9; }
+.scd-route-kicker { color: #6a9869; font: 800 10px 'Space Grotesk',sans-serif; letter-spacing: 1.4px; }
+.scd-route-symbol { display: grid; place-items: center; margin: 22px auto 17px; width: 66px; height: 66px; color: #41643c; background: #e1f0d9; border-radius: 13px; }
+.scd-route-panel h1 { font: 750 30px 'Space Grotesk',sans-serif; letter-spacing: -1.1px; margin: 0 0 12px; }
+.scd-route-panel p { margin: 0; color: #718275; font-size: 12px; line-height: 1.75; }
+.scd-route-actions { display: flex; gap: 12px; justify-content: center; margin-top: 23px; }
+.scd-route-actions button { color: #31573b; border: 1px solid #bed3b6; border-radius: 7px; padding: 10px 13px; background: #eff6eb; font: 700 11px 'Space Grotesk',sans-serif; }
+.scd-route-actions button.scd-route-retry { color: #fff; background: #31573b; border-color: #31573b; }
+.scd-route-progress { height: 3px; border-radius: 3px; background: linear-gradient(90deg,#d6e8d3 0%,#5b9668 50%,#d6e8d3 100%); background-size: 200% 100%; animation: scd-progress 1.5s linear infinite; margin: 28px auto 0; max-width: 160px; }
+@keyframes scd-progress { to { background-position: -200% 0; } }
+@media(max-width: 950px) { .scd-link-card { grid-template-columns: 1fr; gap: 17px; } .scd-link-error { grid-column: 1; } }
+@media(max-width: 570px) { .scd-link-card { margin-top: 24px; padding: 16px; } .scd-link-form { flex-wrap: wrap; } .scd-link-form button { width: 100%; } .scd-route-panel { padding: 26px 20px; } }
+@media(prefers-reduced-motion:reduce) { .scd-route-progress { animation: none; } }
