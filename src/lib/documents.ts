@@ -1,12 +1,8 @@
-import JSZip from 'jszip';
-import * as pdfjs from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { readCachedText, writeCachedText } from './cache';
 import { naturalCompare, normalizeText } from './text';
 import type { ComicDocument, LoadResult, PendingPdf, TextDocument } from '../types';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-
-pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
 
 const IMAGE = /\.(?:jpe?g|png|webp|gif|avif)$/i;
 const ARCHIVE = /\.(?:zip|cbz)$/i;
@@ -45,6 +41,7 @@ function firstTag(parent: ParentNode, name: string): Element | undefined {
 }
 
 async function readEpub(file: File): Promise<TextDocument> {
+  const { default: JSZip } = await import('jszip');
   const zip = await JSZip.loadAsync(file);
   if (Object.keys(zip.files).length > MAX_ZIP_ENTRIES) throw new Error('This archive contains too many files.');
   const container = zip.file('META-INF/container.xml');
@@ -124,12 +121,15 @@ function readImages(files: File[]): ComicDocument {
 }
 
 async function readComicZip(file: File): Promise<ComicDocument> {
+  const { default: JSZip } = await import('jszip');
   const zip = await JSZip.loadAsync(file);
   const files = Object.values(zip.files)
     .filter(entry => !entry.dir && IMAGE.test(entry.name) && !entry.name.split('/').some(part => part.startsWith('__MACOSX')))
     .sort((a, b) => naturalCompare(a.name, b.name));
   if (!files.length) throw new Error('No supported images found in this archive.');
   if (files.length > MAX_ZIP_ENTRIES) throw new Error('This archive contains too many images.');
+  const uncompressedBytes = files.reduce((sum, entry) => sum + ((entry as unknown as { _data?: { uncompressedSize?: number } })._data?.uncompressedSize ?? 0), 0);
+  if (uncompressedBytes > 700 * 1024 * 1024) throw new Error('Uncompressed archive is too large for browser reading.');
   const cache = new Map<number, string>();
   return {
     kind: 'comic', id: fileId(file), name: trimmedName(file.name), pageCount: files.length,
@@ -248,6 +248,8 @@ export async function loadDocuments(files: File[], pdfMode?: 'text' | 'comic'): 
   if (ext.endsWith('.txt')) return readTxt(file);
   if (ext.endsWith('.epub')) return readEpub(file);
   if (ext.endsWith('.pdf')) {
+    const pdfjs = await import('pdfjs-dist');
+    pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
     const pdf = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
     if (pdfMode === 'comic') return pdfComicDocument(pdf, file);
     if (pdfMode === 'text') return pdfTextDocument(pdf, file);
