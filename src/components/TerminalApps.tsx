@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { BookOpen, ChevronLeft, ChevronRight, CircleHelp, Command, FolderOpen, HardDrive, Plus, Terminal as TerminalIcon } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, Command, FolderOpen, HardDrive, Plus, Terminal as TerminalIcon } from 'lucide-react';
 import { MenuBar, WindowControls } from './Chrome';
 import type { TextProps } from './TextApps';
 
@@ -73,7 +73,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
     const [instruction, option] = entered.toLowerCase().split(/\s+/, 2);
 
     if (instruction === 'help') {
-      setMessage('Local reader commands: help, ls, pwd, cat, clear, next, prev, theme [warp|ghostty|windows], mode [sentence|paragraph], view [excel|code]. Nothing executes on your computer.');
+      setMessage('Local reader commands: help, ls, pwd, cat, clear, next, prev, theme [warp|ghostty|windows], mode [sentence|paragraph], view [excel|code].');
     } else if (instruction === 'ls') {
       setMessage(titles.slice(0, 15).map((chapter, n) => String(n + 1).padStart(2, '0') + '  ' + chapter.title).join('\n') + (titles.length > 15 ? '\n…' : ''));
     } else if (instruction === 'pwd') {
@@ -149,7 +149,7 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
         <div className="term-side-selected"><TerminalIcon size={15}/> Personal</div>
         <div className="term-side-heading">OPEN TABS</div>
         <div className="term-side-file"><BookOpen size={14}/> {fileName}</div>
-        <div className="term-side-bottom"><CircleHelp size={14}/> Quick help</div>
+        <div className="term-side-bottom"><HardDrive size={14}/> Local workspace</div>
       </aside>}
       <div className="term-workspace">
         {skin === 'warp' ?
