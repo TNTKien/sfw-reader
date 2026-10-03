@@ -23,10 +23,6 @@ bun run dev
 bun run build
 ```
 
-## Deploy to Vercel
-
-Import `TNTKien/sfw-reader` into Vercel, choose **Vite** (or use the included `vercel.json`), and deploy. `bun run build` creates `dist/`; no environment variables are needed. All user book processing runs in the browser.
-
 ## Notes and limits
 
 - Recommended maximum input size is 350 MB per file; large PDFs, long EPUBs and image archives still depend on device RAM, CPU and browser storage quotas.
