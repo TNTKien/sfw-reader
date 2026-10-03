@@ -1,0 +1,34 @@
+name: Generate Bun lockfile (temporary)
+on:
+  push:
+    branches: [chore/use-bun]
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/use-bun
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - name: Generate Bun lockfile
+        run: bun install --lockfile-only
+      - name: Upload lockfile (fallback)
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-bun-lock
+          path: bun.lock
+      - name: Commit lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bun.lock
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: commit generated Bun lockfile"
+            git push origin HEAD:chore/use-bun
+          fi
