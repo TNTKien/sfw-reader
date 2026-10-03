@@ -25,3 +25,44 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 @media(max-width:640px){.reader-pdf-comic{font-size:9px;max-width:77px;white-space:normal}}
+
+/* Reader-level controls are independent of the simulated application chrome. */
+.reader-header-hide {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 9px;
+  border: 1px solid #505b55;
+  border-radius: 6px;
+  background: transparent;
+  color: #d7e6dc;
+  cursor: pointer;
+}
+.reader-header-hide:hover { background: #415747; }
+.reader-header-hide kbd {
+  font: 600 10px 'Space Grotesk', sans-serif;
+  color: #a7c0af;
+}
+.reader-header-show {
+  position: fixed;
+  z-index: 80;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 22px;
+  border: 1px solid #748679;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: #26352df2;
+  color: #d7f4b2;
+  opacity: .22;
+  cursor: pointer;
+  transition: opacity .16s ease;
+}
+.reader-header-show:hover,
+.reader-header-show:focus-visible { opacity: 1; }
