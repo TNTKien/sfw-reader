@@ -65,6 +65,7 @@ export default function App() {
   const [book, setBook] = useState<ReaderDocument | null>(null);
   const [remoteChapterId, setRemoteChapterId] = useState<string | null>(() => routeChapterId(window.location.pathname));
   const [remoteLoading, setRemoteLoading] = useState(() => routeChapterId(window.location.pathname) !== null);
+  const [remoteRetry, setRemoteRetry] = useState(0);
   const bookRef = useRef<ReaderDocument | null>(null);
   const [pending, setPending] = useState<PendingPdf | null>(null);
   const [view, setView] = useState<View>('photoshop');
@@ -177,7 +178,7 @@ export default function App() {
       }
     });
     return () => controller.abort();
-  }, [remoteChapterId, applyBook]);
+  }, [remoteChapterId, remoteRetry, applyBook]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -292,7 +293,7 @@ export default function App() {
         <div className="scd-route-symbol"><BookOpen size={29}/></div>
         <h1>{remoteLoading ? 'Opening chapter…' : 'Could not open chapter'}</h1>
         <p>{remoteLoading ? 'Retrieving chapter pages from Suicaodex. Your local files are not uploaded.' : error ?? 'This chapter is unavailable.'}</p>
-        {!remoteLoading && <div className="scd-route-actions"><button onClick={() => {const id = remoteChapterId; setRemoteChapterId(null); queueMicrotask(() => setRemoteChapterId(id)); }} className="scd-route-retry" type="button">Try again</button><button onClick={goHome} type="button">Back to home</button></div>}
+        {!remoteLoading && <div className="scd-route-actions"><button onClick={() => setRemoteRetry(current => current + 1)} className="scd-route-retry" type="button">Try again</button><button onClick={goHome} type="button">Back to home</button></div>}
         {remoteLoading && <div className="scd-route-progress"/>}
       </div>
     </div> : !book ? <Landing onFiles={openFiles} onDemo={type => { lastFiles.current = null; applyBook(type === 'comic' ? demoComic() : demoText()); }} onHelp={() => setHelpOpen(true)} onSuicaodex={openSuicaodexLink} busy={busy} error={error}/> :
