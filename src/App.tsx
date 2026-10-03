@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertCircle, ArrowDownRight, ArrowLeft, ArrowRight, BookOpen, CheckCircle2, ChevronDown, ChevronUp, Code2, FileArchive, FileImage, FileText, FolderOpen, Github, Grid2X2, HardDrive, Image, Layers, LockKeyhole, Monitor, Plus, Presentation, ShieldCheck, Sparkles, UploadCloud, X } from 'lucide-react';
+import { AlertCircle, ArrowDownRight, ArrowLeft, ArrowRight, BookOpen, CheckCircle2, ChevronDown, ChevronUp, CircleHelp, Code2, FileArchive, FileImage, FileText, FolderOpen, Github, Grid2X2, HardDrive, Image, Layers, LockKeyhole, Monitor, Plus, Presentation, ShieldCheck, Sparkles, UploadCloud, X } from 'lucide-react';
 import ComicApps from './components/ComicApps';
 import TextApps from './components/TextApps';
+import HelpDialog from './components/HelpDialog';
+import { getStoredTerminalProfile, updateBrowserAppearance, type TerminalProfile } from './lib/browserAppearance';
 import { demoComic, demoText } from './lib/demo';
 import type { ComicView, PendingPdf, ReaderDocument, TextView, View } from './types';
 
@@ -24,16 +26,17 @@ function getStoredPosition(doc: ReaderDocument): { index: number; view?: View } 
   return { index: 0 };
 }
 
-function Landing({ onFiles, onDemo, busy, error }: {
+function Landing({ onFiles, onDemo, onHelp, busy, error }: {
   onFiles: (files: File[]) => void;
   onDemo: (kind: 'text' | 'comic') => void;
+  onHelp: () => void;
   busy: boolean;
   error: string | null;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
   return <div className="landing">
-    <header className="landing-top"><div className="brand"><span className="brand-mark"><BookOpen size={18}/></span><div>SFW <strong>READER</strong></div><span className="brand-version">/ BETA 0.1</span></div><nav className="landing-nav"><span className="landing-private"><span/> Files stay on your device</span><a href="https://github.com/TNTKien/sfw-reader" target="_blank" rel="noreferrer"><Github size={18}/> GitHub <ArrowDownRight size={15}/></a></nav></header>
+    <header className="landing-top"><div className="brand"><span className="brand-mark"><BookOpen size={18}/></span><div>SFW <strong>READER</strong></div><span className="brand-version">/ BETA 0.1</span></div><nav className="landing-nav"><button type="button" className="landing-help" onClick={onHelp} title="How to use SFW Reader (F1 / ?)"><CircleHelp size={17}/> Guide <kbd>F1</kbd></button><span className="landing-private"><span/> Files stay on your device</span><a href="https://github.com/TNTKien/sfw-reader" target="_blank" rel="noreferrer"><Github size={18}/> GitHub <ArrowDownRight size={15}/></a></nav></header>
     <main className="landing-main"><div className="eyebrow"><span className="eyebrow-line"/> A DIFFERENT KIND OF READING DESK <span className="eyebrow-arrow">↗</span></div><div className="hero-grid"><section className="hero-copy"><h1>A story in<br/><em>disguise.</em></h1><p>Your favorite stories, dressed up as familiar software. Open a book, pick a workspace, and enjoy reading in a whole new window.</p><div className="hero-pill-row"><span><ShieldCheck size={15}/> 100% browser-side</span><span><Sparkles size={15}/> Zero setup</span></div><div className="hero-micro"><span className="hero-micro-line"/><span>MADE FOR CURIOUS READERS, NOT FOR GETTING CAUGHT.</span></div></section><section className={`upload-card ${dragging ? 'dragging' : ''}`} onDragEnter={event=>{event.preventDefault();setDragging(true);}} onDragOver={event=>event.preventDefault()} onDragLeave={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node))setDragging(false);}} onDrop={event=>{event.preventDefault();setDragging(false);if(event.dataTransfer.files.length)onFiles(Array.from(event.dataTransfer.files));}}>
       <div className="upload-card-top"><span>01 / YOUR NEXT READ</span><span className="upload-card-dots"><i/><i/><i/></span></div><div className="upload-card-center"><div className="upload-art"><div className="upload-art-inner"><FileText size={29}/><span>+</span></div><div className="upload-art-circle"/></div><h2>Drop a story<br/>right here.</h2><p>Drag a file into this window or choose one from your device. Nothing is uploaded.</p><input hidden type="file" ref={input} multiple accept=".txt,.epub,.pdf,.cbz,.zip,.jpg,.jpeg,.png,.webp,.gif,.avif,image/jpeg,image/png,image/webp,image/gif,image/avif" onChange={event=>{if(event.target.files?.length)onFiles(Array.from(event.target.files));event.target.value='';}}/><button disabled={busy} onClick={()=>input.current?.click()} className="choose-file"><FolderOpen size={17}/>{busy?'Opening your book…':'Choose a file'}<ArrowRight size={18}/></button>{error && <div className="upload-error"><AlertCircle size={15}/>{error}</div>}</div><div className="upload-card-bottom"><span>TXT · EPUB · PDF · CBZ · ZIP · IMAGES</span><span>MAX 350 MB / FILE</span></div>
     </section></div><div className="workspace-line"><div><span className="section-numeral">02 /</span> PICK YOUR COVER STORY</div><span>ONE ENGINE, SIX FAMILIAR WORKSPACES <ArrowDownRight size={17}/></span></div><div className="mode-preview"><article className="mode-card text-mode"><div className="mode-card-top"><div className="mode-icons"><span className="mode-icon excel-mini">X</span><span className="mode-icon code-mini">⌘</span></div><span>FOR WRITTEN STORIES</span></div><div className="mode-illustration mode-text-illustration"><div className="mini-window-top"><i/><i/><i/><b>Quarterly_report.xlsx</b></div><div className="mini-spreadsheet"><div>A</div><div>B</div><div>C</div><div>1</div><div className="mini-active">The story begins somewhere else…</div><div/><div>2</div><div>Another line appears quietly.</div><div/><div>3</div><div>This could be any spreadsheet.</div><div/></div></div><h3>Words at work.</h3><p>Every sentence becomes a row, a line of code, or terminal output. Your call.</p><button onClick={()=>onDemo('text')}>Try the text demo <ArrowRight size={18}/></button></article><article className="mode-card comic-mode"><div className="mode-card-top"><div className="mode-icons"><span className="mode-icon photoshop-mini">Ps</span><span className="mode-icon power-mini">P</span><span className="mode-icon canva-mini">C</span></div><span>FOR VISUAL STORIES</span></div><div className="mode-illustration mode-visual-illustration"><div className="mini-ps-header"><span>Ps</span> File　 Edit　 Image　 Layer　 Type　 View</div><div className="mini-ps-body"><div className="mini-ps-tool">✥<br/>□<br/>⌖<br/>T<br/>◈</div><img src="/demo-comic.svg" alt="Original sample comic illustration"/><div className="mini-ps-layers"><b>Layers</b><span>☷</span><span>◉ Page 01</span><span>◉ Layer 1</span><span>◉ Background</span></div></div></div><h3>Art, in progress.</h3><p>Your manga pages, reimagined inside the creative tools you know.</p><button onClick={()=>onDemo('comic')}>Try the comic demo <ArrowRight size={18}/></button></article></div></main><footer className="landing-footer"><span>© {new Date().getFullYear()} SFW READER · A PLAYFUL EXPERIMENT</span><span>NOT AFFILIATED WITH ADOBE, MICROSOFT, CANVA OR VS CODE.</span><a href="https://github.com/TNTKien/sfw-reader" target="_blank" rel="noreferrer">OPEN SOURCE ↗</a></footer>
@@ -50,6 +53,9 @@ export default function App() {
   const [pending, setPending] = useState<PendingPdf | null>(null);
   const [view, setView] = useState<View>('photoshop');
   const [headerVisible, setHeaderVisible] = useState(true);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [terminalProfile, setTerminalProfile] = useState<TerminalProfile>(getStoredTerminalProfile);
+  const closeHelp = useCallback(() => setHelpOpen(false), []);
   const [page, setPage] = useState(0);
   const [zoom, setZoom] = useState(80);
   const [mode, setMode] = useState<'sentence' | 'paragraph'>('sentence');
@@ -114,6 +120,29 @@ export default function App() {
     setRaw(''); setImage(null);
   }, []);
 
+  // Keep the browser tab's title, favicon and theme synchronized with the active workspace.
+  useEffect(() => {
+    updateBrowserAppearance(book ? view : 'home', book?.name, terminalProfile, page);
+  }, [book, view, terminalProfile, page]);
+
+  // Global help is available on the home page and with the reader toolbar hidden.
+  useEffect(() => {
+    const onHelpKey = (event: KeyboardEvent) => {
+      if (pending || event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
+      const target = event.target instanceof HTMLElement ? event.target : null;
+      const editing = target && (
+        ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName) ||
+        target.isContentEditable || target.closest('[contenteditable="true"], [role="textbox"], [role="menu"], .menu-bar, [role="dialog"]')
+      );
+      if (event.key === 'F1' || (event.key === '?' && !editing)) {
+        event.preventDefault();
+        setHelpOpen(true);
+      }
+    };
+    window.addEventListener('keydown', onHelpKey);
+    return () => window.removeEventListener('keydown', onHelpKey);
+  }, [pending]);
+
   useEffect(() => () => { bookRef.current?.dispose(); }, []);
   useEffect(() => {
     if (!book) return;
@@ -142,7 +171,7 @@ export default function App() {
     try { localStorage.setItem(`sfw-position:${book.id}`, JSON.stringify({ index: page, view })); } catch { /* optional */ }
   }, [book, page, view]);
   useEffect(() => {
-    if (!book || pending) return;
+    if (!book || pending || helpOpen) return;
     const onKey = (event: KeyboardEvent) => {
       const element = event.target as HTMLElement | null;
       // Keep native editing and mock application menu keyboard interactions intact.
@@ -179,18 +208,19 @@ export default function App() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [book, pending]);
+  }, [book, pending, helpOpen]);
 
   const compatible = useMemo(() => book?.kind === 'comic' ? comicViews : textViews, [book]);
   return <>
-    {!book ? <Landing onFiles={openFiles} onDemo={type => { lastFiles.current = null; applyBook(type === 'comic' ? demoComic() : demoText()); }} busy={busy} error={error}/> :
+    {!book ? <Landing onFiles={openFiles} onDemo={type => { lastFiles.current = null; applyBook(type === 'comic' ? demoComic() : demoText()); }} onHelp={() => setHelpOpen(true)} busy={busy} error={error}/> :
       <div className="reader-page">
       <input hidden type="file" ref={fileInput} multiple accept=".txt,.epub,.pdf,.cbz,.zip,.jpg,.jpeg,.png,.webp,.gif,.avif" onChange={event=>{if(event.target.files?.length)void openFiles(Array.from(event.target.files));event.target.value='';}}/>
-      {headerVisible ? <header className="reader-toolbar"><button className="reader-home" onClick={close} title="Close reader"><span className="reader-home-badge"><BookOpen size={17}/></span><span>SFW <b>READER</b></span></button><div className="reader-toolbar-divider"/><span className="reader-bookname" title={book.name}>{book.name}</span><div className="reader-mode-switch" role="group" aria-label="Choose reading workspace">{compatible.map(item => <button key={item.id} className={view === item.id ? 'current' : ''} onClick={() => setView(item.id as View)} title={item.desc}>{item.title}</button>)}</div>{book.kind === 'text' && lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf') && <button className="reader-pdf-comic" onClick={()=>void reopenAsComic()}>Read as comic</button>}<span className="reader-local"><span/> LOCAL ONLY</span><button className="reader-open" onClick={()=>fileInput.current?.click()} disabled={busy}><Plus size={16}/> Open</button><button className="reader-header-hide" type="button" title="Hide reader header (H)" aria-label="Hide reader header (H)" onClick={() => setHeaderVisible(false)}><ChevronUp size={16}/><kbd>H</kbd></button><button className="reader-back" title="Back to library" onClick={close}><X size={17}/></button></header> : <button type="button" className="reader-header-show" title="Show reader header (H)" aria-label="Show reader header (H)" onClick={() => setHeaderVisible(true)}><ChevronDown size={16}/></button>}
-      {book.kind === 'comic' ? <ComicApps name={book.name} index={page} count={book.pageCount} image={image} getImage={book.getImage} zoom={zoom} setZoom={setZoom} onPage={setPage} view={view as ComicView} setView={setView} openFile={()=>fileInput.current?.click()} close={close}/> : <TextApps name={book.name} raw={raw} loading={rendering} index={page} titles={book.chapters} onPage={setPage} mode={mode} onMode={setMode} view={view as TextView} setView={setView} openFile={()=>fileInput.current?.click()} close={close}/>}
+      {headerVisible ? <header className="reader-toolbar"><button className="reader-home" onClick={close} title="Close reader"><span className="reader-home-badge"><BookOpen size={17}/></span><span>SFW <b>READER</b></span></button><div className="reader-toolbar-divider"/><span className="reader-bookname" title={book.name}>{book.name}</span><div className="reader-mode-switch" role="group" aria-label="Choose reading workspace">{compatible.map(item => <button key={item.id} className={view === item.id ? 'current' : ''} onClick={() => setView(item.id as View)} title={item.desc}>{item.title}</button>)}</div>{book.kind === 'text' && lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf') && <button className="reader-pdf-comic" onClick={()=>void reopenAsComic()}>Read as comic</button>}<span className="reader-local"><span/> LOCAL ONLY</span><button className="reader-open" onClick={()=>fileInput.current?.click()} disabled={busy}><Plus size={16}/> Open</button><button className="reader-help" type="button" title="Help (F1 / ?)" aria-label="Open guide" onClick={() => setHelpOpen(true)}><CircleHelp size={17}/></button><button className="reader-header-hide" type="button" title="Hide reader header (H)" aria-label="Hide reader header (H)" onClick={() => setHeaderVisible(false)}><ChevronUp size={16}/><kbd>H</kbd></button><button className="reader-back" title="Back to library" onClick={close}><X size={17}/></button></header> : <button type="button" className="reader-header-show" title="Show reader header (H)" aria-label="Show reader header (H)" onClick={() => setHeaderVisible(true)}><ChevronDown size={16}/></button>}
+      {book.kind === 'comic' ? <ComicApps name={book.name} index={page} count={book.pageCount} image={image} getImage={book.getImage} zoom={zoom} setZoom={setZoom} onPage={setPage} view={view as ComicView} setView={setView} openFile={()=>fileInput.current?.click()} close={close}/> : <TextApps name={book.name} raw={raw} loading={rendering} index={page} titles={book.chapters} onPage={setPage} mode={mode} onMode={setMode} view={view as TextView} setView={setView} onTerminalProfileChange={setTerminalProfile} openFile={()=>fileInput.current?.click()} close={close}/>}
       {error && <div className="reader-error"><AlertCircle size={17}/>{error}<button onClick={()=>setError(null)}><X size={15}/></button></div>}
       {rendering && book.kind === 'text' && <div className="reader-toast">Loading {book.chapters[page]?.title}…</div>}
       </div>}
     {pending && <ScanDialog pending={pending} choose={chooseScan} dismiss={()=>{pending.dispose();setPending(null);}}/>}
+    {helpOpen && !pending && <HelpDialog onClose={closeHelp}/>}
   </>;
 }
