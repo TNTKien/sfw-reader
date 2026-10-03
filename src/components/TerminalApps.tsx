@@ -3,8 +3,9 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { BookOpen, ChevronLeft, ChevronRight, Command, FolderOpen, HardDrive, Plus, Terminal as TerminalIcon } from 'lucide-react';
 import { MenuBar, WindowControls } from './Chrome';
 import type { TextProps } from './TextApps';
+import { getStoredTerminalProfile, type TerminalProfile } from '../lib/browserAppearance';
 
-type TerminalSkin = 'warp' | 'ghostty' | 'windows';
+type TerminalSkin = TerminalProfile;
 
 const skins: { id: TerminalSkin; label: string; caption: string }[] = [
   { id: 'warp', label: 'Warp', caption: 'Blocks & sessions' },
@@ -12,13 +13,6 @@ const skins: { id: TerminalSkin; label: string; caption: string }[] = [
   { id: 'windows', label: 'Windows Terminal', caption: 'PowerShell session' },
 ];
 
-function storedSkin(): TerminalSkin {
-  try {
-    const stored = localStorage.getItem('sfw-terminal-skin');
-    if (stored === 'warp' || stored === 'ghostty' || stored === 'windows') return stored;
-  } catch { /* Storage may be unavailable in private browsing. */ }
-  return 'ghostty';
-}
 
 function Prompt({ skin }: { skin: TerminalSkin }) {
   if (skin === 'ghostty') return <span className="term-starship-prompt"><span className="term-starship-path">~/books</span><span className="term-starship-branch">git:main</span><span className="term-starship-arrow">❯</span></span>;
@@ -27,8 +21,8 @@ function Prompt({ skin }: { skin: TerminalSkin }) {
 }
 
 export default function TerminalApps({ props, rows }: { props: TextProps; rows: string[] }) {
-  const { name, index, titles, onPage, mode, onMode, openFile, close, setView, loading } = props;
-  const [skin, setSkin] = useState<TerminalSkin>(storedSkin);
+  const { name, index, titles, onPage, mode, onMode, openFile, close, setView, loading, onTerminalProfileChange } = props;
+  const [skin, setSkin] = useState<TerminalSkin>(getStoredTerminalProfile);
   const [command, setCommand] = useState('');
   const [message, setMessage] = useState('');
   const [showOutput, setShowOutput] = useState(true);
@@ -47,7 +41,8 @@ export default function TerminalApps({ props, rows }: { props: TextProps; rows: 
 
   useEffect(() => {
     try { localStorage.setItem('sfw-terminal-skin', skin); } catch { /* Optional preference. */ }
-  }, [skin]);
+    onTerminalProfileChange?.(skin);
+  }, [skin, onTerminalProfileChange]);
 
   useEffect(() => {
     setMessage('');
