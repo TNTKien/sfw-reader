@@ -12,6 +12,19 @@ A playful, privacy-first reader that disguises your own text books and comics in
 - **Lazy loading:** PDF pages and comic archive images are decoded as requested, with limited prefetching and memory-aware image cache eviction. Long text views virtualize visible rows.
 - **Demo:** Built-in original sample text and simple original vector comic to try without choosing a file.
 
+## Reading workspace fidelity
+
+This revision targets **desktop visual resemblance**, without loading proprietary software or granting editor/shell access. The optional top-level SFW toolbar can still be hidden with **H**.
+
+- Photoshop: denser menu/tool chrome based on the supplied Photoshop desktop reference, nearby document tabs, actual image dimensions in the status bar, and a flattened-page layer thumbnail (rather than invented speech-bubble layers).
+- PowerPoint: contextual Office-style ribbon, File backstage, and nearby page thumbnails decoded lazily. Distant slides remain lightweight placeholders until opened.
+- Canva: document header, contextual Design / Elements / Text / Uploads / Draw / Apps panels, and document page controls.
+- Excel: contextual ribbons, a selectable row reflected in the formula bar, worksheet tab and status bar.
+- VS Code: consistent Markdown text instead of random code tokens, an activity bar, explorer and a lightweight search of the current chapter.
+- Warp / Ghostty / Windows Terminal: distinct title-bar and prompt treatments; switch profiles using the terminal status bar's **Profile** selector or the Warp View menu.
+
+The appearance is inspired by the corresponding desktop products and may differ from particular versions or operating systems. No trademarks or bundled proprietary artwork are required to render the layouts. Reader commands remain allowlisted and no shell executes.
+
 ## Stack
 
 Vite, React 19, TypeScript, PDF.js, JSZip, TanStack Virtual, lucide-react. No server-side runtime required.
