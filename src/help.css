@@ -78,20 +78,15 @@
 }
 .help-close:hover { color: #1f3026; border-color: #8bac80; background: #e5eedf; }
 .help-dialog-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #c4d1c0 transparent; }
-.help-intro { padding: 28px 33px 24px; border-bottom: 1px solid #dfe8da; }
-.help-kicker {
   display: inline-flex; align-items: center; gap: 6px;
   color: #53834f;
   font: 800 10px 'Space Grotesk',sans-serif;
   letter-spacing: 1.35px;
 }
-.help-intro h2 {
   margin: 9px 0 10px;
   font: 700 clamp(33px,5vw,51px)/1.06 'Space Grotesk',Arial,sans-serif;
   letter-spacing: -2px;
 }
-.help-intro h2 em { color: #6c9a68; font-style: normal; }
-.help-intro p { margin: 0; font-size: 13px; line-height: 1.7; color: #647767; max-width: 610px; }
 .help-columns { display: grid; grid-template-columns: 1fr 1.1fr; }
 .help-section { padding: 24px 32px 20px; min-width: 0; }
 .help-section + .help-section { border-left: 1px solid #dfe8da; }
@@ -162,7 +157,6 @@
   .landing-help kbd, .landing-private { display: none !important; }
   .help-dialog { max-height: 94vh; border-radius: 12px; }
   .help-dialog-heading { min-height: 49px; padding: 8px 16px; }
-  .help-intro { padding: 23px 20px 19px; }
   .help-columns { grid-template-columns: 1fr; }
   .help-section { padding: 19px 20px; }
   .help-section + .help-section { border-left: none; border-top: 1px solid #dfe8da; }
