@@ -23,6 +23,17 @@ bun run dev
 bun run build
 ```
 
+## Keyboard shortcuts
+
+When a book is open:
+
+- **H** — Hide or show the SFW Reader header. The hide button also shows this shortcut; a subtle tab at the top restores the header with a click.
+- **Left / Right arrows** — Previous / next comic page in Photoshop, PowerPoint and Canva workspaces (also available after clicking toolbar or workspace buttons).
+- **Page Up / Page Down** — Navigate pages or chapters as before.
+- **Ctrl/Cmd + O** — Open another local file, even while the reader header is hidden.
+
+Shortcuts leave text fields, dropdowns, editable content and mock application menus alone. Use unmodified keys for navigation.
+
 ## Notes and limits
 
 - Recommended maximum input size is 350 MB per file; large PDFs, long EPUBs and image archives still depend on device RAM, CPU and browser storage quotas.
