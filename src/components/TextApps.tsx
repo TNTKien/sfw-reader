@@ -4,6 +4,7 @@ import CodeApp from './CodeApp';
 import TerminalApps from './TerminalApps';
 import { splitText } from '../lib/text';
 import type { TextView } from '../types';
+import type { TerminalProfile } from '../lib/browserAppearance';
 
 export interface TextProps {
   name: string;
@@ -16,6 +17,7 @@ export interface TextProps {
   onMode: (v: 'sentence' | 'paragraph') => void;
   view: TextView;
   setView: (v: TextView) => void;
+  onTerminalProfileChange?: (profile: TerminalProfile) => void;
   openFile: () => void;
   close: () => void;
 }
