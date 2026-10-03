@@ -76,7 +76,7 @@ export default function HelpDialog({ onClose }: {onClose: () => void}) {
         <div className="help-notes">
           <div><ScanText size={19}/><p><strong>Scanned PDFs</strong><br/>No OCR is performed. If selectable text isn't detected, open the file in a comic workspace to read its pages as images.</p></div>
           <div><Monitor size={19}/><p><strong>Terminal profiles</strong><br/>Switch between Warp, Ghostty, and Windows Terminal using the profile selector. Try <code>help</code>, <code>cat</code>, <code>next</code>, or <code>prev</code> in its prompt.</p></div>
-          <div><LockKeyhole size={19}/><p><strong>Local reading</strong><br/>Books stay on your device. Reading position and selected workspace may be saved in your browser.</p></div>
+          <div><LockKeyhole size={19}/><p><strong>Local reading</strong><br/>Files you choose stay on your device. Suicaodex chapter links load published pages from Suicaodex servers. Reading position and selected workspace may be saved in your browser.</p></div>
         </div>
       </div>
       <div className="help-dialog-footer"><span>F1 / ? to reopen this guide</span><button type="button" onClick={onClose}>Got it <span>↗</span></button></div>
