@@ -86,7 +86,7 @@ export default function CodeApp({ props, rows }: { props: TextProps; rows: strin
     {label:'Go',items:[{label:'Next Chapter',disabled:index>=titles.length-1,action:()=>onPage(index+1)},{label:'Previous Chapter',disabled:!index,action:()=>onPage(index-1)}]},
     {label:'Run',items:[{label:'Start Debugging',disabled:true}]},
     {label:'Terminal',items:[{label:'New Terminal',action:()=>setView('terminal')}]},
-    {label:'Help',items:[{label:'About SFW Reader',action:()=>alert('SFW Reader opens local books and stores progress in your browser.')}]}],
+    {label:'Help',items:[{label:'About SFW Reader',action:()=>alert('SFW Reader opens local books and stores progress in your browser.')}]},
   ];
   return <div className="vscode app-fill vscode-repository">
     <div className="vsc-menuline">
