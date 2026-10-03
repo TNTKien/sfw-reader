@@ -34,9 +34,6 @@ function buildTree(paths: string[]): Node[] {
 
 const defaultExpanded = () => new Set(['', 'src', 'src/components', 'src/lib']);
 const allNodes = buildTree(repositoryFiles);
-const allFolderPaths = (nodes: Node[]): string[] =>
-  nodes.flatMap(n => n.folder ? [n.path, ...allFolderPaths(n.children)] : []);
-
 function FileGlyph({ name }: { name: string }) {
   const ext = name.split('.').at(-1)?.toLowerCase();
   const isReact = ext === 'tsx' || ext === 'jsx';
@@ -50,10 +47,11 @@ function FileGlyph({ name }: { name: string }) {
   return <span aria-hidden="true" className={'vsc-tree-glyph vsc-glyph-' + cls}>{icon}</span>;
 }
 
-export default function RepoExplorer({ selectedPath, onFile, chapterTitle }: {
+export default function RepoExplorer({ selectedPath, onFile, chapterTitle, onStory }: {
   selectedPath: string | null;
   onFile: (path: string) => void;
   chapterTitle: string;
+  onStory: () => void;
 }) {
   const nodes = useMemo(() => allNodes, []);
   const [expanded, setExpanded] = useState<Set<string>>(defaultExpanded);
@@ -87,6 +85,12 @@ export default function RepoExplorer({ selectedPath, onFile, chapterTitle }: {
 
   return <div className="vsc-explorer-inner">
     <div className="vsc-explorer-header">EXPLORER <MoreHorizontal size={16}/></div>
+    <div className="vsc-open-editors">
+      <div className="vsc-open-editors-title">⌄　OPEN EDITORS <span>1</span></div>
+      <button type="button" className="vsc-open-editor-story" onClick={onStory}>
+        <BookOpen size={14} color="#d0aa61"/> reading-notes.md <span>◉</span>
+      </button>
+    </div>
     <div className="vsc-repo-heading">
       <button type="button" onClick={() => toggle('')} className="vsc-repo-toggle" aria-expanded={expanded.has('')}>
         {expanded.has('') ? <ChevronDown size={15}/> : <ChevronRight size={15}/>}<b>sfw-reader</b>
