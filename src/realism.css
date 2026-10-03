@@ -1,0 +1,271 @@
+/* Desktop fidelity pass — layered after the original responsive stylesheet.
+   UI chrome stays lightweight and no native editor or terminal is embedded. */
+
+/* The surrounding reader toolbar remains optional (H) and distinct from app chrome. */
+.reader-toolbar { min-height: 48px; height: 48px; gap: 11px; }
+
+/* Photoshop: compact neutral chrome, document tab strip, and real layer previews. */
+.photoshop { font-family: Arial, Helvetica, sans-serif; background: #252525; }
+.ps-menu-top { min-height: 30px; height: 30px; padding: 0 8px; gap: 9px; background: #272727; }
+.ps-badge { border: 0; border-radius: 3px; background: #071b34; color: #6cb6fa; font-size: 12px; padding: 3px 4px; }
+.ps-options { min-height: 39px; height: 39px; gap: 11px; padding: 0 15px; }
+.ps-option-select { min-height: 25px; border: 1px solid #555; background: #343434; box-shadow: inset 0 1px #ffffff0a; color: #e0e0e0; }
+.ps-text-align { display: flex; align-items: center; gap: 9px; color: #c9c9c9; }
+.ps-color-swatch { display: inline-block; width: 21px; height: 17px; background: #0b0b0b; border: 1px solid #9b9b9b; box-shadow: inset 0 0 0 1px black; }
+.ps-workspace { background: #242424; }
+.ps-tools { width: 39px; flex-basis: 39px; background: #333; border-right-color: #212121; }
+.ps-tool { width: 31px; height: 28px; margin: 1px 0; border-radius: 2px; }
+.ps-tool.active { box-shadow: inset 0 0 0 1px #808080; background: #4a4a4a; }
+.ps-left { width: 230px; flex-basis: 230px; }
+.ps-right { width: 286px; flex-basis: 286px; }
+.ps-right-icons { width: 33px; flex-basis: 33px; }
+.ps-nav-preview { height: 236px; background: #323232; }
+.ps-nav-viewport { border: 1px solid #e16b73; background: #e16b7310; }
+.ps-panel-heading { min-height: 28px; height: 28px; background: #383838; border-bottom: 1px solid #232323; font-size: 11px; }
+.ps-panel-heading span { font-size: 10px; }
+.ps-prop-head { padding: 9px; background: #3a3a3a; }
+.ps-tabs { height: 32px; min-height: 32px; overflow-x: auto; background: #303030; }
+.ps-tabs button,
+.ps-tabs button.ps-active-tab { display: flex; align-items: center; gap: 7px; flex: 0 0 auto; width: auto; max-width: 270px; padding: 0 12px; background: #323232; font-size: 11px; }
+.ps-tabs button.ps-active-tab { background: #484848; color: #f2f2f2; box-shadow: inset 0 1px #777; }
+.ps-tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ps-tab-close { opacity: .52; font: 15px/1 Arial; margin-left: 4px; }
+.ps-tabs button:hover .ps-tab-close { opacity: .9; }
+.ps-canvas-area { background: #202020; }
+.ps-canvas-area .image-stage { padding: 22px 12px 34px; }
+.ps-canvas-area .comic-image { box-shadow: 0 0 0 1px #101010, 0 4px 26px #0006; }
+.ps-status { height: 24px; min-height: 24px; font-size: 10px; gap: 15px; border-top: 1px solid #1a1a1a; }
+.ps-status>span:first-child { background: #464646; }
+.ps-layer-list { background: #303030; }
+.ps-layer { height: 44px; gap: 8px; }
+.ps-layer.selected { background: #444; }
+.ps-layer-thumb { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 30px; border: 1px solid #6d6d6d; background: #fff; padding: 1px; }
+.ps-layer-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.ps-layer-thumb.ps-background-thumb { background: repeating-conic-gradient(#fff 0% 25%, #ddd 0% 50%) 0 0 / 8px 8px; }
+.ps-layer-lock { margin-left: auto; font-size: 9px; opacity: .65; }
+
+/* PowerPoint: Office title bar, context-sensitive ribbon, thumbnails and backstage. */
+.powerpoint { font-family: "Segoe UI", "DM Sans", Arial, sans-serif; background: #f3f3f5; }
+.ppt-titlebar { min-height: 40px; height: 40px; padding: 0 13px; background: #b7472b; gap: 14px; }
+.ppt-icon { font: 800 16px "Segoe UI", Arial; background: #d67553; border-radius: 2px; padding: 3px 8px; }
+.ppt-autosave { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; white-space: nowrap; }
+.ppt-autosave span { border-radius: 15px; background: #f1c4b3; padding: 1px 7px; font-size: 9px; color: #723b2b; }
+.ppt-quick-access { white-space: nowrap; color: #f8e5de; font-size: 17px; }
+.ppt-title { flex: 1; margin: 0; min-width: 40px; overflow: hidden; text-overflow: ellipsis; text-align: center; white-space: nowrap; font-size: 12px; font-weight: 600; }
+.ppt-title-search { display: flex; align-items: center; gap: 8px; width: 170px; background: #ffffff29; padding: 5px 9px; border: 1px solid #ffffff21; color: #f7e8e3; border-radius: 4px; white-space: nowrap; font-size: 10px; }
+.ppt-tabs { height: 36px; min-height: 36px; background: #fcfcfd; border-bottom-color: #d7d7da; padding: 0 17px; gap: 5px; scrollbar-width: none; }
+.ppt-tabs button { padding: 0 12px; }
+.ppt-tabs button.selected { box-shadow: inset 0 -2px #b3472b; color: #ab4128; }
+.ppt-ribbon { height: 101px; min-height: 101px; padding: 7px 12px; align-items: stretch; gap: 0; }
+.ppt-ribbon-group { display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 126px; max-width: 198px; position: relative; border-right: 1px solid #e6e6e6; gap: 2px; padding: 0 9px; }
+.ppt-ribbon-group:first-child { min-width: 94px; }
+.ppt-ribbon-group small { color: #8b8b8b; font-size: 10px; margin-top: auto; }
+.ppt-ribbon-group .ppt-ribbon-sep { display: none; }
+.ppt-ribbon-tool { gap: 4px; min-width: auto; line-height: 1.1; font-size: 10px; }
+.ppt-ribbon-font { display: flex; flex-direction: column; gap: 3px; font: 10px "Segoe UI",Arial; white-space: nowrap; }
+.ppt-ribbon-font span { background: #fafafa; border: 1px solid #e1e1e1; padding: 1px 5px; }
+.ppt-ribbon-collapse { align-self: flex-end; background: transparent; border: none; color: #666; padding: 3px 8px; }
+.ppt-slides { width: 198px; flex-basis: 198px; padding: 11px 11px; background: #fafafa; }
+.ppt-side-heading { display: flex; gap: 17px; color: #4c4c4c; border-bottom: 1px solid #dedee1; margin-bottom: 8px; padding-bottom: 8px; }
+.ppt-side-heading span:first-child { border-bottom: 2px solid #b7472b; padding-bottom: 7px; }
+.ppt-thumb-row { gap: 10px; padding: 6px 2px; }
+.ppt-thumb { border: 1px solid #bfc0c4; border-radius: 1px; }
+.ppt-thumb.ppt-thumb-active { border: 2px solid #bd4b2d; }
+.ppt-thumbnail-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 100%; height: 100%; color: #c2c5ca; }
+.ppt-thumbnail-placeholder small { font-size: 9px; color: #91949a; }
+.ppt-slide-wrap { align-items: flex-start; background: #e8e8ec; padding: 33px 25px; }
+.ppt-slide { background: #fff; border: 1px solid #d0d0d3; box-shadow: 0 3px 22px #20202024; min-width: 0; min-height: min(62vh, 480px); width: min(100%, 860px); height: auto; max-height: none; aspect-ratio: 16 / 9; }
+.ppt-slide .image-stage { min-height: 0; height: 100%; padding: 12px; align-items: center; }
+.ppt-slide .comic-image { width: 70%; max-width: 100%; min-width: 0; max-height: min(60vh, 530px); object-fit: contain; }
+.ppt-notes { height: 38px; min-height: 38px; padding: 10px 22px; border-top: 1px solid #d6d6d9; color: #6e6e73; }
+.ppt-bottom { height: 32px; min-height: 32px; background: #f9f9fa; border-top: 1px solid #d5d5d6; }
+.ppt-status-accessibility { color: #3b7f3b; }
+.ppt-bottom input { accent-color: #ae482a; }
+.ppt-backstage, .excel-backstage { display: flex; flex: 1; min-height: 0; background: white; color: #343434; }
+.ppt-backstage aside, .excel-backstage aside { display: flex; flex-direction: column; gap: 6px; flex: 0 0 190px; padding: 24px 12px; background: #bf4a2c; color: white; }
+.ppt-backstage aside strong, .excel-backstage aside strong, .ppt-backstage aside b { margin: 3px 12px 22px; font-size: 20px; }
+.ppt-backstage aside button, .excel-backstage aside button { text-align: left; border: 0; background: transparent; color: white; padding: 10px 14px; }
+.ppt-backstage aside button:hover, .excel-backstage aside button:hover { background: #ffffff23; }
+.ppt-backstage section, .excel-backstage main { padding: 39px 45px; flex: 1; }
+.ppt-backstage h2, .excel-backstage h2 { font-size: 25px; font-weight: 500; }
+.ppt-backstage section>button, .excel-backstage main>button { border: 1px solid #d8d8d8; color: #424242; background: white; padding: 15px 19px; display: flex; align-items: center; gap: 9px; }
+
+/* Canva: branded header, richer context panels, editorial page controls. */
+.canva { background: #e9ebf1; font-family: Arial, "DM Sans", sans-serif; }
+.canva-bar { height: 52px; min-height: 52px; background: linear-gradient(110deg,#1964d5,#6256cc 56%,#9543aa); gap: 15px; padding: 0 17px; }
+.canva-logo { font: italic 800 25px Georgia,serif; letter-spacing: -1.5px; }
+.canva-doc-title { margin-left: auto; }
+.canva-saved { display: flex; align-items: center; gap: 5px; }
+.canva-avatar { width: 29px; height: 29px; border-radius: 50%; background: #edc767; color: #49320c; display: grid; place-items: center; font: 700 12px Arial; border: 2px solid #fff8; }
+.canva-share { padding: 9px 17px; border-radius: 6px; color: #5b39b5; box-shadow: 0 1px 4px #0002; }
+.canva-rail { background: #181922; width: 70px; flex-basis: 70px; }
+.canva-rail button { border-radius: 5px; }
+.canva-rail button.active { background: #363a48; }
+.canva-side { background: #fff; padding: 18px 14px; width: 260px; flex-basis: 260px; border-right-color: #e6e6ec; }
+.canva-side-head { font-size: 16px; }
+.canva-side-subtitle { margin: 23px 0 12px; display: flex; justify-content: space-between; font: 700 12px Arial; }
+.canva-side-subtitle span { color: #6651aa; font-weight: 500; font-size: 11px; }
+.canva-recent-grid { display: flex; gap: 8px; }
+.canva-template { height: 132px; width: 105px; border: 1px solid #dadce3; border-radius: 5px; }
+.canva-blank-template { display: grid; place-items: center; color: #bbb; background: #eff1f3; }
+.canva-layout-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
+.canva-layout-grid span { height: 57px; border-radius: 5px; border: 1px solid #ddd; background: linear-gradient(#ddd 0 5px,transparent 5px 9px,#ececec 9px 23px,transparent 23px),#fff; }
+.canva-elements-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.canva-elements-grid span { display: grid; place-items: center; height: 60px; border-radius: 6px; background: #f4f4f7; color: #594c87; font: 26px Arial; }
+.canva-text-panel { display: flex; flex-direction: column; gap: 10px; margin-top: 25px; }
+.canva-text-panel>* { padding: 12px 9px; color: #2b2c34; background: #f5f5f8; text-align: center; border-radius: 5px; font-family: Arial,sans-serif; }
+.canva-text-panel strong { font-size: 23px; }
+.canva-text-panel b { font-size: 15px; }
+.canva-text-panel span { font-size: 10px; }
+.canva-upload-button { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 0; border-radius: 6px; color: white; background: #854bc8; padding: 11px; margin-top: 23px; font-weight: 700; font-size: 11px; }
+.canva-uploaded { width: 110px; height: 140px; display: grid; place-items: center; overflow: hidden; background: #f1f1f4; border: 1px solid #ddd; border-radius: 5px; }
+.canva-uploaded img { width: 100%; height: 100%; object-fit: contain; }
+.canva-draw-tools { display: flex; gap: 8px; margin: 13px 0; }
+.canva-draw-tools svg { width: 44px; height: 42px; padding: 10px; background: #f3f3f8; border-radius: 5px; }
+.canva-options { height: 48px; min-height: 48px; gap: 24px; font-size: 11px; }
+.canva-options-right { margin-left: auto; }
+.canva-stage { background: #e9ebf1; padding: 24px 25px 30px; }
+.canva-work-area { width: min(100%, 780px); display: flex; flex-direction: column; align-items: center; margin: 0 auto; }
+.canva-page-heading { display: flex; justify-content: space-between; width: 100%; color: #545967; font: 700 11px Arial; padding-bottom: 11px; }
+.canva-artboard { width: 100%; max-width: 780px; min-height: 0; background: #fff; box-shadow: 0 3px 14px #26304628; border: 1px solid #d2d5dd; padding: 5px; }
+.canva-artboard .image-stage { min-height: 0; align-items: center; }
+.canva-artboard .comic-image { min-width: 0; max-width: 100%; }
+.canva-page-actions { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; font: 11px Arial; color: #727583; padding-top: 12px; }
+.canva-page-actions button { border: 0; border-radius: 4px; padding: 6px; color: #656778; background: transparent; }
+.canva-page-actions button:hover:not(:disabled) { background: #dce0e8; }
+.canva-footer { height: 43px; min-height: 43px; }
+.canva-footer select { max-width: 104px; }
+
+/* Excel: sheet selection, native-ish title search and context-dependent ribbon. */
+.excel { font-family: "Segoe UI", Arial, sans-serif; }
+.excel-titlebar { min-height: 40px; height: 40px; background: #1a7148; gap: 15px; }
+.excel-logo { padding: 4px 7px; background: #0b562f; box-shadow: -3px 2px 0 #41936b; }
+.excel-title-quick-access { color: #e1ffed; font-size: 18px; white-space: nowrap; }
+.excel-doc { flex: 1; min-width: 60px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; font-weight: 600; }
+.excel-title-right { display: flex; align-items: center; justify-content: center; gap: 8px; flex: 0 0 auto; width: 178px; margin: 0; background: #ffffff25; color: #e8f8ed; border: 1px solid #ffffff25; border-radius: 4px; font: 11px Arial; padding: 6px; }
+.excel-tabs { height: 34px; min-height: 34px; gap: 5px; }
+.excel-tabs button { padding: 9px 11px; font-size: 11px; }
+.excel-ribbon { height: 97px; min-height: 97px; padding: 4px 12px; gap: 0; align-items: stretch; }
+.excel-ribbon-group { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 5px; padding: 10px 16px 4px; border-right: 1px solid #e8e8e8; min-width: 142px; }
+.excel-ribbon-symbols { font-size: 20px; white-space: nowrap; letter-spacing: 6px; color: #426f56; }
+.excel-ribbon-caption { color: #444; font-size: 10px; white-space: nowrap; }
+.excel-ribbon-group small { font-size: 10px; color: #898989; }
+.excel-formula { height: 35px; min-height: 35px; }
+.excel-formula .excel-name-box { min-width: 96px; text-align: center; border-right: 1px solid #ddd; }
+.excel-formula>div { color: #333; font: 12px "Segoe UI", Arial; }
+.excel-columns, .excel-row { grid-template-columns: 42px minmax(280px,56%) repeat(3,minmax(110px,1fr)); }
+.excel-columns { background: #f2f3f3; font-size: 12px; }
+.excel-cell { font-family: "Segoe UI",Arial,sans-serif; font-size: 12px; }
+.excel-row-selected .excel-cell { outline: 2px solid #208f57; outline-offset: -2px; background: #f9fffb; }
+.excel-row-selected .excel-number { color: #116f3e; background: #e7f4e9; }
+.excel-status { min-height: 38px; height: 38px; }
+.excel-ready { color: #747474; font-size: 10px; margin-right: 10px; }
+.excel-zoom-status { color: #686868; font-size: 10px; letter-spacing: .3px; }
+.excel-backstage aside { background: #1a7148; }
+
+/* VS Code: Dark Modern explorer, proper Markdown output and activity panel affordances. */
+.vscode { font-family: "Segoe UI", Arial, sans-serif; background: #1f1f1f; }
+.vsc-menuline { height: 36px; min-height: 36px; padding: 0 9px; }
+.vsc-search { width: min(42%, 480px); min-width: 110px; border-radius: 6px; background: #252525; }
+.vsc-body { background: #1f1f1f; }
+.vsc-explorer { background: #181818; border-right: 1px solid #282828; width: 236px; flex-basis: 236px; }
+.vsc-activity { background: #181818; }
+.vsc-activity button.active { border-left-color: #d4d4d4; }
+.vsc-file { padding: 7px 12px 7px 21px; }
+.vsc-file-selected { background: #2a2d2e; }
+.vsc-outline-item { padding: 7px 18px; color: #a7b5c1; font-size: 11px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.vsc-tab { background: #1f1f1f; border-top: 1px solid #3f89bc; min-width: 140px; justify-content: flex-start; color: #ddd; }
+.vsc-tab-close { color: #7e7e7e; margin-left: auto; padding: 0 3px; font-size: 14px; }
+.vsc-breadcrumb { border-bottom: 1px solid #252525; }
+.code-scroll { background: #1f1f1f; padding-top: 11px; }
+.code-row { min-height: 28px; font: 13px/1.6 "Cascadia Code", Consolas, monospace; }
+.code-number { padding: 3px 17px 3px 0; }
+.code-content { color: #d0d0d0; padding: 3px 18px 3px 6px; }
+.code-row:hover { background: #282828; }
+.vsc-minimap { background: #1f1f1f; width: 99px; flex-basis: 99px; }
+.vsc-side-search { display: flex; flex-direction: column; gap: 11px; padding: 8px 12px; color: #bdbdbd; font-size: 11px; }
+.vsc-side-search input { padding: 6px; color: #eee; background: #282828; border: 1px solid #555; border-radius: 3px; outline-color: #358acc; }
+.vsc-side-search small { color: #858585; }
+.vsc-search-result { display: flex; flex-direction: column; gap: 5px; padding: 8px 4px; border-bottom: 1px solid #303030; font-family: Consolas,monospace; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.vsc-search-result span { color: #a3bfcf; }
+.vsc-empty-side { padding: 15px; font: 11px Arial; color: #bbb; }
+.vsc-empty-side span { float: right; color: #888; }
+.vsc-empty-side p { color: #858585; }
+
+/* Native-looking terminal profiles. The footer keeps the reader's profile switcher accessible. */
+.term--ghostty .term-menubar { display: none; }
+.term--windows .term-menubar { display: none; }
+.term--ghostty .term-titlebar { position: relative; justify-content: center; min-height: 36px; height: 36px; background: #232436; }
+.term--ghostty .term-mac-title { flex: 1; justify-content: center; }
+.term--ghostty .term-traffic { position: absolute; left: 14px; top: 13px; }
+.term--ghostty .term-title-spacer { display: none; }
+.term--ghostty .term-mac-title strong { font-size: 12px; font-weight: 500; }
+.term--ghostty .term-ghostty-heading { border-bottom-color: #282939; background: #181925; }
+.term--ghostty .term-ghostty-shell { margin-left: auto; color: #757993; }
+.term--ghostty .term-story-line { font-size: 13px; line-height: 1.8; color: #d2d6e8; }
+.term--warp .term-titlebar { background: #221d2a; }
+.term--warp .term-session-heading { background: #25202f; }
+.term-native-badge { color: #9a91ae; border: 1px solid #51485f; border-radius: 5px; font-size: 10px; padding: 3px 9px; }
+.term--warp .term-warp-sidebar { background: #1d1825; }
+.term--warp .term-warp-command-caption { color: #b9a0fd; }
+.term--warp .term-virtual { border-radius: 5px; overflow: hidden; }
+.term--windows .term-titlebar { min-height: 40px; height: 40px; background: #202b3b; padding-left: 10px; }
+.term-win-tab { align-self: flex-end; height: 33px; min-width: 172px; }
+.term-win-menu .menu-trigger { color: #becbde; font-size: 10px; padding: 6px; }
+.term-win-menu .menu-dropdown { background: #202b3b; border-color: #415269; }
+.term--windows .term-win-heading { display: none; }
+.term--windows .term-scroll { padding-top: 24px; background: #0d1826; }
+.term--windows .term-inputbar { background: #0d1826; }
+.term-appearance { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: inherit; white-space: nowrap; }
+.term-appearance select { max-width: 130px; }
+.term--ghostty .term-footer { height: 30px; min-height: 30px; background: #222434; color: #9a9eb3; }
+.term--warp .term-footer { min-height: 34px; }
+.term--windows .term-footer { min-height: 32px; }
+.term--windows .term-footer select { background: #194e7e; }
+@media(max-width: 1140px) {
+  .ps-left { width: 180px; flex-basis: 180px; }
+  .ps-right { width: 235px; flex-basis: 235px; }
+  .ppt-title-search { display: none; }
+  .ppt-ribbon-group { min-width: 100px; padding: 0 6px; }
+  .canva-side { width: 220px; flex-basis: 220px; }
+  .excel-ribbon-group { min-width: 117px; padding: 9px 8px 4px; }
+}
+@media(max-width: 800px) {
+  .ps-left, .ps-right { display: none; }
+  .ppt-slide-wrap { padding: 16px; }
+  .ppt-slides { width: 104px; flex-basis: 104px; }
+  .ppt-thumb { width: 67px; height: 55px; }
+  .ppt-quick-access { display: none; }
+  .canva-side { display: none; }
+  .canva-saved, .canva-avatar { display: none; }
+  .canva-bar { gap: 10px; padding: 0 10px; }
+  .canva-options-right { display: none !important; }
+  .vsc-explorer { width: 186px; flex-basis: 186px; }
+  .excel-zoom-status { display: none; }
+}
+@media(max-width: 520px) {
+  .ppt-titlebar { gap: 8px; }
+  .ppt-autosave, .ppt-status-accessibility { display: none; }
+  .ppt-ribbon { min-height: 79px; height: 79px; padding: 5px 6px; }
+  .ppt-ribbon-group { min-width: 80px; font-size: 9px; }
+  .ppt-slides { display: none; }
+  .ppt-slide { min-height: 250px; }
+  .ppt-slide-wrap { padding: 8px; }
+  .ppt-bottom-center { display: none; }
+  .canva-logo { font-size: 20px; }
+  .canva-share { padding: 6px 10px; }
+  .canva-stage { padding: 10px; }
+  .canva-page-heading { font-size: 10px; }
+  .excel-ribbon { min-height: 75px; height: 75px; }
+  .excel-ribbon-group { min-width: 86px; }
+  .excel-ribbon-symbols { font-size: 14px; letter-spacing: 2px; }
+  .excel-ribbon-caption { max-width: 78px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .excel-ribbon-group small { font-size: 9px; }
+  .excel-title-quick-access, .excel-title-right, .excel-ready { display: none; }
+  .excel-columns, .excel-row { grid-template-columns: 36px minmax(190px,75%) repeat(3,minmax(75px,1fr)); }
+  .vsc-explorer, .vsc-minimap { display: none; }
+  .vsc-search { min-width: 85px; font-size: 10px; }
+  .term-win-menu { display: none; }
+  .term-appearance>span { display: none; }
+  .term-appearance select { max-width: 92px; }
+}
