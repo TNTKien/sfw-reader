@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { AlignCenter, AlignLeft, AlignRight, ArrowLeft, BookOpen, Brush, ChevronDown, ChevronLeft, ChevronRight, Crop, Download, Eraser, Eye, FileImage, FolderOpen, Hand, Image as ImageIcon, Layers, LayoutTemplate, Maximize, MousePointer2, Move, PaintBucket, PanelLeft, PanelRight, PenTool, Pipette, Plus, Search, Settings2, Shapes, SlidersHorizontal, Sparkles, Square, Type, WandSparkles, ZoomIn, ZoomOut, Save, Undo2, Redo2, Bell, Mic, Clipboard, Scissors, Copy, Paintbrush, LayoutGrid } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { AlignCenter, AlignLeft, AlignRight, ArrowLeft, BookOpen, Brush, ChevronDown, ChevronLeft, ChevronRight, Crop, Download, Eraser, Eye, FileImage, FolderOpen, Hand, Image as ImageIcon, Layers, LayoutTemplate, Maximize, MousePointer2, Move, PaintBucket, PanelLeft, PanelRight, PenTool, Pipette, Plus, Search, Settings2, Shapes, SlidersHorizontal, Sparkles, Square, Type, WandSparkles, ZoomIn, ZoomOut, Save, Undo2, Redo2, Bell, Mic, Clipboard, Scissors, Copy, LayoutGrid } from 'lucide-react';
 import { MenuBar, PageSelect, WindowControls } from './Chrome';
 import type { ComicView } from '../types';
 
@@ -142,24 +142,34 @@ function Photoshop({ props }: { props: ComicProps }) {
   </div>;
 }
 
-function SlideThumbnail({ page, active, activeImage, current, getImage }: {
+function SlideThumbnail({ page, active, activeImage, getImage }: {
   page: number;
   active: boolean;
   activeImage: string | null;
-  current: number;
   getImage?: (index: number) => Promise<string>;
 }) {
   const [preview, setPreview] = useState<string | null>(null);
+  const container = useRef<HTMLDivElement>(null);
+  // Decode only thumbnails that approach the visible slides pane, not every page.
   useEffect(() => {
-    if (page === current || Math.abs(page - current) > 1 || !getImage) return;
-    let mounted = true;
-    getImage(page).then(src => { if (mounted) setPreview(src); }).catch(() => {});
-    return () => { mounted = false; };
-  }, [page, current, getImage]);
-  const display = active ? activeImage : Math.abs(page - current) <= 1 ? preview : null;
-  return <div className={active ? 'ppt-thumb ppt-thumb-active' : 'ppt-thumb'}>
-    {display ? <img src={display} alt={`Slide ${page + 1} thumbnail`}/> :
-      <div className="ppt-thumbnail-placeholder"><FileImage size={19}/><small>{page + 1}</small></div>}
+    if (active || !getImage || preview || !container.current) return;
+    let live = true;
+    let requested = false;
+    const node = container.current;
+    const observer = new IntersectionObserver(entries => {
+      if (!requested && entries.some(entry => entry.isIntersecting)) {
+        requested = true;
+        observer.disconnect();
+        getImage(page).then(src => { if (live) setPreview(src); }).catch(() => {});
+      }
+    }, { root: node.closest('.ppt-slides'), rootMargin: '120px 0px' });
+    observer.observe(node);
+    return () => { live = false; observer.disconnect(); };
+  }, [active, getImage, page, preview]);
+  const display = active ? activeImage : preview;
+  return <div ref={container} className={active ? 'ppt-thumb ppt-thumb-active' : 'ppt-thumb'}>
+    {display ? <img loading="lazy" src={display} alt={`Slide ${page + 1} thumbnail`}/> :
+      <div className="ppt-thumbnail-placeholder"><FileImage size={18}/><small>{page + 1}</small></div>}
   </div>;
 }
 
@@ -195,7 +205,7 @@ function PowerPoint({ props }: { props: ComicProps }) {
       <span className="ppt-title-search"><Search size={15}/> Search</span><span className="ppt-fidelity-avatar">R</span>
       <WindowControls onClose={close}/>
     </div>
-    <div className="ppt-tabs">{tabs.map(t => <button onClick={() => setTab(t)} key={t} className={t === tab ? 'selected' : ''}>{t}</button>)}<div className="ppt-fidelity-tab-actions"><span className="ppt-fidelity-comment"><Clipboard size={14}/> Comments</span><span className="ppt-fidelity-share">⇧ Share ⌄</span></div></div>
+    <div className="ppt-tabs">{tabs.map(t => <button onClick={() => setTab(t)} key={t} className={t === tab ? 'selected' : ''}>{t}</button>)}<div className="ppt-fidelity-tab-actions"><span className="ppt-fidelity-comment"><BookOpen size={14}/> Comments</span><span className="ppt-fidelity-share">⇧ Share ⌄</span></div></div>
     {tab === 'File' ? <main className="ppt-backstage"><aside><b>File</b><button onClick={() => setTab('Home')}>← Back</button><button onClick={openFile}>Open</button><button onClick={() => setTab('Home')}>Info</button></aside><section><h2>Open</h2><p>Recent</p><button onClick={openFile}><FolderOpen size={18}/> Browse files on this device</button></section></main> : <>
       <div className="ppt-ribbon ppt-fidelity-ribbon">
         {tab === 'Home' || tab === 'Shape Format' ? <>
@@ -229,10 +239,10 @@ function PowerPoint({ props }: { props: ComicProps }) {
         <aside className="ppt-slides"><div className="ppt-side-heading"><span>Slides</span> <span>Outline</span></div>
           {Array.from({ length: Math.min(count, 150) }, (_, i) =>
             <button key={i} onClick={() => onPage(i)} className={`ppt-thumb-row ${index === i ? 'selected' : ''}`} aria-label={`Go to slide ${i + 1}`}>
-              <span>{i + 1}</span><SlideThumbnail page={i} current={index} active={index === i} activeImage={image} getImage={getImage}/>
+              <span>{i + 1}</span><SlideThumbnail page={i} active={index === i} activeImage={image} getImage={getImage}/>
             </button>)}
         </aside>
-        <div className="ppt-center"><div className="ppt-slide-wrap"><div className="ppt-slide"><ImageCanvas src={image} zoom={zoom} name={name}/></div></div><div className="ppt-notes">Notes</div></div>
+        <div className="ppt-center"><div className="ppt-slide-wrap"><div className="ppt-slide"><ImageCanvas src={image} zoom={zoom} name={name}/></div></div><div className="ppt-notes"><span>Notes</span><span className="ppt-notes-hint">Click to add notes</span></div></div>
       </div>
       <div className="ppt-bottom"><span>Slide {index + 1} of {count}</span><span className="ppt-bottom-center">English (United States)　 <span className="ppt-status-accessibility">✓ Accessibility: Good</span></span>
         <Navigation page={index} count={count} onPage={onPage}/>
@@ -279,10 +289,10 @@ function Canva({ props }: { props: ComicProps }) {
   return <div className="canva app-fill">
     <div className="canva-bar">
       <button onClick={close} title="Back to library"><ArrowLeft size={18}/></button>
-      <div className="canva-logo">Canva</div>
+      <div className="canva-logo">Canva</div><span className="canva-top-divider"/>
       <button onClick={openFile}>File <ChevronDown size={12}/></button>
       <button disabled>Resize <ChevronDown size={12}/></button>
-      <span className="canva-doc-title">{name.replace(/\.[^.]+$/, '')}</span>
+      <span className="canva-doc-title" title={name}>{name.replace(/\.[^.]+$/, '')}</span><span className="canva-history"><Undo2 size={15}/><Redo2 size={15}/></span>
       <span className="canva-saved">☁ <span>All changes saved</span></span>
       <span className="canva-avatar">R</span>
       <span className="canva-share">Share</span>
@@ -294,7 +304,7 @@ function Canva({ props }: { props: ComicProps }) {
         <div className="canva-options">
           <span><Sparkles size={16}/> Edit image</span><span><SlidersHorizontal size={16}/> Adjust</span>
           <span><Crop size={16}/> Crop</span><span><Maximize size={16}/> Flip</span>
-          <span className="canva-options-right">Position <ChevronDown size={12}/></span>
+          <span className="canva-options-right">Position <ChevronDown size={12}/></span><span className="canva-top-more">⋯</span>
         </div>
         <div className="canva-stage">
           <div className="canva-work-area"><div className="canva-page-heading"><span>Page {index + 1} — {name.slice(0, 30)}</span><span>•••</span></div>
