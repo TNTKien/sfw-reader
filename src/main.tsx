@@ -10,6 +10,7 @@ import './ribbon-photoshop-reference.css';
 import './excel-ribbon-reference.css';
 import './help.css';
 import './suicaodex.css';
+import './workspace-picker.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode><App /></React.StrictMode>,
