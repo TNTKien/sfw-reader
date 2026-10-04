@@ -1,7 +1,15 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "bun run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "git": {
+    "deploymentEnabled": {
+      "feat/*": false,
+      "fix/*": false,
+      "chore/*": false
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
