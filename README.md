@@ -12,6 +12,12 @@ A playful, privacy-first reader that disguises your own text books and comics in
 - **Lazy loading:** PDF pages and comic archive images are decoded as requested, with limited prefetching and memory-aware image cache eviction. Long text views virtualize visible rows.
 - **Demo:** Built-in original sample text and simple original vector comic to try without choosing a file.
 
+## Pre-read workspace choice
+
+Every loaded document now pauses before entering the reader and shows only compatible workspaces: **Excel / VS Code / Terminal** for text, or **Photoshop / PowerPoint / Canva** for comics. The previous workspace used for the same document is selected first; otherwise SFW Reader uses the most recently chosen workspace for that content type. The selection can still be changed from the reader header after opening.
+
+This choice also applies to demos, scanned-PDF fallback, reopened PDFs and direct Suicaodex chapter links.
+
 ## Workspace
 
 Desktop-focused chrome refinements are split into `src/workspace-fidelity-v2.css`, loaded after the earlier styles to keep the existing reading engine untouched.

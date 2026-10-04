@@ -55,7 +55,7 @@ export default function HelpDialog({ onClose }: {onClose: () => void}) {
           <section className="help-section">
             <h3 id="help-heading"><BookOpen size={17}/> Getting started</h3>
             <div className="help-step"><b>01</b><div><strong>Open a book</strong><p>Drop a file onto the home page or use <em>Choose a file</em>. You can also try either built-in demo.</p></div></div>
-            <div className="help-step"><b>02</b><div><strong>Choose your workspace</strong><p>Text books open in Excel, VS Code, or Terminal. Comics open in Photoshop, PowerPoint, or Canva. Change the workspace from the reader header.</p></div></div>
+            <div className="help-step"><b>02</b><div><strong>Choose your workspace</strong><p>After SFW Reader detects the book type, pick a compatible UI before the reader opens. Text books offer Excel, VS Code, or Terminal; comics offer Photoshop, PowerPoint, or Canva. You can still switch later from the reader header.</p></div></div>
             <div className="help-step"><b>03</b><div><strong>Read your way</strong><p>Use chapter/page controls or keyboard navigation. Text readers support sentences or paragraphs; comics support zoom.</p></div></div>
             <div className="help-format-note"><div><FileText size={17}/><strong>Text</strong><span>TXT · EPUB · text-based PDF</span></div>
               <div><FileImage size={17}/><strong>Comics</strong><span>Images · CBZ · ZIP · PDF</span></div></div>

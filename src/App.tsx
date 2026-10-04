@@ -3,6 +3,7 @@ import { AlertCircle, ArrowDownRight, ArrowLeft, ArrowRight, BookOpen, CheckCirc
 import ComicApps from './components/ComicApps';
 import TextApps from './components/TextApps';
 import HelpDialog from './components/HelpDialog';
+import WorkspacePicker from './components/WorkspacePicker';
 import { getStoredTerminalProfile, updateBrowserAppearance, type TerminalProfile } from './lib/browserAppearance';
 import { loadSuicaodexChapter, parseSuicaodexChapter, routeChapterId } from './lib/suicaodex';
 import { demoComic, demoText } from './lib/demo';
@@ -25,6 +26,22 @@ function getStoredPosition(doc: ReaderDocument): { index: number; view?: View } 
     if (value && Number.isInteger(value.index) && value.index >= 0) return value;
   } catch { /* private browsing can disable storage */ }
   return { index: 0 };
+}
+
+function compatibleView(kind: ReaderDocument['kind'], view: unknown): view is View {
+  return kind === 'comic'
+    ? view === 'photoshop' || view === 'powerpoint' || view === 'canva'
+    : view === 'excel' || view === 'code' || view === 'terminal';
+}
+
+function preferredWorkspace(doc: ReaderDocument): View {
+  const saved = getStoredPosition(doc).view;
+  if (compatibleView(doc.kind, saved)) return saved;
+  try {
+    const preferred = localStorage.getItem(`sfw-preferred-workspace:${doc.kind}`);
+    if (compatibleView(doc.kind, preferred)) return preferred;
+  } catch { /* localStorage can be unavailable */ }
+  return doc.kind === 'comic' ? 'photoshop' : 'excel';
 }
 
 function Landing({ onFiles, onDemo, onHelp, onSuicaodex, busy, error }: {
@@ -63,6 +80,8 @@ function ScanDialog({ pending, choose, dismiss }: { pending: PendingPdf; choose:
 
 export default function App() {
   const [book, setBook] = useState<ReaderDocument | null>(null);
+  const [stagedBook, setStagedBook] = useState<ReaderDocument | null>(null);
+  const stagedRef = useRef<ReaderDocument | null>(null);
   const [remoteChapterId, setRemoteChapterId] = useState<string | null>(() => routeChapterId(window.location.pathname));
   const [remoteLoading, setRemoteLoading] = useState(() => routeChapterId(window.location.pathname) !== null);
   const [remoteRetry, setRemoteRetry] = useState(0);
@@ -91,6 +110,20 @@ export default function App() {
     setError(null);
   }, []);
 
+  const stageBook = useCallback((next: ReaderDocument) => {
+    stagedRef.current?.dispose();
+    stagedRef.current = next;
+    setStagedBook(next);
+    setError(null);
+  }, []);
+
+  const cancelStaged = useCallback(() => {
+    stagedRef.current?.dispose();
+    stagedRef.current = null;
+    setStagedBook(null);
+    if (!book && remoteChapterId) goHome();
+  }, [book, remoteChapterId, goHome]);
+
   const openSuicaodexLink = useCallback((input: string): string | null => {
     const id = parseSuicaodexChapter(input);
     if (!id) return 'Enter a valid Suicaodex chapter link or chapter UUID.';
@@ -102,16 +135,16 @@ export default function App() {
     return null;
   }, []);
 
-  const applyBook = useCallback((next: ReaderDocument) => {
+  const applyBook = useCallback((next: ReaderDocument, initialView?: View) => {
     bookRef.current?.dispose();
     bookRef.current = next;
     const saved = getStoredPosition(next);
     const limit = next.kind === 'comic' ? next.pageCount : next.chapters.length;
     setPage(Math.min(saved.index, limit - 1));
-    setView(next.kind === 'comic' && ['photoshop','powerpoint','canva'].includes(saved.view ?? '')
-      ? saved.view as ComicView
-      : next.kind === 'text' && ['excel','code','terminal'].includes(saved.view ?? '')
-        ? saved.view as TextView : next.kind === 'comic' ? 'photoshop' : 'excel');
+    const chosenView = initialView && compatibleView(next.kind, initialView)
+      ? initialView
+      : compatibleView(next.kind, saved.view) ? saved.view : preferredWorkspace(next);
+    setView(chosenView);
     setZoom(80);
     setBook(next);
     setImage(null);
@@ -131,15 +164,15 @@ export default function App() {
       lastFiles.current = files;
       goHome();
       if (result.kind === 'pending-pdf') setPending(result);
-      else applyBook(result);
+      else stageBook(result);
     } catch (e) { setError(e instanceof Error ? e.message : 'Could not read this book.'); }
     finally { setBusy(false); }
-  }, [applyBook, pending, goHome]);
+  }, [pending, goHome, stageBook]);
 
   const reopenAsComic = async () => {
     if (!lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf')) return;
     setBusy(true);
-    try { const { loadDocuments } = await import('./lib/documents'); const result = await loadDocuments(lastFiles.current, 'comic'); if (result.kind === 'comic') applyBook(result); }
+    try { const { loadDocuments } = await import('./lib/documents'); const result = await loadDocuments(lastFiles.current, 'comic'); if (result.kind === 'comic') stageBook(result); }
     catch(e) { setError(e instanceof Error ? e.message : 'Could not open PDF as comic.'); }
     finally { setBusy(false); }
   };
@@ -147,15 +180,27 @@ export default function App() {
     if (!pending) return;
     const result = type === 'comic' ? pending.asComic() : pending.asText();
     setPending(null);
-    applyBook(result);
+    stageBook(result);
   };
   const close = useCallback(() => {
     bookRef.current?.dispose();
     bookRef.current = null;
+    stagedRef.current?.dispose();
+    stagedRef.current = null;
+    setStagedBook(null);
     setBook(null);
     goHome();
     setRaw(''); setImage(null);
   }, [goHome]);
+
+  const openStaged = useCallback((selectedView: View) => {
+    const next = stagedRef.current;
+    if (!next || !compatibleView(next.kind, selectedView)) return;
+    stagedRef.current = null;
+    setStagedBook(null);
+    try { localStorage.setItem(`sfw-preferred-workspace:${next.kind}`, selectedView); } catch { /* optional */ }
+    applyBook(next, selectedView);
+  }, [applyBook]);
 
   // Deep-linked Suicaodex chapters share the existing ComicDocument reader engine.
   useEffect(() => {
@@ -169,7 +214,7 @@ export default function App() {
     lastFiles.current = null;
     void loadSuicaodexChapter(remoteChapterId, controller.signal).then(next => {
       if (!controller.signal.aborted) {
-        applyBook(next);
+        stageBook(next);
         setRemoteLoading(false);
       } else next.dispose();
     }).catch(error => {
@@ -179,7 +224,7 @@ export default function App() {
       }
     });
     return () => controller.abort();
-  }, [remoteChapterId, remoteRetry, applyBook]);
+  }, [remoteChapterId, remoteRetry, stageBook]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -205,7 +250,7 @@ export default function App() {
   // Global help is available on the home page and with the reader toolbar hidden.
   useEffect(() => {
     const onHelpKey = (event: KeyboardEvent) => {
-      if (pending || event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (pending || stagedBook || event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
       const target = event.target instanceof HTMLElement ? event.target : null;
       const editing = target && (
         ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName) ||
@@ -218,9 +263,9 @@ export default function App() {
     };
     window.addEventListener('keydown', onHelpKey);
     return () => window.removeEventListener('keydown', onHelpKey);
-  }, [pending]);
+  }, [pending, stagedBook]);
 
-  useEffect(() => () => { bookRef.current?.dispose(); }, []);
+  useEffect(() => () => { bookRef.current?.dispose(); stagedRef.current?.dispose(); }, []);
   useEffect(() => {
     if (!book) return;
     let cancelled = false;
@@ -245,10 +290,13 @@ export default function App() {
   }, [book, page]);
   useEffect(() => {
     if (!book) return;
-    try { localStorage.setItem(`sfw-position:${book.id}`, JSON.stringify({ index: page, view })); } catch { /* optional */ }
+    try {
+      localStorage.setItem(`sfw-position:${book.id}`, JSON.stringify({ index: page, view }));
+      if (compatibleView(book.kind, view)) localStorage.setItem(`sfw-preferred-workspace:${book.kind}`, view);
+    } catch { /* optional */ }
   }, [book, page, view]);
   useEffect(() => {
-    if (!book || pending || helpOpen) return;
+    if (!book || pending || stagedBook || helpOpen) return;
     const onKey = (event: KeyboardEvent) => {
       const element = event.target as HTMLElement | null;
       // Keep native editing and mock application menu keyboard interactions intact.
@@ -285,11 +333,11 @@ export default function App() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [book, pending, helpOpen]);
+  }, [book, pending, stagedBook, helpOpen]);
 
   const compatible = useMemo(() => book?.kind === 'comic' ? comicViews : textViews, [book]);
   return <>
-    {!book && remoteChapterId ? <div className="scd-route-page">
+    {!book && remoteChapterId && !stagedBook ? <div className="scd-route-page">
       <div className="scd-route-panel"><span className="scd-route-kicker">SUICAODEX / CHAPTER</span>
         <div className="scd-route-symbol"><BookOpen size={29}/></div>
         <h1>{remoteLoading ? 'Opening chapter…' : 'Could not open chapter'}</h1>
@@ -297,7 +345,7 @@ export default function App() {
         {!remoteLoading && <div className="scd-route-actions"><button onClick={() => setRemoteRetry(current => current + 1)} className="scd-route-retry" type="button">Try again</button><button onClick={goHome} type="button">Back to home</button></div>}
         {remoteLoading && <div className="scd-route-progress"/>}
       </div>
-    </div> : !book ? <Landing onFiles={openFiles} onDemo={type => { lastFiles.current = null; applyBook(type === 'comic' ? demoComic() : demoText()); }} onHelp={() => setHelpOpen(true)} onSuicaodex={openSuicaodexLink} busy={busy} error={error}/> :
+    </div> : !book ? <Landing onFiles={openFiles} onDemo={type => { lastFiles.current = null; stageBook(type === 'comic' ? demoComic() : demoText()); }} onHelp={() => setHelpOpen(true)} onSuicaodex={openSuicaodexLink} busy={busy} error={error}/> :
       <div className="reader-page">
       <input hidden type="file" ref={fileInput} multiple accept=".txt,.epub,.pdf,.cbz,.zip,.jpg,.jpeg,.png,.webp,.gif,.avif" onChange={event=>{if(event.target.files?.length)void openFiles(Array.from(event.target.files));event.target.value='';}}/>
       {headerVisible ? <header className="reader-toolbar"><button className="reader-home" onClick={close} title="Close reader"><span className="reader-home-badge"><BookOpen size={17}/></span><span>SFW <b>READER</b></span></button><div className="reader-toolbar-divider"/><span className="reader-bookname" title={book.name}>{book.name}</span><div className="reader-mode-switch" role="group" aria-label="Choose reading workspace">{compatible.map(item => <button key={item.id} className={view === item.id ? 'current' : ''} onClick={() => setView(item.id as View)} title={item.desc}>{item.title}</button>)}</div>{book.kind === 'text' && lastFiles.current?.[0]?.name.toLowerCase().endsWith('.pdf') && <button className="reader-pdf-comic" onClick={()=>void reopenAsComic()}>Read as comic</button>}<span className="reader-local"><span/> {book.id.startsWith("suicaodex:") ? "SCD CHAPTER" : "LOCAL ONLY"}</span><button className="reader-open" onClick={()=>fileInput.current?.click()} disabled={busy}><Plus size={16}/> Open</button><button className="reader-help" type="button" title="Help (F1 / ?)" aria-label="Open guide" onClick={() => setHelpOpen(true)}><CircleHelp size={17}/></button><button className="reader-header-hide" type="button" title="Hide reader header (H)" aria-label="Hide reader header (H)" onClick={() => setHeaderVisible(false)}><ChevronUp size={16}/><kbd>H</kbd></button><button className="reader-back" title="Back to library" onClick={close}><X size={17}/></button></header> : <button type="button" className="reader-header-show" title="Show reader header (H)" aria-label="Show reader header (H)" onClick={() => setHeaderVisible(true)}><ChevronDown size={16}/></button>}
@@ -306,6 +354,11 @@ export default function App() {
       {rendering && book.kind === 'text' && <div className="reader-toast">Loading {book.chapters[page]?.title}…</div>}
       </div>}
     {pending && <ScanDialog pending={pending} choose={chooseScan} dismiss={()=>{pending.dispose();setPending(null);}}/>}
-    {helpOpen && !pending && <HelpDialog onClose={closeHelp}/>}
+    {stagedBook && <WorkspacePicker document={stagedBook}
+      choices={stagedBook.kind === 'comic' ? comicViews : textViews}
+      initial={preferredWorkspace(stagedBook)}
+      onOpen={openStaged}
+      onCancel={cancelStaged}/>}
+    {helpOpen && !pending && !stagedBook && <HelpDialog onClose={closeHelp}/>}
   </>;
 }

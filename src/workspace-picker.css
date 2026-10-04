@@ -1,0 +1,147 @@
+/* Workspace choice shown after document type detection and before entering a reader UI. */
+.workspace-picker-backdrop {
+  z-index: 1250;
+  background: #0d1813dc;
+  backdrop-filter: blur(7px);
+  padding: 16px;
+}
+.workspace-picker {
+  position: relative;
+  width: min(100%, 720px);
+  padding: 29px 30px 25px;
+  border: 1px solid #c8d9c0;
+  border-radius: 15px;
+  background: #f7faf4;
+  color: #293c2f;
+  box-shadow: 0 28px 100px #07120c8a;
+  font-family: 'DM Sans',Arial,sans-serif;
+}
+.workspace-picker-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 31px; height: 31px;
+  display: grid; place-items: center;
+  border: 1px solid #cbd8c7;
+  border-radius: 50%;
+  background: #fff;
+  color: #55705b;
+}
+.workspace-picker-close:hover { background: #e8f0e3; color: #263b2d; }
+.workspace-picker-kicker {
+  display: block;
+  color: #6b9668;
+  font: 800 10px 'Space Grotesk',sans-serif;
+  letter-spacing: 1.4px;
+}
+.workspace-picker h2 {
+  margin: 8px 45px 4px 0;
+  color: #263b2d;
+  font: 750 clamp(25px,4vw,37px)/1.13 'Space Grotesk',sans-serif;
+  letter-spacing: -1.15px;
+}
+.workspace-picker-book {
+  margin: 0 45px 23px 0;
+  overflow: hidden;
+  color: #768779;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+}
+.workspace-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 11px;
+}
+.workspace-choice {
+  position: relative;
+  min-width: 0;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #cedbc9;
+  border-radius: 9px;
+  background: #fff;
+  color: #34473a;
+  transition: border-color .14s ease, box-shadow .14s ease, transform .14s ease;
+}
+.workspace-choice:hover {
+  border-color: #82a77b;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px #2e4b3120;
+}
+.workspace-choice.selected {
+  border-color: #548653;
+  background: #f1f7ed;
+  box-shadow: inset 0 0 0 1px #548653, 3px 4px 0 #dbe9d4;
+}
+.workspace-choice-mark {
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 7px;
+  font: 800 15px 'Space Grotesk',sans-serif;
+  letter-spacing: -.5px;
+}
+.workspace-choice-excel { background:#107c41; color:white; }
+.workspace-choice-code { background:#202c43; color:#28a8ed; font-size:12px; }
+.workspace-choice-terminal { background:#252235; color:#cbb9ff; font-family:'JetBrains Mono',monospace; }
+.workspace-choice-photoshop { background:#001e36; color:#42c7ff; border:1px solid #195879; }
+.workspace-choice-powerpoint { background:#c34b28; color:white; border-radius:50%; }
+.workspace-choice-canva { background:linear-gradient(135deg,#20bec5,#7058d6); color:white; border-radius:50%; font-family:Georgia,serif; font-style:italic; font-size:20px; }
+.workspace-choice-copy { min-width:0; display:flex; flex-direction:column; gap:4px; }
+.workspace-choice-copy strong { color:#2b3f31; font:750 14px 'Space Grotesk',sans-serif; }
+.workspace-choice-copy small { color:#7a8b7d; font-size:10px; line-height:1.45; overflow-wrap:anywhere; }
+.workspace-choice-check {
+  position:absolute; top:13px; right:13px;
+  width:21px; height:21px;
+  display:grid; place-items:center;
+  border:1px solid #d6dfd2;
+  border-radius:50%;
+  color:#fff;
+  background:#fff;
+}
+.workspace-choice.selected .workspace-choice-check { background:#4e8151; border-color:#4e8151; }
+.workspace-picker-note {
+  margin:17px 0 0;
+  color:#7d8d7f;
+  font-size:10px;
+  line-height:1.6;
+}
+.workspace-picker-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:20px;
+  padding-top:17px;
+  border-top:1px solid #dce6d8;
+}
+.workspace-picker-actions button {
+  min-height:39px;
+  border-radius:6px;
+  padding:0 14px;
+  font:750 11px 'Space Grotesk',sans-serif;
+}
+.workspace-picker-cancel { border:1px solid #c8d8c4; background:#fff; color:#52705a; }
+.workspace-picker-open {
+  min-width:145px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  border:1px solid #315e3d;
+  background:#315e3d;
+  color:#ecffe3;
+}
+.workspace-picker-open:hover { background:#437947; }
+@media(max-width:620px) {
+  .workspace-picker { padding:24px 18px 18px; }
+  .workspace-picker-grid { grid-template-columns:1fr; }
+  .workspace-choice { min-height:0; flex-direction:row; align-items:center; }
+  .workspace-choice-check { top:50%; transform:translateY(-50%); }
+  .workspace-picker-actions { flex-direction:column-reverse; }
+  .workspace-picker-actions button { width:100%; }
+}
